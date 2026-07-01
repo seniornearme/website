@@ -5,8 +5,13 @@
  * from the CCLD transparency API and attempts an NPI match via the free NPI
  * Registry API. Writes summary fields to facilities + rows to facility_reports.
  *
- * Run:  npx tsx scripts/enrich-cdss.ts [city]
- *       npx tsx scripts/enrich-cdss.ts reseda
+ * The CDSS join is ALWAYS keyed on facility license_number (facility number),
+ * never city — city has source typos (e.g. "RECEDA") and isn't a reliable key.
+ *
+ * Run:  npx tsx scripts/enrich-cdss.ts               # all un-enriched facilities
+ *       npx tsx scripts/enrich-cdss.ts --city reseda # optional test subset
+ *       npx tsx scripts/enrich-cdss.ts --force       # re-enrich everything
+ *       npx tsx scripts/enrich-cdss.ts --limit 100   # cap the batch
  *
  * Env:  NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY (in .env.local)
  *
@@ -20,7 +25,14 @@ import { config } from "dotenv";
 
 config({ path: ".env.local" });
 
-const CITY = (process.argv[2] ?? "reseda").trim();
+const args = process.argv.slice(2);
+const flag = (name: string) => {
+  const i = args.indexOf(name);
+  return i >= 0 ? args[i + 1] : undefined;
+};
+const CITY_FILTER = flag("--city");
+const FORCE = args.includes("--force");
+const LIMIT = flag("--limit") ? parseInt(flag("--limit")!, 10) : undefined;
 const CCLD = "https://www.ccld.dss.ca.gov/transparencyapi/api";
 const NPI = "https://npiregistry.cms.hhs.gov/api";
 
@@ -125,10 +137,10 @@ function normalizeName(s: string): string {
     .trim();
 }
 
-async function matchNpi(name: string): Promise<string | null> {
+async function matchNpi(name: string, city: string | null): Promise<string | null> {
+  const cityParam = city ? `&city=${encodeURIComponent(city)}` : "";
   const url =
-    `${NPI}/?version=2.1&enumeration_type=NPI-2&state=CA` +
-    `&city=${encodeURIComponent(CITY)}&limit=20`;
+    `${NPI}/?version=2.1&enumeration_type=NPI-2&state=CA${cityParam}&limit=20`;
   const json = (await getJson(url)) as
     | { results?: { number: number; basic?: { organization_name?: string } }[] }
     | null;
@@ -145,18 +157,46 @@ async function matchNpi(name: string): Promise<string | null> {
   return null;
 }
 
+type Target = {
+  id: string;
+  name: string;
+  license_number: string | null;
+  city: string | null;
+};
+
+async function fetchTargets(): Promise<Target[]> {
+  const PAGE = 1000;
+  const out: Target[] = [];
+  for (let from = 0; ; from += PAGE) {
+    let q = supabase
+      .from("facilities")
+      .select("id, name, license_number, city")
+      .not("license_number", "is", null)
+      .order("id")
+      .range(from, from + PAGE - 1);
+    if (CITY_FILTER) q = q.ilike("city", CITY_FILTER);
+    if (!FORCE) q = q.is("cdss_synced_at", null);
+    const { data, error } = await q;
+    if (error) throw error;
+    if (!data?.length) break;
+    out.push(...(data as Target[]));
+    if (LIMIT && out.length >= LIMIT) return out.slice(0, LIMIT);
+    if (data.length < PAGE) break;
+  }
+  return out;
+}
+
 async function main() {
-  console.log(`Enriching facilities in city="${CITY}"…`);
-  const { data: facilities, error } = await supabase
-    .from("facilities")
-    .select("id, name, license_number")
-    .ilike("city", CITY);
-  if (error) throw error;
-  if (!facilities?.length) {
-    console.log("No facilities found.");
+  const scope = CITY_FILTER ? `city="${CITY_FILTER}"` : "all CA facilities";
+  console.log(
+    `Enriching ${scope} by facility number${FORCE ? " (force re-enrich)" : " (un-enriched only)"}…`,
+  );
+  const facilities = await fetchTargets();
+  if (!facilities.length) {
+    console.log("Nothing to enrich.");
     return;
   }
-  console.log(`  ${facilities.length} facilities`);
+  console.log(`  ${facilities.length} facilities to process`);
 
   let enriched = 0;
   let withCitations = 0;
@@ -174,7 +214,7 @@ async function main() {
 
       const summary = parseDetail(detailJson);
       const reports = parseReports(reportsJson);
-      const npi = await matchNpi(f.name);
+      const npi = await matchNpi(f.name, f.city);
 
       if (summary) {
         const { error: upErr } = await supabase
