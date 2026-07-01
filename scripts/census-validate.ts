@@ -22,6 +22,16 @@ const supabase = createClient(
   { auth: { persistSession: false } },
 );
 
+const APPLY_SAFE = process.argv.includes("--apply-safe");
+
+// Curated typos where our value is clearly wrong (Census's exact form isn't
+// what we'd store, so map explicitly).
+const TYPO_MAP: Record<string, string> = {
+  "MONTERERY PARK": "MONTEREY PARK",
+  "BERMUDAS DUNES": "BERMUDA DUNES",
+  "CATHEDRAL WAY": "CATHEDRAL CITY",
+};
+
 type Row = {
   id: string;
   name: string;
@@ -79,8 +89,15 @@ async function main() {
   const results = await geocodeBatch(inputs);
   console.log(`  ${results.size} / ${inputs.length} matched\n`);
 
-  const byId = new Map(rows.map((r) => [r.id, r]));
-  const cityFlags: { name: string; ours: string; census: string; zip: string }[] = [];
+  const cityFlags: {
+    id: string;
+    name: string;
+    ours: string;
+    census: string;
+    zip: string;
+    safe: boolean;
+    target: string;
+  }[] = [];
   const zipFlags: { name: string; ours: string; census: string }[] = [];
   const unmatched: Row[] = [];
   const pinFills: { id: string; location: string }[] = [];
@@ -99,32 +116,49 @@ async function main() {
     if (!c) continue;
     const ourCity = (r.city ?? "").trim().toUpperCase();
     const ourZip = (r.zip ?? "").trim().slice(0, 5);
-    if (c.city && ourCity && c.city !== ourCity)
-      cityFlags.push({ name: r.name, ours: ourCity, census: c.city, zip: ourZip });
+    if (c.city && ourCity && c.city !== ourCity) {
+      // Safe = CDSS-truncated name (Census extends ours, ≥18 chars), a missing
+      // trailing "S", or an explicit curated typo. Everything else is a
+      // judgment call (neighborhood flattening, abbreviations) — flag only.
+      const truncation = c.city.startsWith(ourCity) && ourCity.length >= 18;
+      const pluralS = c.city === `${ourCity}S`;
+      const typo = TYPO_MAP[ourCity];
+      const target = typo ?? c.city;
+      const safe = truncation || pluralS || !!typo;
+      cityFlags.push({ id: r.id, name: r.name, ours: ourCity, census: c.city, zip: ourZip, safe, target });
+    }
     if (c.zip && ourZip && c.zip !== ourZip)
       zipFlags.push({ name: r.name, ours: ourZip, census: c.zip });
   }
 
+  const safeCity = cityFlags.filter((f) => f.safe);
+  const reviewCity = cityFlags.filter((f) => !f.safe);
+
   console.log("=== SUMMARY ===");
   console.log(`  Matched by Census: ${results.size}`);
-  console.log(`  Unmatched (possible bad address): ${unmatched.length}`);
-  console.log(`  Insufficient address (missing street/city/zip): ${insufficient}`);
-  console.log(`  City discrepancies (ours vs Census): ${cityFlags.length}`);
-  console.log(`  ZIP discrepancies (ours vs Census): ${zipFlags.length}`);
-  console.log(`  Pins to fill (had none, Census matched): ${pinFills.length}\n`);
+  console.log(`  Unmatched: ${unmatched.length}`);
+  console.log(`  City discrepancies: ${cityFlags.length} (safe auto-fix: ${safeCity.length}, review: ${reviewCity.length})`);
+  console.log(`  ZIP discrepancies (low confidence — not applied): ${zipFlags.length}\n`);
 
-  console.log("=== CITY DISCREPANCIES (first 40 — review before correcting) ===");
-  cityFlags.slice(0, 40).forEach((f) =>
-    console.log(`  ${f.name}: "${f.ours}" → Census "${f.census}" [${f.zip}]`),
-  );
-  console.log("\n=== ZIP DISCREPANCIES (first 25) ===");
-  zipFlags.slice(0, 25).forEach((f) =>
-    console.log(`  ${f.name}: "${f.ours}" → Census "${f.census}"`),
-  );
-  console.log("\n=== UNMATCHED (first 25) ===");
-  unmatched.slice(0, 25).forEach((r) =>
-    console.log(`  ${r.name} — ${r.street_address}, ${r.city} CA ${r.zip}`),
-  );
+  console.log(`=== SAFE CITY FIXES${APPLY_SAFE ? " (APPLYING)" : ""} ===`);
+  safeCity.forEach((f) => console.log(`  ${f.name}: "${f.ours}" → "${f.target}" [${f.zip}]`));
+
+  console.log("\n=== CITY — NEEDS REVIEW (NOT applied; all of them) ===");
+  reviewCity.forEach((f) => console.log(`  ${f.name}: "${f.ours}" → Census "${f.census}" [${f.zip}]`));
+
+  if (APPLY_SAFE && safeCity.length) {
+    console.log(`\nApplying ${safeCity.length} safe city corrections…`);
+    let n = 0;
+    for (let i = 0; i < safeCity.length; i += 20) {
+      await Promise.all(
+        safeCity.slice(i, i + 20).map(async (f) => {
+          const { error } = await supabase.from("facilities").update({ city: f.target }).eq("id", f.id);
+          if (!error) n++;
+        }),
+      );
+    }
+    console.log(`  Corrected ${n} cities.`);
+  }
 
   if (pinFills.length) {
     console.log(`\nFilling ${pinFills.length} missing pins…`);
