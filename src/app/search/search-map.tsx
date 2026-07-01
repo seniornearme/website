@@ -25,13 +25,48 @@ const INITIAL_ZOOM = 5.5;
 const MIN_ZOOM = 5;
 const MAX_ZOOM = 18;
 
+// Rough California bounding box — used to warn users located outside the state,
+// since the directory only covers CA facilities.
+function isOutsideCalifornia(loc: { lng: number; lat: number }): boolean {
+  return (
+    loc.lng < -124.6 || loc.lng > -114.0 || loc.lat < 32.4 || loc.lat > 42.1
+  );
+}
+
+function distanceMiles(
+  a: { lng: number; lat: number },
+  b: { lng: number; lat: number },
+): number {
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const R = 3958.8; // Earth radius in miles
+  const dLat = toRad(b.lat - a.lat);
+  const dLng = toRad(b.lng - a.lng);
+  const lat1 = toRad(a.lat);
+  const lat2 = toRad(b.lat);
+  const h =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+function formatMiles(mi: number): string {
+  return mi < 10 ? `${mi.toFixed(1)} mi` : `${Math.round(mi)} mi`;
+}
+
 export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
+  const geolocateRef = useRef<maplibregl.GeolocateControl | null>(null);
   const [mapReady, setMapReady] = useState(false);
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [visibleIds, setVisibleIds] = useState<Set<string>>(new Set());
+  const [userLocation, setUserLocation] = useState<{
+    lng: number;
+    lat: number;
+  } | null>(null);
+  const [locating, setLocating] = useState(false);
+  const [geoError, setGeoError] = useState<string | null>(null);
 
   const filtered = useMemo(
     () =>
@@ -103,6 +138,33 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
     map.scrollZoom.enable({ around: "center" });
 
     map.addControl(new maplibregl.NavigationControl(), "top-right");
+
+    const geolocate = new maplibregl.GeolocateControl({
+      positionOptions: { enableHighAccuracy: true },
+      trackUserLocation: false,
+      showUserLocation: true,
+      showAccuracyCircle: true,
+      fitBoundsOptions: { maxZoom: 13 },
+    });
+    geolocateRef.current = geolocate;
+    map.addControl(geolocate, "top-right");
+    geolocate.on("geolocate", (e) => {
+      const pos = e as unknown as GeolocationPosition;
+      setLocating(false);
+      setGeoError(null);
+      setUserLocation({
+        lng: pos.coords.longitude,
+        lat: pos.coords.latitude,
+      });
+    });
+    geolocate.on("error", (err) => {
+      setLocating(false);
+      setGeoError(
+        err && (err as GeolocationPositionError).code === 1
+          ? "Location permission denied. Enable it in your browser to use “Near me”."
+          : "Couldn’t get your location. Try again.",
+      );
+    });
 
     map.on("load", () => {
       map.addSource("facilities", {
@@ -228,13 +290,40 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
   }, [geojson, mapReady, recomputeVisible]);
 
   const visibleList = useMemo(() => {
-    const list: FacilityGeo[] = [];
+    const items: { facility: FacilityGeo; distance: number | null }[] = [];
     for (const id of visibleIds) {
       const f = filteredById.get(id);
-      if (f) list.push(f);
+      if (!f) continue;
+      items.push({
+        facility: f,
+        distance: userLocation
+          ? distanceMiles(userLocation, { lng: f.lng, lat: f.lat })
+          : null,
+      });
     }
-    return list.sort((a, b) => a.name.localeCompare(b.name));
-  }, [visibleIds, filteredById]);
+    if (userLocation) {
+      items.sort((a, b) => (a.distance ?? 0) - (b.distance ?? 0));
+    } else {
+      items.sort((a, b) => a.facility.name.localeCompare(b.facility.name));
+    }
+    return items;
+  }, [visibleIds, filteredById, userLocation]);
+
+  const outsideCA = userLocation ? isOutsideCalifornia(userLocation) : false;
+
+  const handleNearMe = () => {
+    if (!geolocateRef.current) return;
+    setGeoError(null);
+    setLocating(true);
+    // trigger() returns false when geolocation isn't available in this browser;
+    // otherwise the control fires a "geolocate" or "error" event that clears
+    // the locating state.
+    const started = geolocateRef.current.trigger();
+    if (!started) {
+      setLocating(false);
+      setGeoError("Location isn’t available in this browser.");
+    }
+  };
 
   return (
     <div className="flex flex-col md:flex-row h-[100dvh] overflow-hidden">
@@ -255,9 +344,40 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
             <option value="rcfe">RCFE — Elder care</option>
             <option value="arf">ARF — Adult residential</option>
           </select>
+          <button
+            type="button"
+            onClick={handleNearMe}
+            disabled={locating}
+            className="mt-3 flex w-full items-center justify-center gap-2 rounded border border-zinc-300 bg-white p-2 text-sm font-medium transition-colors hover:bg-zinc-50 disabled:opacity-60 dark:border-zinc-700 dark:bg-transparent dark:hover:bg-zinc-900"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="3" />
+              <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+            </svg>
+            {locating ? "Locating…" : "Near me"}
+          </button>
+          {geoError && (
+            <p className="mt-2 text-xs text-red-600">{geoError}</p>
+          )}
+          {outsideCA && (
+            <p className="mt-2 text-xs text-amber-600">
+              You appear to be outside California. SeniorNearMe currently covers
+              California facilities only.
+            </p>
+          )}
         </div>
         <ul className="flex-1 overflow-y-auto divide-y divide-zinc-200 dark:divide-zinc-800">
-          {visibleList.map((f) => (
+          {visibleList.map(({ facility: f, distance }) => (
             <li key={f.id}>
               <button
                 type="button"
@@ -274,7 +394,14 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
                   });
                 }}
               >
-                <div className="text-sm font-medium">{f.name}</div>
+                <div className="flex items-baseline justify-between gap-2">
+                  <span className="text-sm font-medium">{f.name}</span>
+                  {distance != null && (
+                    <span className="shrink-0 text-xs font-medium text-blue-600 dark:text-blue-400">
+                      {formatMiles(distance)}
+                    </span>
+                  )}
+                </div>
                 <div className="text-xs text-zinc-500 mt-0.5">
                   {[f.city, f.facility_type.toUpperCase()]
                     .filter(Boolean)
