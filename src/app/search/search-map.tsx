@@ -585,7 +585,7 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
   };
 
   const chipClass =
-    "shrink-0 rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-1.5 text-sm";
+    "min-w-0 flex-1 rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-1.5 text-sm";
   const panelBase =
     "absolute z-10 flex flex-col bg-white dark:bg-zinc-900 shadow-xl overflow-hidden " +
     "left-0 right-0 bottom-0 h-[40vh] rounded-t-2xl " +
@@ -658,7 +658,7 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
             </button>
           </div>
           <div
-            className={`${filtersOpen ? "flex" : "hidden"} mt-2 gap-2 overflow-x-auto pb-1 md:flex`}
+            className={`${filtersOpen ? "flex" : "hidden"} mt-2 gap-2 md:flex`}
           >
             <select
               className={chipClass}
@@ -667,8 +667,8 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
               aria-label="Facility type"
             >
               <option value="all">All types</option>
-              <option value="rcfe">RCFE — Elder care</option>
-              <option value="arf">ARF — Adult residential</option>
+              <option value="rcfe">RCFE</option>
+              <option value="arf">ARF</option>
             </select>
             <select
               className={chipClass}
@@ -677,9 +677,9 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
               aria-label="Capacity"
             >
               <option value="any">Any beds</option>
-              <option value="small">≤6 (board &amp; care)</option>
-              <option value="medium">7–15 beds</option>
-              <option value="large">16+ beds</option>
+              <option value="small">≤6 beds</option>
+              <option value="medium">7–15</option>
+              <option value="large">16+</option>
             </select>
             {userLocation && (
               <select
@@ -688,10 +688,10 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
                 onChange={(e) => handleRadiusChange(e.target.value)}
                 aria-label="Distance"
               >
-                <option value="any">Any distance</option>
+                <option value="any">Any dist.</option>
                 {RADIUS_OPTIONS.map((r) => (
                   <option key={r} value={r}>
-                    Within {r} mi
+                    {r} mi
                   </option>
                 ))}
               </select>
