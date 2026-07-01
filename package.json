@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "seed:facilities": "tsx scripts/etl-cdss.ts",
-    "enrich:cdss": "tsx scripts/enrich-cdss.ts"
+    "enrich:cdss": "tsx scripts/enrich-cdss.ts",
+    "enrich:google": "tsx scripts/enrich-google-placeid.ts"
   },
   "dependencies": {
     "@stripe/stripe-js": "^9.8.0",
