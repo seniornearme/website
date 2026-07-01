@@ -143,6 +143,7 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
   const [bedsFilter, setBedsFilter] = useState<BedsFilter>("any");
   const [query, setQuery] = useState("");
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [visibleIds, setVisibleIds] = useState<Set<string>>(new Set());
   const [userLocation, setUserLocation] = useState<LngLat | null>(null);
@@ -404,7 +405,7 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
           .setLngLat(geom.coordinates as [number, number])
           .setHTML(
             `<div class="fhp-card">` +
-              `<div class="fhp-thumb"><i class="ti ti-building-community"></i></div>` +
+              `<div class="fhp-thumb"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#185fa5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg></div>` +
               `<div><div class="fhp-name">${escapeHtml(p.label || "")}</div>` +
               `<div class="fhp-sub">${escapeHtml(sub + beds)}</div></div></div>`,
           )
@@ -513,6 +514,10 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
   }, [visibleIds, filteredById, userLocation, q]);
 
   const outsideCA = userLocation ? isOutsideCalifornia(userLocation) : false;
+  const activeFilterCount =
+    (typeFilter !== "all" ? 1 : 0) +
+    (bedsFilter !== "any" ? 1 : 0) +
+    (radiusMiles != null ? 1 : 0);
   const selectedFacility = selectedId
     ? (facilitiesById.get(selectedId) ?? null)
     : null;
@@ -583,7 +588,7 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
     "shrink-0 rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-1.5 text-sm";
   const panelBase =
     "absolute z-10 flex flex-col bg-white dark:bg-zinc-900 shadow-xl overflow-hidden " +
-    "left-0 right-0 bottom-0 h-[52vh] rounded-t-2xl " +
+    "left-0 right-0 bottom-0 h-[40vh] rounded-t-2xl " +
     "md:left-3 md:top-3 md:bottom-3 md:right-auto md:h-auto md:w-[384px] md:rounded-2xl";
   const cardPanel =
     "absolute z-20 flex flex-col bg-white dark:bg-zinc-900 shadow-2xl overflow-hidden " +
@@ -596,30 +601,65 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
 
       <aside className={panelBase}>
         <div className="shrink-0 border-b border-zinc-200 dark:border-zinc-800 p-3">
-          <div className="flex items-center gap-2 rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-4 py-2">
-            <i className="ti ti-search text-zinc-400" aria-hidden="true" />
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") handleSearchSubmit();
-              }}
-              placeholder="Search address, city, ZIP, or name"
-              className="w-full bg-transparent text-sm outline-none placeholder:text-zinc-400"
-              aria-label="Search by address, city, ZIP, or facility name"
-            />
-            {query && (
-              <button
-                type="button"
-                onClick={() => setQuery("")}
-                aria-label="Clear search"
-                className="text-zinc-400 hover:text-zinc-600"
+          <div className="flex items-center gap-2">
+            <div className="flex flex-1 items-center gap-2 rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-4 py-2">
+              <svg
+                className="shrink-0 text-zinc-400"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                aria-hidden="true"
               >
-                <i className="ti ti-x" aria-hidden="true" />
-              </button>
-            )}
+                <circle cx="11" cy="11" r="7" />
+                <path d="m21 21-4.3-4.3" />
+              </svg>
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSearchSubmit();
+                }}
+                placeholder="Search address, city, ZIP, or name"
+                className="w-full bg-transparent text-sm outline-none placeholder:text-zinc-400"
+                aria-label="Search by address, city, ZIP, or facility name"
+              />
+              {query && (
+                <button
+                  type="button"
+                  onClick={() => setQuery("")}
+                  aria-label="Clear search"
+                  className="text-zinc-400 hover:text-zinc-600"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+                    <path d="M18 6 6 18M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+            </div>
+            <button
+              type="button"
+              onClick={() => setFiltersOpen((o) => !o)}
+              aria-label="Filters"
+              aria-expanded={filtersOpen}
+              className="relative shrink-0 rounded-full border border-zinc-300 bg-white p-2.5 text-zinc-600 md:hidden dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" aria-hidden="true">
+                <path d="M3 4h18l-7 8.5V19l-4 2v-8.5z" />
+              </svg>
+              {activeFilterCount > 0 && (
+                <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-medium text-white">
+                  {activeFilterCount}
+                </span>
+              )}
+            </button>
           </div>
-          <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
+          <div
+            className={`${filtersOpen ? "flex" : "hidden"} mt-2 gap-2 overflow-x-auto pb-1 md:flex`}
+          >
             <select
               className={chipClass}
               value={typeFilter}
