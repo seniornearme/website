@@ -24,12 +24,6 @@ const CA_CENTER: [number, number] = [-119.4179, 36.7783];
 const INITIAL_ZOOM = 5.5;
 const MIN_ZOOM = 5;
 const MAX_ZOOM = 18;
-// California bounding box (with margin) — hard-clamps the camera so it can
-// never walk off the state (e.g. the zoom-out "jump to Brazil" bug).
-const CA_MAX_BOUNDS: [[number, number], [number, number]] = [
-  [-125.5, 32.0],
-  [-113.5, 42.5],
-];
 
 export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
   const mapContainer = useRef<HTMLDivElement | null>(null);
@@ -92,11 +86,13 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
       zoom: INITIAL_ZOOM,
       minZoom: MIN_ZOOM,
       maxZoom: MAX_ZOOM,
-      maxBounds: CA_MAX_BOUNDS,
       renderWorldCopies: false,
       canvasContextAttributes: { antialias: true },
     });
     mapRef.current = map;
+    if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
+      (window as unknown as { __searchMap?: MapLibreMap }).__searchMap = map;
+    }
 
     // Zoom around the map center rather than the cursor. Cursor-anchored zoom
     // (the default) walks the camera toward the pointer on every wheel tick,
@@ -241,9 +237,9 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
   }, [visibleIds, filteredById]);
 
   return (
-    <div className="flex flex-1 flex-col md:flex-row min-h-[calc(100vh-4rem)]">
-      <aside className="md:w-96 md:max-w-96 border-b md:border-b-0 md:border-r border-zinc-200 dark:border-zinc-800 flex flex-col">
-        <div className="p-4 border-b border-zinc-200 dark:border-zinc-800">
+    <div className="flex flex-col md:flex-row h-[100dvh] overflow-hidden">
+      <aside className="flex flex-col shrink-0 md:w-96 md:max-w-96 max-h-[45vh] md:max-h-none md:h-full overflow-hidden border-b md:border-b-0 md:border-r border-zinc-200 dark:border-zinc-800">
+        <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 shrink-0">
           <h1 className="text-lg font-semibold">
             {filtered.length.toLocaleString()} facilities
           </h1>
@@ -260,7 +256,7 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
             <option value="arf">ARF — Adult residential</option>
           </select>
         </div>
-        <ul className="flex-1 overflow-y-auto divide-y divide-zinc-200 dark:divide-zinc-800 max-h-[60vh] md:max-h-none">
+        <ul className="flex-1 overflow-y-auto divide-y divide-zinc-200 dark:divide-zinc-800">
           {visibleList.map((f) => (
             <li key={f.id}>
               <button
@@ -290,7 +286,7 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
           ))}
         </ul>
       </aside>
-      <div ref={mapContainer} className="flex-1 min-h-[60vh]" />
+      <div ref={mapContainer} className="flex-1 min-h-0" />
     </div>
   );
 }
