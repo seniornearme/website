@@ -15,7 +15,22 @@ type FacilityDetail = {
   capacity: number | null;
   administrator: string | null;
   licensee: string | null;
+  cdss_last_visit_date: string | null;
+  cdss_num_visits: number | null;
+  cdss_num_complaints: number | null;
+  cdss_citations_type_a: number | null;
+  cdss_citations_type_b: number | null;
+  cdss_substantiated_allegations: number | null;
+  cdss_synced_at: string | null;
 };
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+function fmtDate(iso: string | null | undefined): string | null {
+  if (!iso) return null;
+  const [y, m, d] = iso.split("-").map(Number);
+  if (!y || !m || !d) return null;
+  return `${MONTHS[m - 1]} ${d}, ${y}`;
+}
 
 const KEEP_UPPER = new Set(["LLC", "II", "III", "IV", "INC", "LP", "RCFE", "ARF"]);
 
@@ -60,7 +75,7 @@ export function FacilityCard({
     supabase
       .from("facilities")
       .select(
-        "street_address,city,zip,phone,email,website,license_number,capacity,administrator,licensee",
+        "street_address,city,zip,phone,email,website,license_number,capacity,administrator,licensee,cdss_last_visit_date,cdss_num_visits,cdss_num_complaints,cdss_citations_type_a,cdss_citations_type_b,cdss_substantiated_allegations,cdss_synced_at",
       )
       .eq("id", facility.id)
       .single()
@@ -187,6 +202,66 @@ export function FacilityCard({
             <InfoRow icon="building">Licensee: {titleCase(detail.licensee)}</InfoRow>
           )}
         </div>
+
+        {/* State inspection record */}
+        {detail?.cdss_synced_at && (
+          <div className="border-t border-zinc-100 p-4 dark:border-zinc-800">
+            <div className="mb-2 flex items-center justify-between">
+              <h3 className="text-sm font-semibold">State inspection record</h3>
+              <span className="text-[10px] uppercase tracking-wide text-zinc-400">
+                CA CDSS
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+              <div>
+                <div className="text-xs text-zinc-500">Last visit</div>
+                <div className="font-medium">
+                  {fmtDate(detail.cdss_last_visit_date) ?? "—"}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs text-zinc-500">Total visits</div>
+                <div className="font-medium">{detail.cdss_num_visits ?? 0}</div>
+              </div>
+              <div>
+                <div className="text-xs text-zinc-500">Complaints</div>
+                <div className="font-medium">
+                  {detail.cdss_num_complaints ?? 0}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs text-zinc-500">Substantiated</div>
+                <div
+                  className={`font-medium ${
+                    (detail.cdss_substantiated_allegations ?? 0) > 0
+                      ? "text-amber-600 dark:text-amber-400"
+                      : ""
+                  }`}
+                >
+                  {detail.cdss_substantiated_allegations ?? 0}
+                </div>
+              </div>
+            </div>
+            {(detail.cdss_citations_type_a ?? 0) +
+              (detail.cdss_citations_type_b ?? 0) >
+              0 && (
+              <div className="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+                <span className="font-medium">
+                  {detail.cdss_citations_type_a ?? 0} Type A
+                </span>{" "}
+                · {detail.cdss_citations_type_b ?? 0} Type B citations
+                <div className="mt-0.5 text-amber-700 dark:text-amber-400">
+                  Type A = a violation posing immediate risk to health, safety,
+                  or personal rights.
+                </div>
+              </div>
+            )}
+            <p className="mt-2 text-[11px] leading-snug text-zinc-400">
+              Inspection and complaint history from the California Dept. of
+              Social Services, Community Care Licensing.
+            </p>
+          </div>
+        )}
 
         {/* Claim CTA */}
         <div className="p-4">
