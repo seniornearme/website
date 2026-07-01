@@ -23,6 +23,7 @@ type BedsFilter = "any" | "small" | "medium" | "large";
 type LngLat = { lng: number; lat: number };
 
 const STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
+const LABEL_FONT = "Noto Sans Regular";
 const CA_CENTER: [number, number] = [-119.4179, 36.7783];
 const INITIAL_ZOOM = 5.5;
 const MIN_ZOOM = 5;
@@ -110,34 +111,29 @@ function bedsMatch(capacity: number | null, filter: BedsFilter): boolean {
   return c >= 16;
 }
 
-function markerSvg(color: string): string {
-  return (
-    `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="40" viewBox="0 0 30 40">` +
-    `<path d="M15 0C6.7 0 0 6.7 0 15c0 10.5 15 25 15 25s15-14.5 15-25C30 6.7 23.3 0 15 0z" fill="${color}"/>` +
-    `<circle cx="15" cy="14.5" r="9" fill="#ffffff"/>` +
-    `<path d="M15 9.2l5.4 4.4v5.6h-3.6v-3.6h-3.6v3.6H9.6v-5.6z" fill="${color}"/>` +
-    `</svg>`
-  );
-}
+// Draw a teardrop pin with a house glyph directly to canvas — synchronous and
+// robust (no Image element / SVG data-URL loading, which can hang headless).
+const TEARDROP_PATH =
+  "M15 0C6.7 0 0 6.7 0 15c0 10.5 15 25 15 25s15-14.5 15-25C30 6.7 23.3 0 15 0z";
+const HOUSE_PATH = "M15 9.2l5.4 4.4v5.6h-3.6v-3.6h-3.6v3.6H9.6v-5.6z";
 
-async function addMarkerImage(map: MapLibreMap, id: string, color: string) {
-  if (map.hasImage(id)) return;
-  const url = "data:image/svg+xml;base64," + btoa(markerSvg(color));
-  const img = new Image();
-  await new Promise<void>((resolve, reject) => {
-    img.onload = () => resolve();
-    img.onerror = () => reject(new Error("marker load failed"));
-    img.src = url;
-  });
+function makeMarkerImageData(color: string): ImageData | null {
   const scale = 2;
   const canvas = document.createElement("canvas");
   canvas.width = 30 * scale;
   canvas.height = 40 * scale;
   const ctx = canvas.getContext("2d");
-  if (!ctx) return;
-  ctx.drawImage(img, 0, 0, 30 * scale, 40 * scale);
-  const data = ctx.getImageData(0, 0, 30 * scale, 40 * scale);
-  if (!map.hasImage(id)) map.addImage(id, data, { pixelRatio: scale });
+  if (!ctx) return null;
+  ctx.scale(scale, scale);
+  ctx.fillStyle = color;
+  ctx.fill(new Path2D(TEARDROP_PATH));
+  ctx.fillStyle = "#ffffff";
+  ctx.beginPath();
+  ctx.arc(15, 14.5, 9, 0, 2 * Math.PI);
+  ctx.fill();
+  ctx.fillStyle = color;
+  ctx.fill(new Path2D(HOUSE_PATH));
+  return ctx.getImageData(0, 0, 30 * scale, 40 * scale);
 }
 
 export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
@@ -280,12 +276,14 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
       setUserLocation({ lng: pos.coords.longitude, lat: pos.coords.latitude });
     });
 
-    map.on("load", async () => {
-      await Promise.all([
-        addMarkerImage(map, "marker-rcfe", MARKER_COLORS.rcfe),
-        addMarkerImage(map, "marker-arf", MARKER_COLORS.arf),
-        addMarkerImage(map, "marker-other", MARKER_COLORS.other),
-      ]).catch(() => {});
+    map.on("load", () => {
+      for (const [type, color] of Object.entries(MARKER_COLORS)) {
+        const id = `marker-${type}`;
+        if (!map.hasImage(id)) {
+          const data = makeMarkerImageData(color);
+          if (data) map.addImage(id, data, { pixelRatio: 2 });
+        }
+      }
 
       map.addSource("radius", {
         type: "geojson",
@@ -344,7 +342,7 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
         layout: {
           "text-field": "{point_count_abbreviated}",
           "text-size": 12,
-          "text-font": ["Noto Sans Regular"],
+          "text-font": [LABEL_FONT],
         },
         paint: { "text-color": "#ffffff" },
       });
@@ -369,7 +367,7 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
           "icon-anchor": "bottom",
           "icon-allow-overlap": true,
           "text-field": ["get", "label"],
-          "text-font": ["Noto Sans Regular"],
+          "text-font": [LABEL_FONT],
           "text-size": 11,
           "text-anchor": "left",
           "text-offset": [1.1, -1.1],
