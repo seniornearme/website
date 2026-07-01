@@ -42,7 +42,6 @@ const supabase = createClient(
   { auth: { persistSession: false } },
 );
 
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const toInt = (v: unknown): number => {
   const n = parseInt(String(v ?? ""), 10);
   return Number.isFinite(n) ? n : 0;
@@ -198,23 +197,26 @@ async function main() {
   }
   console.log(`  ${facilities.length} facilities to process`);
 
+  const CONCURRENCY = 10;
   let enriched = 0;
   let withCitations = 0;
   let withComplaints = 0;
   let npiMatched = 0;
   let totalReports = 0;
+  let done = 0;
 
-  for (const f of facilities) {
-    if (!f.license_number) continue;
+  const processOne = async (f: Target) => {
+    if (!f.license_number) return;
     try {
-      const [detailJson, reportsJson] = await Promise.all([
+      // All three lookups are independent — fire them together.
+      const [detailJson, reportsJson, npi] = await Promise.all([
         getJson(`${CCLD}/FacilityDetail/${f.license_number}`),
         getJson(`${CCLD}/FacilityReports/${f.license_number}`),
+        matchNpi(f.name, f.city),
       ]);
 
       const summary = parseDetail(detailJson);
       const reports = parseReports(reportsJson);
-      const npi = await matchNpi(f.name, f.city);
 
       if (summary) {
         const { error: upErr } = await supabase
@@ -242,8 +244,14 @@ async function main() {
     } catch (e) {
       console.error(`  skip ${f.name} (${f.license_number}):`, (e as Error).message);
     }
+  };
 
-    await sleep(150);
+  for (let i = 0; i < facilities.length; i += CONCURRENCY) {
+    await Promise.all(facilities.slice(i, i + CONCURRENCY).map(processOne));
+    done += Math.min(CONCURRENCY, facilities.length - i);
+    if (done % 500 < CONCURRENCY || done >= facilities.length) {
+      console.log(`  ${done}/${facilities.length}  enriched=${enriched}`);
+    }
   }
 
   console.log("Done.");
