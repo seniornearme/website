@@ -22,6 +22,14 @@ type TypeFilter = "all" | "rcfe" | "arf";
 const STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
 const CA_CENTER: [number, number] = [-119.4179, 36.7783];
 const INITIAL_ZOOM = 5.5;
+const MIN_ZOOM = 5;
+const MAX_ZOOM = 18;
+// California bounding box (with margin) — hard-clamps the camera so it can
+// never walk off the state (e.g. the zoom-out "jump to Brazil" bug).
+const CA_MAX_BOUNDS: [[number, number], [number, number]] = [
+  [-125.5, 32.0],
+  [-113.5, 42.5],
+];
 
 export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
   const mapContainer = useRef<HTMLDivElement | null>(null);
@@ -82,8 +90,21 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
       style: STYLE_URL,
       center: CA_CENTER,
       zoom: INITIAL_ZOOM,
+      minZoom: MIN_ZOOM,
+      maxZoom: MAX_ZOOM,
+      maxBounds: CA_MAX_BOUNDS,
+      renderWorldCopies: false,
+      canvasContextAttributes: { antialias: true },
     });
     mapRef.current = map;
+
+    // Zoom around the map center rather than the cursor. Cursor-anchored zoom
+    // (the default) walks the camera toward the pointer on every wheel tick,
+    // which is what let zoom-out drift the center south out of California.
+    // scrollZoom is enabled by default and enable() no-ops when already on,
+    // so we must disable() first.
+    map.scrollZoom.disable();
+    map.scrollZoom.enable({ around: "center" });
 
     map.addControl(new maplibregl.NavigationControl(), "top-right");
 
