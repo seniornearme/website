@@ -1,114 +1,110 @@
 /**
- * CDSS Community Care Licensing ETL
+ * CDSS Community Care Licensing ETL.
  *
- * Pulls the public CA RCFE + ARF facility dataset, geocodes street addresses
- * via the US Census Geocoder, and upserts into public.facilities.
+ * Pulls RCFE + ARF facility datasets from CHHS CKAN DataStore, geocodes
+ * addresses via the free US Census batch geocoder, and upserts into
+ * public.facilities using license_number as the conflict key.
  *
  * Run:
- *   npx tsx scripts/etl-cdss.ts
+ *   npm run seed:facilities
  *
  * Env required:
  *   NEXT_PUBLIC_SUPABASE_URL
- *   SUPABASE_SERVICE_ROLE_KEY  (bypasses RLS — service role only, never client-side)
+ *   SUPABASE_SERVICE_ROLE_KEY  (bypasses RLS — server only, never client-side)
  *
- * TODO(phase-1):
- *   - Confirm the current CDSS download URL (rotates periodically)
- *   - Parse the CDSS Excel / CSV format
- *   - Batch geocode via Census `/geocoder/locations/addressbatch` (10k rows/req)
- *   - Diff against existing rows and update status transitions (active → closed)
+ * ~23K rows total (12.5K RCFE + 10.5K ARF). First run: ~5-10 min end-to-end.
+ * Subsequent runs upsert-by-license-number, so re-running is idempotent.
  */
 
 import { createClient } from "@supabase/supabase-js";
+import { config as loadEnv } from "dotenv";
+import {
+  ARF_RESOURCE_ID,
+  RCFE_RESOURCE_ID,
+  fetchAllRecords,
+  mapCdssRow,
+  type FacilityRow,
+} from "./lib/cdss-api";
+import { geocodeBatch, type AddressInput } from "./lib/geocode-census";
 
-const CDSS_DATASET_URL = "";  // TODO: fill in current CDSS download URL
+loadEnv({ path: ".env.local" });
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-);
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-type CdssRow = {
-  license_number: string;
-  facility_type: "rcfe" | "arf" | "other";
-  status: "active" | "pending" | "closed" | "suspended" | "unknown";
-  name: string;
-  street_address: string | null;
-  city: string | null;
-  county: string | null;
-  zip: string | null;
-  phone: string | null;
-  capacity: number | null;
-  administrator: string | null;
-  licensee: string | null;
-  license_issue_date: string | null;
-};
+if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
+  console.error(
+    "Missing env: NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY (put them in .env.local)",
+  );
+  process.exit(1);
+}
 
-async function fetchCdssRows(): Promise<CdssRow[]> {
-  if (!CDSS_DATASET_URL) {
-    throw new Error("CDSS_DATASET_URL not set");
+const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
+  auth: { persistSession: false },
+});
+
+const UPSERT_CHUNK = 500;
+
+async function upsertChunked(rows: (FacilityRow & { location?: string | null })[]) {
+  for (let i = 0; i < rows.length; i += UPSERT_CHUNK) {
+    const chunk = rows.slice(i, i + UPSERT_CHUNK);
+    const { error } = await supabase
+      .from("facilities")
+      .upsert(chunk, { onConflict: "license_number" });
+    if (error) {
+      console.error(`Upsert error on chunk ${i / UPSERT_CHUNK}:`, error);
+      throw error;
+    }
+    console.log(`  upserted ${i + chunk.length} / ${rows.length}`);
   }
-  // TODO: fetch + parse CDSS dataset
-  return [];
 }
 
-type Geocoded = { lat: number; lng: number };
+async function main() {
+  console.log("Fetching CDSS RCFE…");
+  const rcfeRaw = await fetchAllRecords(RCFE_RESOURCE_ID);
+  console.log(`  fetched ${rcfeRaw.length} RCFE records`);
 
-async function geocodeBatch(
-  rows: CdssRow[],
-): Promise<Map<string, Geocoded>> {
-  // TODO: US Census batch geocoder — https://geocoding.geo.census.gov/geocoder/locations/addressbatch
-  return new Map();
-}
+  console.log("Fetching CDSS ARF…");
+  const arfRaw = await fetchAllRecords(ARF_RESOURCE_ID);
+  console.log(`  fetched ${arfRaw.length} ARF records`);
 
-function slugify(name: string, licenseNumber: string): string {
-  const base = name
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "")
-    .slice(0, 60);
-  return `${base}-${licenseNumber}`;
-}
+  console.log("Mapping to facilities schema…");
+  const mapped = [...rcfeRaw, ...arfRaw]
+    .map(mapCdssRow)
+    .filter((r): r is FacilityRow => r !== null);
+  console.log(`  ${mapped.length} rows mapped (dropped ${rcfeRaw.length + arfRaw.length - mapped.length} invalid)`);
 
-async function upsertFacilities(rows: CdssRow[], geocoded: Map<string, Geocoded>) {
-  const payload = rows.map((r) => {
+  // Dedupe by license_number: some records exist in both feeds due to overlap
+  const byLicense = new Map<string, FacilityRow>();
+  for (const r of mapped) byLicense.set(r.license_number, r);
+  const deduped = [...byLicense.values()];
+  console.log(`  ${deduped.length} unique after dedup`);
+
+  console.log("Geocoding addresses (US Census)…");
+  const geocodeInput: AddressInput[] = deduped
+    .filter((r) => r.street_address && r.city && r.state && r.zip)
+    .map((r) => ({
+      id: r.license_number,
+      street: r.street_address!,
+      city: r.city!,
+      state: r.state,
+      zip: r.zip!,
+    }));
+  const geocoded = await geocodeBatch(geocodeInput);
+  console.log(`  geocoded ${geocoded.size} / ${geocodeInput.length}`);
+
+  // Attach PostGIS EWKT WKT to each row
+  const withLocation = deduped.map((r) => {
     const g = geocoded.get(r.license_number);
     return {
-      license_number: r.license_number,
-      facility_type: r.facility_type,
-      status: r.status,
-      name: r.name,
-      slug: slugify(r.name, r.license_number),
-      street_address: r.street_address,
-      city: r.city,
-      county: r.county,
-      zip: r.zip,
-      phone: r.phone,
-      capacity: r.capacity,
-      administrator: r.administrator,
-      licensee: r.licensee,
-      license_issue_date: r.license_issue_date,
+      ...r,
       location: g ? `SRID=4326;POINT(${g.lng} ${g.lat})` : null,
     };
   });
 
-  const { error } = await supabase
-    .from("facilities")
-    .upsert(payload, { onConflict: "license_number" });
-
-  if (error) throw error;
-}
-
-async function main() {
-  console.log("Fetching CDSS dataset…");
-  const rows = await fetchCdssRows();
-  console.log(`Fetched ${rows.length} rows`);
-
-  console.log("Geocoding via US Census…");
-  const geocoded = await geocodeBatch(rows);
-  console.log(`Geocoded ${geocoded.size} / ${rows.length}`);
-
   console.log("Upserting to facilities…");
-  await upsertFacilities(rows, geocoded);
+  await upsertChunked(withLocation);
+
   console.log("Done.");
 }
 
