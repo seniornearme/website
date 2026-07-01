@@ -137,6 +137,7 @@ async function fetchTargets(): Promise<Target[]> {
       .from("facilities")
       .select("id, name, city")
       .not("license_number", "is", null)
+      .eq("status", "active")
       .order("id")
       .range(from, from + PAGE - 1);
     if (CITY_FILTER) q = q.ilike("city", CITY_FILTER);
