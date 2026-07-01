@@ -85,12 +85,10 @@ export type FacilityRow = {
   license_issue_date: string | null;
 };
 
-function normFacilityType(raw: string): "rcfe" | "arf" | "other" {
-  const s = raw.trim().toUpperCase();
-  if (s.startsWith("RCFE")) return "rcfe";
-  if (s.startsWith("ARF")) return "arf";
-  return "other";
-}
+// facility_type strings in the ARF feed don't start with "ARF" — they're
+// "ADULT RESIDENTIAL FACILITY", "ADULT DAY PROGRAM", etc. Source resource
+// is the reliable signal for the top-level enum bucket.
+export type CdssSource = "rcfe" | "arf";
 
 function normStatus(
   raw: string | null,
@@ -151,14 +149,17 @@ export function slugify(name: string, licenseNumber: string): string {
   return `${base}-${licenseNumber}`;
 }
 
-export function mapCdssRow(raw: CdssRawRow): FacilityRow | null {
+export function mapCdssRow(
+  raw: CdssRawRow,
+  source: CdssSource,
+): FacilityRow | null {
   const licenseNumber = normStr(raw.facility_number);
   const name = normStr(raw.facility_name);
   if (!licenseNumber || !name) return null;
 
   return {
     license_number: licenseNumber,
-    facility_type: normFacilityType(raw.facility_type ?? ""),
+    facility_type: source,
     status: normStatus(raw.facility_status, raw.closed_date),
     name,
     slug: slugify(name, licenseNumber),

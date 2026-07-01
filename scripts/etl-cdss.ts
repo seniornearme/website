@@ -69,9 +69,10 @@ async function main() {
   console.log(`  fetched ${arfRaw.length} ARF records`);
 
   console.log("Mapping to facilities schema…");
-  const mapped = [...rcfeRaw, ...arfRaw]
-    .map(mapCdssRow)
-    .filter((r): r is FacilityRow => r !== null);
+  const mapped = [
+    ...rcfeRaw.map((r) => mapCdssRow(r, "rcfe")),
+    ...arfRaw.map((r) => mapCdssRow(r, "arf")),
+  ].filter((r): r is FacilityRow => r !== null);
   console.log(`  ${mapped.length} rows mapped (dropped ${rcfeRaw.length + arfRaw.length - mapped.length} invalid)`);
 
   // Dedupe by license_number: some records exist in both feeds due to overlap
