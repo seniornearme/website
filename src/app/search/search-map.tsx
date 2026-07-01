@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import maplibregl, { type Map as MapLibreMap } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
+import { FacilityCard, titleCase } from "./facility-card";
 
 export type FacilityGeo = {
   id: string;
@@ -50,6 +51,20 @@ function distanceMiles(a: LngLat, b: LngLat): number {
 
 function formatMiles(mi: number): string {
   return mi < 10 ? `${mi.toFixed(1)} mi` : `${Math.round(mi)} mi`;
+}
+
+function escapeHtml(s: string): string {
+  return s.replace(
+    /[&<>"']/g,
+    (c) =>
+      ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      })[c] as string,
+  );
 }
 
 // Approximate a geodesic circle as a polygon for the radius overlay.
@@ -114,6 +129,12 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
     return map;
   }, [filtered]);
 
+  const facilitiesById = useMemo(() => {
+    const map = new Map<string, FacilityGeo>();
+    for (const f of facilities) map.set(f.id, f);
+    return map;
+  }, [facilities]);
+
   const geojson = useMemo(
     () => ({
       type: "FeatureCollection" as const,
@@ -123,8 +144,11 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
         properties: {
           id: f.id,
           name: f.name,
+          label: titleCase(f.name),
           slug: f.slug,
           facility_type: f.facility_type,
+          city: f.city ?? "",
+          capacity: f.capacity ?? 0,
         },
       })),
     }),
@@ -291,6 +315,58 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
         },
       });
 
+      // Name labels next to each dot (shown once points uncluster on zoom-in).
+      map.addLayer({
+        id: "facility-labels",
+        type: "symbol",
+        source: "facilities",
+        filter: ["!", ["has", "point_count"]],
+        layout: {
+          "text-field": ["get", "label"],
+          "text-font": ["Noto Sans Regular"],
+          "text-size": 11,
+          "text-anchor": "left",
+          "text-offset": [0.7, 0],
+          "text-max-width": 12,
+          "text-optional": true,
+        },
+        paint: {
+          "text-color": "#374151",
+          "text-halo-color": "#ffffff",
+          "text-halo-width": 1.5,
+        },
+      });
+
+      // Hover popup card.
+      const hoverPopup = new maplibregl.Popup({
+        closeButton: false,
+        closeOnClick: false,
+        offset: 12,
+        className: "facility-hover-popup",
+      });
+      const showHover = (e: maplibregl.MapLayerMouseEvent) => {
+        const f = e.features?.[0];
+        if (!f) return;
+        const p = f.properties as {
+          label?: string;
+          city?: string;
+          facility_type?: string;
+          capacity?: number;
+        };
+        const sub = [p.city, (p.facility_type || "").toUpperCase()]
+          .filter(Boolean)
+          .join(" · ");
+        const cap = p.capacity ? ` · ${p.capacity} beds` : "";
+        const geom = f.geometry as GeoJSON.Point;
+        hoverPopup
+          .setLngLat(geom.coordinates as [number, number])
+          .setHTML(
+            `<div class="fhp-name">${escapeHtml(p.label || "")}</div>` +
+              `<div class="fhp-sub">${escapeHtml(sub + cap)}</div>`,
+          )
+          .addTo(map);
+      };
+
       map.on("click", "clusters", async (e) => {
         const features = map.queryRenderedFeatures(e.point, {
           layers: ["clusters"],
@@ -317,8 +393,20 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
       };
       map.on("mouseenter", "clusters", () => setCursor("pointer"));
       map.on("mouseleave", "clusters", () => setCursor(""));
-      map.on("mouseenter", "unclustered-point", () => setCursor("pointer"));
-      map.on("mouseleave", "unclustered-point", () => setCursor(""));
+      map.on("mouseenter", "unclustered-point", (e) => {
+        setCursor("pointer");
+        showHover(e);
+      });
+      map.on("mousemove", "unclustered-point", (e) => {
+        const f = e.features?.[0];
+        if (!f) return;
+        const geom = f.geometry as GeoJSON.Point;
+        hoverPopup.setLngLat(geom.coordinates as [number, number]);
+      });
+      map.on("mouseleave", "unclustered-point", () => {
+        setCursor("");
+        hoverPopup.remove();
+      });
 
       map.on("moveend", () => recomputeRef.current());
 
@@ -383,6 +471,17 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
 
   const outsideCA = userLocation ? isOutsideCalifornia(userLocation) : false;
 
+  const selectedFacility = selectedId
+    ? (facilitiesById.get(selectedId) ?? null)
+    : null;
+  const selectedDistance =
+    selectedFacility && userLocation
+      ? distanceMiles(userLocation, {
+          lng: selectedFacility.lng,
+          lat: selectedFacility.lat,
+        })
+      : null;
+
   const handleRadiusChange = (value: string) => {
     const r = value === "any" ? null : Number(value);
     setRadiusMiles(r);
@@ -403,8 +502,17 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
   return (
     <div className="flex flex-col md:flex-row h-[100dvh] overflow-hidden">
       <aside className="flex flex-col shrink-0 md:w-96 md:max-w-96 max-h-[45vh] md:max-h-none md:h-full overflow-hidden border-b md:border-b-0 md:border-r border-zinc-200 dark:border-zinc-800">
-        <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 shrink-0">
-          <h1 className="text-lg font-semibold">
+        {selectedFacility ? (
+          <FacilityCard
+            key={selectedFacility.id}
+            facility={selectedFacility}
+            distanceMi={selectedDistance}
+            onClose={() => setSelectedId(null)}
+          />
+        ) : (
+          <>
+            <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 shrink-0">
+              <h1 className="text-lg font-semibold">
             {filtered.length.toLocaleString()} facilities
             {userLocation && radiusMiles != null
               ? ` within ${radiusMiles} mi`
@@ -482,7 +590,9 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
               </button>
             </li>
           ))}
-        </ul>
+            </ul>
+          </>
+        )}
       </aside>
       <div ref={mapContainer} className="flex-1 min-h-0" />
     </div>
