@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SeniorNearMe
 
-## Getting Started
+California assisted living + RCFE directory. Consumer-facing map, owner claim flow, and Stripe-backed subscriptions + resident rent payments.
 
-First, run the development server:
+## Stack
+
+| Layer | Choice |
+|---|---|
+| Hosting | Vercel |
+| DB + Auth | Supabase (Postgres + PostGIS + Auth) |
+| File storage | S3 + CloudFront (us-west-2) |
+| Map | MapLibre GL JS + Protomaps (self-hosted) + US Census Geocoder |
+| Payments | Stripe (Connect + Billing) |
+| Email | Postmark |
+| Domain / CDN | Cloudflare Registrar + Cloudflare in front of Vercel |
+
+## Local setup
 
 ```bash
+npm install
+cp .env.example .env.local  # then fill in Supabase, Stripe, Postmark keys
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Database
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Migrations live in `supabase/migrations/`. Apply with the Supabase CLI:
 
-## Learn More
+```bash
+supabase link --project-ref <ref>
+supabase db push
+```
 
-To learn more about Next.js, take a look at the following resources:
+Schema highlights:
+- `facilities` — seeded from CDSS Community Care Licensing, PostGIS `geography(point, 4326)` for "near me" queries, tsvector full-text search
+- `profiles` — extends `auth.users` with `role` enum (`consumer` / `owner` / `admin`), auto-created via trigger on signup
+- `facility_claims` — owners claim their listing, admin-verified
+- `inquiries`, `saved_facilities`, `owner_subscriptions`, `rent_invoices`
+- Row Level Security on every table; role checks via `public.current_role()`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## CDSS ETL
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npx tsx scripts/etl-cdss.ts
+```
 
-## Deploy on Vercel
+Pulls the CA Community Care Licensing facility dataset, geocodes via the free US Census Geocoder, upserts to `facilities`. Schedule via GitHub Actions (monthly).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deployment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Vercel deploys on push to `main` from `seniornearme/website`. Preview deploys on every PR. Env vars set in the Vercel project settings.
+
+DNS is on Cloudflare; the domain proxies through Cloudflare to Vercel (free DDoS + WAF).
