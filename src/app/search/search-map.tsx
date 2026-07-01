@@ -18,25 +18,24 @@ export type FacilityGeo = {
 };
 
 type TypeFilter = "all" | "rcfe" | "arf";
+type LngLat = { lng: number; lat: number };
 
 const STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
 const CA_CENTER: [number, number] = [-119.4179, 36.7783];
 const INITIAL_ZOOM = 5.5;
 const MIN_ZOOM = 5;
 const MAX_ZOOM = 18;
+const RADIUS_OPTIONS = [5, 10, 25, 50] as const;
 
 // Rough California bounding box — used to warn users located outside the state,
 // since the directory only covers CA facilities.
-function isOutsideCalifornia(loc: { lng: number; lat: number }): boolean {
+function isOutsideCalifornia(loc: LngLat): boolean {
   return (
     loc.lng < -124.6 || loc.lng > -114.0 || loc.lat < 32.4 || loc.lat > 42.1
   );
 }
 
-function distanceMiles(
-  a: { lng: number; lat: number },
-  b: { lng: number; lat: number },
-): number {
+function distanceMiles(a: LngLat, b: LngLat): number {
   const toRad = (d: number) => (d * Math.PI) / 180;
   const R = 3958.8; // Earth radius in miles
   const dLat = toRad(b.lat - a.lat);
@@ -53,28 +52,61 @@ function formatMiles(mi: number): string {
   return mi < 10 ? `${mi.toFixed(1)} mi` : `${Math.round(mi)} mi`;
 }
 
+// Approximate a geodesic circle as a polygon for the radius overlay.
+function circlePolygon(
+  center: LngLat,
+  radiusMiles: number,
+  points = 64,
+): GeoJSON.Feature<GeoJSON.Polygon> {
+  const R = 3958.8;
+  const lat = (center.lat * Math.PI) / 180;
+  const lng = (center.lng * Math.PI) / 180;
+  const d = radiusMiles / R;
+  const coords: [number, number][] = [];
+  for (let i = 0; i <= points; i++) {
+    const brng = (i / points) * 2 * Math.PI;
+    const lat2 = Math.asin(
+      Math.sin(lat) * Math.cos(d) + Math.cos(lat) * Math.sin(d) * Math.cos(brng),
+    );
+    const lng2 =
+      lng +
+      Math.atan2(
+        Math.sin(brng) * Math.sin(d) * Math.cos(lat),
+        Math.cos(d) - Math.sin(lat) * Math.sin(lat2),
+      );
+    coords.push([(lng2 * 180) / Math.PI, (lat2 * 180) / Math.PI]);
+  }
+  return {
+    type: "Feature",
+    geometry: { type: "Polygon", coordinates: [coords] },
+    properties: {},
+  };
+}
+
 export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
-  const geolocateRef = useRef<maplibregl.GeolocateControl | null>(null);
   const [mapReady, setMapReady] = useState(false);
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [visibleIds, setVisibleIds] = useState<Set<string>>(new Set());
-  const [userLocation, setUserLocation] = useState<{
-    lng: number;
-    lat: number;
-  } | null>(null);
-  const [locating, setLocating] = useState(false);
-  const [geoError, setGeoError] = useState<string | null>(null);
+  const [userLocation, setUserLocation] = useState<LngLat | null>(null);
+  const [radiusMiles, setRadiusMiles] = useState<number | null>(null);
 
-  const filtered = useMemo(
-    () =>
+  const filtered = useMemo(() => {
+    const base =
       typeFilter === "all"
         ? facilities
-        : facilities.filter((f) => f.facility_type === typeFilter),
-    [facilities, typeFilter],
-  );
+        : facilities.filter((f) => f.facility_type === typeFilter);
+    if (userLocation && radiusMiles != null) {
+      return base.filter(
+        (f) =>
+          distanceMiles(userLocation, { lng: f.lng, lat: f.lat }) <=
+          radiusMiles,
+      );
+    }
+    return base;
+  }, [facilities, typeFilter, userLocation, radiusMiles]);
 
   const filteredById = useMemo(() => {
     const map = new Map<string, FacilityGeo>();
@@ -111,6 +143,13 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
     setVisibleIds(next);
   }, [filtered]);
 
+  // Keep the latest recomputeVisible reachable from the once-only map init,
+  // so map events can call it without re-creating the map on every filter change.
+  const recomputeRef = useRef(recomputeVisible);
+  useEffect(() => {
+    recomputeRef.current = recomputeVisible;
+  }, [recomputeVisible]);
+
   useEffect(() => {
     if (!mapContainer.current || mapRef.current) return;
 
@@ -125,7 +164,10 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
       canvasContextAttributes: { antialias: true },
     });
     mapRef.current = map;
-    if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
+    if (
+      process.env.NODE_ENV === "development" &&
+      typeof window !== "undefined"
+    ) {
       (window as unknown as { __searchMap?: MapLibreMap }).__searchMap = map;
     }
 
@@ -146,27 +188,38 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
       showAccuracyCircle: true,
       fitBoundsOptions: { maxZoom: 13 },
     });
-    geolocateRef.current = geolocate;
     map.addControl(geolocate, "top-right");
     geolocate.on("geolocate", (e) => {
       const pos = e as unknown as GeolocationPosition;
-      setLocating(false);
-      setGeoError(null);
       setUserLocation({
         lng: pos.coords.longitude,
         lat: pos.coords.latitude,
       });
     });
-    geolocate.on("error", (err) => {
-      setLocating(false);
-      setGeoError(
-        err && (err as GeolocationPositionError).code === 1
-          ? "Location permission denied. Enable it in your browser to use “Near me”."
-          : "Couldn’t get your location. Try again.",
-      );
-    });
 
     map.on("load", () => {
+      // Radius overlay (added before the facility layers so pins draw on top).
+      map.addSource("radius", {
+        type: "geojson",
+        data: { type: "FeatureCollection", features: [] },
+      });
+      map.addLayer({
+        id: "radius-fill",
+        type: "fill",
+        source: "radius",
+        paint: { "fill-color": "#2563eb", "fill-opacity": 0.06 },
+      });
+      map.addLayer({
+        id: "radius-outline",
+        type: "line",
+        source: "radius",
+        paint: {
+          "line-color": "#2563eb",
+          "line-width": 1.5,
+          "line-dasharray": [2, 2],
+        },
+      });
+
       map.addSource("facilities", {
         type: "geojson",
         data: { type: "FeatureCollection", features: [] },
@@ -267,7 +320,7 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
       map.on("mouseenter", "unclustered-point", () => setCursor("pointer"));
       map.on("mouseleave", "unclustered-point", () => setCursor(""));
 
-      map.on("moveend", () => recomputeVisible());
+      map.on("moveend", () => recomputeRef.current());
 
       setMapReady(true);
     });
@@ -276,8 +329,9 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
       map.remove();
       mapRef.current = null;
     };
-  }, [recomputeVisible]);
+  }, []);
 
+  // Push filtered facilities to the map + refresh the in-view list.
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !mapReady) return;
@@ -288,6 +342,24 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
     source.setData(geojson);
     recomputeVisible();
   }, [geojson, mapReady, recomputeVisible]);
+
+  // Draw/clear the radius circle overlay.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !mapReady) return;
+    const source = map.getSource("radius") as
+      | maplibregl.GeoJSONSource
+      | undefined;
+    if (!source) return;
+    source.setData(
+      userLocation && radiusMiles != null
+        ? {
+            type: "FeatureCollection",
+            features: [circlePolygon(userLocation, radiusMiles)],
+          }
+        : { type: "FeatureCollection", features: [] },
+    );
+  }, [userLocation, radiusMiles, mapReady]);
 
   const visibleList = useMemo(() => {
     const items: { facility: FacilityGeo; distance: number | null }[] = [];
@@ -311,17 +383,20 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
 
   const outsideCA = userLocation ? isOutsideCalifornia(userLocation) : false;
 
-  const handleNearMe = () => {
-    if (!geolocateRef.current) return;
-    setGeoError(null);
-    setLocating(true);
-    // trigger() returns false when geolocation isn't available in this browser;
-    // otherwise the control fires a "geolocate" or "error" event that clears
-    // the locating state.
-    const started = geolocateRef.current.trigger();
-    if (!started) {
-      setLocating(false);
-      setGeoError("Location isn’t available in this browser.");
+  const handleRadiusChange = (value: string) => {
+    const r = value === "any" ? null : Number(value);
+    setRadiusMiles(r);
+    const map = mapRef.current;
+    if (r != null && userLocation && map) {
+      const coords = circlePolygon(userLocation, r).geometry.coordinates[0];
+      const bounds = coords.reduce(
+        (b, c) => b.extend(c as [number, number]),
+        new maplibregl.LngLatBounds(
+          coords[0] as [number, number],
+          coords[0] as [number, number],
+        ),
+      );
+      map.fitBounds(bounds, { padding: 48, maxZoom: 14, duration: 600 });
     }
   };
 
@@ -331,6 +406,9 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
         <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 shrink-0">
           <h1 className="text-lg font-semibold">
             {filtered.length.toLocaleString()} facilities
+            {userLocation && radiusMiles != null
+              ? ` within ${radiusMiles} mi`
+              : ""}
           </h1>
           <p className="text-xs text-zinc-500 mt-1">
             {visibleList.length.toLocaleString()} visible in current view
@@ -344,30 +422,23 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
             <option value="rcfe">RCFE — Elder care</option>
             <option value="arf">ARF — Adult residential</option>
           </select>
-          <button
-            type="button"
-            onClick={handleNearMe}
-            disabled={locating}
-            className="mt-3 flex w-full items-center justify-center gap-2 rounded border border-zinc-300 bg-white p-2 text-sm font-medium transition-colors hover:bg-zinc-50 disabled:opacity-60 dark:border-zinc-700 dark:bg-transparent dark:hover:bg-zinc-900"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
+          {userLocation ? (
+            <select
+              className="mt-3 w-full rounded border border-zinc-300 dark:border-zinc-700 bg-transparent p-2 text-sm"
+              value={radiusMiles == null ? "any" : String(radiusMiles)}
+              onChange={(e) => handleRadiusChange(e.target.value)}
             >
-              <circle cx="12" cy="12" r="3" />
-              <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
-            </svg>
-            {locating ? "Locating…" : "Near me"}
-          </button>
-          {geoError && (
-            <p className="mt-2 text-xs text-red-600">{geoError}</p>
+              <option value="any">Any distance</option>
+              {RADIUS_OPTIONS.map((r) => (
+                <option key={r} value={r}>
+                  Within {r} miles
+                </option>
+              ))}
+            </select>
+          ) : (
+            <p className="mt-3 text-xs text-zinc-500">
+              Tap the location button on the map to find facilities near you.
+            </p>
           )}
           {outsideCA && (
             <p className="mt-2 text-xs text-amber-600">
