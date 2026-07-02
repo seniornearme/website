@@ -44,7 +44,10 @@ export async function getGoogleReviews(placeId: string): Promise<GoogleReviews |
       cache: "no-store",
       signal: AbortSignal.timeout(8000),
     });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      console.error(`google-reviews: HTTP ${res.status} for ${placeId}: ${(await res.text()).slice(0, 300)}`);
+      return null;
+    }
     const d = (await res.json()) as PlaceDetails;
     if (typeof d.rating !== "number") return null;
     return {
@@ -59,7 +62,8 @@ export async function getGoogleReviews(placeId: string): Promise<GoogleReviews |
           text: r.text!.text!,
         })),
     };
-  } catch {
+  } catch (e) {
+    console.error(`google-reviews: fetch failed for ${placeId}: ${(e as Error).message}`);
     return null;
   }
 }
