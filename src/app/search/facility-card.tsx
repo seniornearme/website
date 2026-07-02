@@ -5,6 +5,8 @@ import { createClient } from "@/lib/supabase/client";
 import type { FacilityGeo } from "./search-map";
 
 type FacilityDetail = {
+  slug: string | null;
+  facility_photos: { url: string; thumb_url: string | null; position: number }[] | null;
   street_address: string | null;
   city: string | null;
   zip: string | null;
@@ -75,7 +77,7 @@ export function FacilityCard({
     supabase
       .from("facilities")
       .select(
-        "street_address,city,zip,phone,email,website,license_number,capacity,administrator,licensee,cdss_last_visit_date,cdss_num_visits,cdss_num_complaints,cdss_citations_type_a,cdss_citations_type_b,cdss_substantiated_allegations,cdss_synced_at",
+        "slug,facility_photos(url,thumb_url,position),street_address,city,zip,phone,email,website,license_number,capacity,administrator,licensee,cdss_last_visit_date,cdss_num_visits,cdss_num_complaints,cdss_citations_type_a,cdss_citations_type_b,cdss_substantiated_allegations,cdss_synced_at",
       )
       .eq("id", facility.id)
       .single()
@@ -89,6 +91,9 @@ export function FacilityCard({
     };
   }, [facility.id]);
 
+  const heroPhoto = detail?.facility_photos
+    ?.slice()
+    .sort((a, b) => a.position - b.position)[0];
   const cityLine = [detail?.city ?? facility.city, "CA", detail?.zip]
     .filter(Boolean)
     .join(" ");
@@ -101,11 +106,20 @@ export function FacilityCard({
     <div className="flex h-full flex-col">
       {/* Photo placeholder + close */}
       <div className="relative shrink-0">
-        <div className="flex h-36 items-center justify-center bg-gradient-to-br from-blue-500 to-blue-700 text-white/90">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-            <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </div>
+        {heroPhoto ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={heroPhoto.thumb_url ?? heroPhoto.url}
+            alt={titleCase(facility.name)}
+            className="h-36 w-full object-cover"
+          />
+        ) : (
+          <div className="flex h-36 items-center justify-center bg-gradient-to-br from-blue-500 to-blue-700 text-white/90">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+              <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        )}
         <button
           type="button"
           onClick={onClose}
@@ -175,6 +189,18 @@ export function FacilityCard({
             Website
           </a>
         </div>
+
+        {/* View full details */}
+        {detail?.slug && (
+          <div className="px-4 pb-4">
+            <a
+              href={`/facilities/${detail.slug}`}
+              className="block w-full rounded-lg bg-blue-600 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-blue-700"
+            >
+              View full details
+            </a>
+          </div>
+        )}
 
         {/* Info rows */}
         <div className="divide-y divide-zinc-100 border-t border-zinc-100 dark:divide-zinc-800 dark:border-zinc-800">

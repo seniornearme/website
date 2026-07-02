@@ -10,14 +10,17 @@
     "seed:facilities": "tsx scripts/etl-cdss.ts",
     "enrich:cdss": "tsx scripts/enrich-cdss.ts",
     "enrich:google": "tsx scripts/enrich-google-placeid.ts",
-    "enrich:website": "tsx scripts/enrich-website-brave.ts"
+    "enrich:website": "tsx scripts/enrich-website-brave.ts",
+    "photos:pipeline": "tsx scripts/photo-pipeline.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1078.0",
     "@stripe/stripe-js": "^9.8.0",
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.110.0",
     "maplibre-gl": "^5.24.0",
     "next": "16.2.9",
+    "playwright": "^1.61.1",
     "postmark": "^4.0.7",
     "react": "19.2.4",
     "react-dom": "19.2.4",

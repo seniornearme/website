@@ -44,3 +44,6 @@ next-env.d.ts
 # supabase cli
 supabase/.temp/
 supabase/.branches/
+
+# local data snapshots (Google Places content is NOT cacheable per ToS — never commit)
+/data/
