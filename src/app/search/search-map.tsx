@@ -1,8 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import maplibregl, { type Map as MapLibreMap } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
+import { createClient } from "@/lib/supabase/client";
 import { FacilityCard, titleCase } from "./facility-card";
 
 export type FacilityGeo = {
@@ -21,6 +23,16 @@ export type FacilityGeo = {
 type TypeFilter = "all" | "rcfe" | "arf";
 type BedsFilter = "any" | "small" | "medium" | "large";
 type LngLat = { lng: number; lat: number };
+
+// Global search results (whole DB, not just the current viewport).
+type FacilityHit = {
+  id: string;
+  name: string;
+  slug: string;
+  city: string | null;
+  street_address: string | null;
+};
+type BoundaryHit = { kind: "city" | "zip"; slug: string; name: string };
 
 const STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
 const LABEL_FONT = "Noto Sans Regular";
@@ -149,6 +161,16 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
   const [userLocation, setUserLocation] = useState<LngLat | null>(null);
   const [radiusMiles, setRadiusMiles] = useState<number | null>(null);
 
+  // Global search: hits come from the whole DB, not the viewport list.
+  const [searchHits, setSearchHits] = useState<{
+    facilities: FacilityHit[];
+    boundaries: BoundaryHit[];
+  }>({ facilities: [], boundaries: [] });
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [boundaryLabel, setBoundaryLabel] = useState<string | null>(null);
+  const addressMarkerRef = useRef<maplibregl.Marker | null>(null);
+  const searchParams = useSearchParams();
+
   // Map pins reflect type + beds + radius (not the text query, which only
   // narrows the list so an address query never blanks the map).
   const filtered = useMemo(() => {
@@ -239,6 +261,125 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
     });
   }, []);
 
+  const panelPadding = useCallback(() => {
+    const desktop =
+      typeof window !== "undefined" &&
+      window.matchMedia("(min-width: 768px)").matches;
+    return desktop
+      ? { left: 420, top: 40, right: 40, bottom: 40 }
+      : { top: 40, left: 24, right: 24, bottom: Math.round(window.innerHeight * 0.42) };
+  }, []);
+
+  const clearBoundary = useCallback(() => {
+    const src = mapRef.current?.getSource("boundary") as maplibregl.GeoJSONSource | undefined;
+    src?.setData({ type: "FeatureCollection", features: [] });
+    setBoundaryLabel(null);
+  }, []);
+
+  const clearAddressPin = useCallback(() => {
+    addressMarkerRef.current?.remove();
+    addressMarkerRef.current = null;
+  }, []);
+
+  // Fetch a boundary polygon and show it: dashed outline + viewport fit.
+  const showBoundary = useCallback(
+    async (kind: "city" | "zip", slug: string) => {
+      const supabase = createClient();
+      const { data } = await supabase
+        .from("boundaries")
+        .select("name, geojson, bbox")
+        .eq("kind", kind)
+        .eq("slug", slug)
+        .single();
+      const map = mapRef.current;
+      if (!map || !data) return false;
+      const src = map.getSource("boundary") as maplibregl.GeoJSONSource | undefined;
+      if (!src) return false;
+      src.setData(data.geojson as GeoJSON.Feature);
+      const [w, s, e, n] = data.bbox as [number, number, number, number];
+      map.fitBounds(
+        [
+          [w, s],
+          [e, n],
+        ],
+        { padding: panelPadding(), duration: 900, maxZoom: 14 },
+      );
+      setBoundaryLabel(kind === "zip" ? `ZIP ${data.name}` : data.name);
+      return true;
+    },
+    [panelPadding],
+  );
+
+  const searchAddress = useCallback(async (term: string) => {
+    const map = mapRef.current;
+    if (!map) return;
+    try {
+      const res = await fetch(`/api/geocode?q=${encodeURIComponent(term)}`);
+      const data = await res.json();
+      if (!data?.result) return;
+      const { lng, lat } = data.result;
+      clearAddressPin();
+      addressMarkerRef.current = new maplibregl.Marker({ color: "#dc2626" })
+        .setLngLat([lng, lat])
+        .addTo(map);
+      map.flyTo({ center: [lng, lat], zoom: 14, duration: 900 });
+    } catch {
+      /* geocode unavailable */
+    }
+  }, [clearAddressPin]);
+
+  // Debounced global search across the whole DB: facility name, street
+  // address, or license number — plus city/ZIP boundaries.
+  useEffect(() => {
+    const q = query.trim();
+    if (q.length < 2) {
+      setSearchHits({ facilities: [], boundaries: [] });
+      setDropdownOpen(false);
+      return;
+    }
+    const t = setTimeout(async () => {
+      const supabase = createClient();
+      const isZip = /^\d{5}$/.test(q);
+      const [f, b] = await Promise.all([
+        supabase
+          .from("facilities")
+          .select("id, name, slug, city, street_address")
+          .eq("status", "active")
+          .or(
+            `name.ilike.%${q}%,street_address.ilike.%${q}%,license_number.eq.${/^\d+$/.test(q) ? q : "0"}`,
+          )
+          .order("name")
+          .limit(6),
+        isZip
+          ? supabase.from("boundaries").select("kind, slug, name").eq("kind", "zip").eq("slug", q).limit(1)
+          : supabase
+              .from("boundaries")
+              .select("kind, slug, name")
+              .eq("kind", "city")
+              .ilike("name", `${q}%`)
+              .order("name")
+              .limit(3),
+      ]);
+      setSearchHits({
+        facilities: (f.data as FacilityHit[] | null) ?? [],
+        boundaries: (b.data as BoundaryHit[] | null) ?? [],
+      });
+      setDropdownOpen(true);
+    }, 250);
+    return () => clearTimeout(t);
+  }, [query]);
+
+  // Deep links: /search?city=reseda or /search?zip=91335 open with a boundary.
+  const deepLinkDone = useRef(false);
+  useEffect(() => {
+    if (!mapReady || deepLinkDone.current) return;
+    deepLinkDone.current = true;
+    const city = searchParams.get("city");
+    const zip = searchParams.get("zip");
+    if (city) void showBoundary("city", city);
+    else if (zip) void showBoundary("zip", zip);
+  }, [mapReady, searchParams, showBoundary]);
+
   useEffect(() => {
     if (!mapContainer.current || mapRef.current) return;
 
@@ -304,6 +445,28 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
           "line-color": "#2563eb",
           "line-width": 1.5,
           "line-dasharray": [2, 2],
+        },
+      });
+
+      // City/ZIP boundary outline (Google-Maps-style dashed region).
+      map.addSource("boundary", {
+        type: "geojson",
+        data: { type: "FeatureCollection", features: [] },
+      });
+      map.addLayer({
+        id: "boundary-fill",
+        type: "fill",
+        source: "boundary",
+        paint: { "fill-color": "#dc2626", "fill-opacity": 0.04 },
+      });
+      map.addLayer({
+        id: "boundary-outline",
+        type: "line",
+        source: "boundary",
+        paint: {
+          "line-color": "#dc2626",
+          "line-width": 2,
+          "line-dasharray": [3, 2],
         },
       });
 
@@ -546,42 +709,34 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
     }
   };
 
-  const handleSearchSubmit = async () => {
-    const term = query.trim();
-    const map = mapRef.current;
-    if (!term || !map) return;
-    const lower = term.toLowerCase();
+  const pickFacilityHit = (hit: FacilityHit) => {
+    setDropdownOpen(false);
+    const f = facilitiesById.get(hit.id);
+    if (f) selectFacility(f);
+  };
 
-    // 1. Exact city match -> fly to that city's centroid.
-    const cityHits = facilities.filter(
-      (f) => (f.city ?? "").toLowerCase() === lower,
-    );
-    if (cityHits.length) {
-      const lng = cityHits.reduce((s, f) => s + f.lng, 0) / cityHits.length;
-      const lat = cityHits.reduce((s, f) => s + f.lat, 0) / cityHits.length;
-      map.flyTo({ center: [lng, lat], zoom: 12, duration: 800 });
-      return;
-    }
-    // 2. Facility-name match -> fly to it and open its card.
-    const nameHit = facilities.find((f) => f.name.toLowerCase().includes(lower));
-    if (nameHit) {
-      selectFacility(nameHit);
-      return;
-    }
-    // 3. Geocode as an address via the API.
-    try {
-      const res = await fetch(`/api/geocode?q=${encodeURIComponent(term)}`);
-      const data = await res.json();
-      if (data?.result) {
-        map.flyTo({
-          center: [data.result.lng, data.result.lat],
-          zoom: 13,
-          duration: 800,
-        });
-      }
-    } catch {
-      /* ignore */
-    }
+  const pickBoundaryHit = (hit: BoundaryHit) => {
+    setDropdownOpen(false);
+    clearAddressPin();
+    void showBoundary(hit.kind, hit.slug);
+  };
+
+  const handleSearchSubmit = () => {
+    const term = query.trim();
+    if (!term) return;
+    // Priority: top facility hit -> boundary hit -> geocode as an address.
+    if (searchHits.facilities[0]) return pickFacilityHit(searchHits.facilities[0]);
+    if (searchHits.boundaries[0]) return pickBoundaryHit(searchHits.boundaries[0]);
+    setDropdownOpen(false);
+    clearBoundary();
+    void searchAddress(term);
+  };
+
+  const handleClearSearch = () => {
+    setQuery("");
+    setDropdownOpen(false);
+    clearBoundary();
+    clearAddressPin();
   };
 
   const chipClass =
@@ -630,7 +785,7 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
               {query && (
                 <button
                   type="button"
-                  onClick={() => setQuery("")}
+                  onClick={handleClearSearch}
                   aria-label="Clear search"
                   className="text-zinc-400 hover:text-zinc-600"
                 >
@@ -700,9 +855,63 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
           <p className="mt-1 px-1 text-xs text-zinc-500">
             {filtered.length.toLocaleString()} facilities
             {userLocation && radiusMiles != null ? ` within ${radiusMiles} mi` : ""}
+            {boundaryLabel ? ` · showing ${boundaryLabel}` : ""}
             {outsideCA ? " · you appear to be outside California" : ""}
           </p>
         </div>
+
+        {/* Global search results — whole DB, not just what's in view */}
+        {dropdownOpen && query.trim().length >= 2 && (
+          <div className="max-h-72 shrink-0 overflow-y-auto border-b border-zinc-200 dark:border-zinc-800">
+            {searchHits.boundaries.map((b) => (
+              <button
+                key={`${b.kind}-${b.slug}`}
+                type="button"
+                onClick={() => pickBoundaryHit(b)}
+                className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm hover:bg-zinc-50 dark:hover:bg-zinc-900"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2" strokeDasharray="3 2" className="shrink-0" aria-hidden="true">
+                  <path d="M5 5l6-2 5 3 3-1v12l-6 2-5-3-3 1z" strokeLinejoin="round" />
+                </svg>
+                <span>
+                  {b.kind === "zip" ? `ZIP ${b.name}` : `${b.name}, CA`}
+                  <span className="ml-1.5 text-xs text-zinc-400">show area</span>
+                </span>
+              </button>
+            ))}
+            {searchHits.facilities.map((h) => (
+              <button
+                key={h.id}
+                type="button"
+                onClick={() => pickFacilityHit(h)}
+                className="flex w-full items-baseline justify-between gap-3 px-4 py-2.5 text-left text-sm hover:bg-zinc-50 dark:hover:bg-zinc-900"
+              >
+                <span className="min-w-0">
+                  <span className="font-medium">{titleCase(h.name)}</span>
+                  <span className="ml-2 truncate text-xs text-zinc-400">
+                    {[h.street_address && titleCase(h.street_address), h.city && titleCase(h.city)]
+                      .filter(Boolean)
+                      .join(", ")}
+                  </span>
+                </span>
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={() => {
+                setDropdownOpen(false);
+                clearBoundary();
+                void searchAddress(query.trim());
+              }}
+              className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm text-blue-600 hover:bg-zinc-50 dark:hover:bg-zinc-900"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="shrink-0" aria-hidden="true">
+                <path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11Zm0-8.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+              </svg>
+              Go to address &quot;{query.trim()}&quot;
+            </button>
+          </div>
+        )}
         <ul className="flex-1 overflow-y-auto divide-y divide-zinc-100 dark:divide-zinc-800">
           {visibleList.length === 0 && (
             <li className="p-4 text-sm text-zinc-500">

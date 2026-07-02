@@ -99,7 +99,7 @@ export default async function CityPage({
         {stat.facility_count === 1 ? "facility" : "facilities"} in {cityName}
         {stat.county ? `, ${titleCase(stat.county)} County` : ""} — from state licensing
         records, with inspection histories on every listing.{" "}
-        <Link href="/search" className="text-blue-600 hover:underline">
+        <Link href={`/search?city=${slug}`} className="text-blue-600 hover:underline">
           View them on the map
         </Link>
         .

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { SearchMap, type FacilityGeo } from "./search-map";
 
@@ -31,7 +32,11 @@ export default async function SearchPage() {
   const supabase = await createClient();
   try {
     const facilities = await fetchAllActive(supabase);
-    return <SearchMap facilities={facilities} />;
+    return (
+      <Suspense fallback={<div className="h-[100dvh] w-full" />}>
+        <SearchMap facilities={facilities} />
+      </Suspense>
+    );
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     return (

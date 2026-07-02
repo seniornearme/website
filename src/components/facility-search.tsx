@@ -77,7 +77,7 @@ export function FacilitySearch() {
   function submit(e: React.FormEvent) {
     e.preventDefault();
     if (facilities[0]) router.push(`/facilities/${facilities[0].slug}`);
-    else if (cities[0]) router.push(`/assisted-living/${slugifyCity(cities[0].city)}`);
+    else if (cities[0]) router.push(`/search?city=${slugifyCity(cities[0].city)}`);
   }
 
   const hasResults = facilities.length > 0 || cities.length > 0;
@@ -130,7 +130,7 @@ export function FacilitySearch() {
                 <li key={c.city}>
                   <button
                     type="button"
-                    onClick={() => router.push(`/assisted-living/${slugifyCity(c.city)}`)}
+                    onClick={() => router.push(`/search?city=${slugifyCity(c.city)}`)}
                     className="flex w-full items-baseline justify-between gap-3 px-4 py-2.5 text-left text-sm hover:bg-zinc-50 dark:hover:bg-zinc-800"
                   >
                     <span>
@@ -138,7 +138,7 @@ export function FacilitySearch() {
                       <span className="font-medium">{titleCase(c.city)}, CA</span>
                     </span>
                     <span className="shrink-0 text-xs text-zinc-400">
-                      {c.facility_count} facilities
+                      {c.facility_count} on map
                     </span>
                   </button>
                 </li>
