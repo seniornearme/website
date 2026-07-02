@@ -33,7 +33,10 @@ type PlaceDetails = {
 
 export async function getGoogleReviews(placeId: string): Promise<GoogleReviews | null> {
   const key = process.env.GOOGLE_MAPS_API_KEY;
-  if (!key) return null;
+  if (!key) {
+    console.error("google-reviews: GOOGLE_MAPS_API_KEY missing from runtime env");
+    return null;
+  }
   try {
     const res = await fetch(`${DETAILS_URL}/${placeId}`, {
       headers: {
@@ -49,7 +52,10 @@ export async function getGoogleReviews(placeId: string): Promise<GoogleReviews |
       return null;
     }
     const d = (await res.json()) as PlaceDetails;
-    if (typeof d.rating !== "number") return null;
+    if (typeof d.rating !== "number") {
+      console.error(`google-reviews: no rating for ${placeId}: ${JSON.stringify(d).slice(0, 200)}`);
+      return null;
+    }
     return {
       rating: d.rating,
       count: d.userRatingCount ?? 0,
