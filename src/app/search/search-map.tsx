@@ -751,7 +751,7 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
     "md:left-[400px] md:top-3 md:bottom-3 md:right-auto md:h-auto md:w-[368px] md:rounded-2xl";
 
   return (
-    <div className="relative h-[100dvh] w-full overflow-hidden">
+    <div className="relative h-full w-full overflow-hidden">
       <div ref={mapContainer} className="h-full w-full" />
 
       <aside className={panelBase}>
