@@ -25,13 +25,6 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Keep the compact map attribution visible above the mobile bottom sheet */
-@media (max-width: 767px) {
-  .maplibregl-ctrl-bottom-right {
-    bottom: 40vh;
-  }
-}
-
 /* Hover mini-card on map pins (H2) */
 .facility-hover-popup .maplibregl-popup-content {
   padding: 0;

@@ -466,11 +466,10 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
       maxZoom: MAX_ZOOM,
       renderWorldCopies: false,
       canvasContextAttributes: { antialias: true },
-      // OSM data attribution is required by its license; keep it as a compact
-      // collapsed control in the bottom-left instead of the default banner.
+      // OSM attribution is required by its license, but it lives as a static
+      // line at the foot of the search panel instead of a map control.
       attributionControl: false,
     });
-    map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
     mapRef.current = map;
     if (
       process.env.NODE_ENV === "development" &&
@@ -715,15 +714,6 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
       });
 
       map.on("moveend", () => recomputeRef.current());
-
-      // The compact attribution auto-expands on load; collapse it after a
-      // moment (it stays accessible behind the info button).
-      setTimeout(() => {
-        const attrib = map.getContainer().querySelector(".maplibregl-ctrl-attrib");
-        attrib?.removeAttribute("open");
-        attrib?.classList.remove("maplibregl-compact-show");
-      }, 4000);
-
       setMapReady(true);
     });
 
@@ -882,7 +872,7 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
           type="button"
           onClick={clearBoundary}
           aria-label="Remove boundary"
-          className="absolute bottom-[calc(40vh+0.75rem)] right-12 z-10 flex items-center gap-1.5 rounded-full border border-red-200 bg-white/95 px-3.5 py-1.5 text-sm font-medium text-red-700 shadow-lg backdrop-blur hover:bg-red-50 md:bottom-3 dark:border-red-900 dark:bg-zinc-900/95 dark:text-red-300 dark:hover:bg-red-950"
+          className="absolute bottom-[calc(40vh+0.75rem)] right-3 z-10 flex items-center gap-1.5 rounded-full border border-red-200 bg-white/95 px-3.5 py-1.5 text-sm font-medium text-red-700 shadow-lg backdrop-blur hover:bg-red-50 md:bottom-3 dark:border-red-900 dark:bg-zinc-900/95 dark:text-red-300 dark:hover:bg-red-950"
         >
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
             <path d="M18 6 6 18M6 6l12 12" />
@@ -1181,6 +1171,18 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
             ),
           )}
         </ul>
+        <p className="shrink-0 border-t border-zinc-100 px-3 py-1 text-[10px] text-zinc-400 dark:border-zinc-800">
+          Map data ©{" "}
+          <a
+            href="https://www.openstreetmap.org/copyright"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline"
+          >
+            OpenStreetMap
+          </a>{" "}
+          contributors · OpenFreeMap
+        </p>
       </aside>
 
       {selectedFacility && (
