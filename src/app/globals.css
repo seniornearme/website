@@ -25,6 +25,17 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* iOS Safari auto-zooms the page when focusing form controls with a font
+   size below 16px. Force 16px on mobile so tapping search/filters doesn't
+   zoom the viewport. (Overrides Tailwind's text-sm on these elements.) */
+@media (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: 1rem !important;
+  }
+}
+
 /* Hover mini-card on map pins (H2) */
 .facility-hover-popup .maplibregl-popup-content {
   padding: 0;
