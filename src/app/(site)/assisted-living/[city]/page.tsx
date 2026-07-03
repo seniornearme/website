@@ -111,7 +111,7 @@ export default async function CityPage({
             ?.slice()
             .sort((a, b) => a.position - b.position)[0];
           return (
-            <li key={f.id}>
+            <li key={f.id} className="min-w-0">
               <Link
                 href={`/facilities/${f.slug}`}
                 className="block overflow-hidden rounded-xl border border-zinc-200 transition-shadow hover:shadow-md dark:border-zinc-800"

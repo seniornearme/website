@@ -196,12 +196,13 @@ export default async function FacilityPage({
         </ol>
         <Link
           href="/search"
+          aria-label="View on map"
           className="inline-flex shrink-0 items-center gap-1 text-blue-600 hover:underline"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
             <path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11Z" strokeLinejoin="round" />
           </svg>
-          View on map
+          <span className="hidden sm:inline">View on map</span>
         </Link>
       </nav>
 

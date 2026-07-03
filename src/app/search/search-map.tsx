@@ -1099,7 +1099,7 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
           )}
           {visibleList.map(({ facility: f, distance }) =>
             viewMode === "grid" ? (
-              <li key={f.id}>
+              <li key={f.id} className="min-w-0">
                 <button
                   type="button"
                   onClick={() => selectFacility(f)}
