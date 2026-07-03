@@ -863,6 +863,21 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
     <div className="relative h-full w-full overflow-hidden">
       <div ref={mapContainer} className="h-full w-full" />
 
+      {/* Floating boundary chip on the map (Google-Maps-style) */}
+      {boundary && (
+        <button
+          type="button"
+          onClick={clearBoundary}
+          aria-label={`Remove ${boundary.label} boundary`}
+          className="absolute left-1/2 top-3 z-10 flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-red-200 bg-white/95 px-3.5 py-1.5 text-sm font-medium text-red-700 shadow-lg backdrop-blur hover:bg-red-50 md:left-[calc(50%+192px)] dark:border-red-900 dark:bg-zinc-900/95 dark:text-red-300 dark:hover:bg-red-950"
+        >
+          {boundary.label}
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
+        </button>
+      )}
+
       <aside className={panelBase}>
         <div className="shrink-0 border-b border-zinc-200 dark:border-zinc-800 p-3">
           <div className="flex items-center gap-2">
@@ -969,18 +984,6 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
               {outsideCA ? " · outside CA" : ""}
             </p>
             <div className="flex shrink-0 items-center gap-1">
-              {boundary && (
-                <button
-                  type="button"
-                  onClick={clearBoundary}
-                  className="flex items-center gap-1 rounded-full border border-red-200 bg-red-50 px-2 py-0.5 text-[11px] font-medium text-red-700 hover:bg-red-100 dark:border-red-900 dark:bg-red-950 dark:text-red-300"
-                >
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" aria-hidden="true">
-                    <path d="M18 6 6 18M6 6l12 12" />
-                  </svg>
-                  Remove boundary
-                </button>
-              )}
               {(
                 [
                   ["list", "M4 6h16M4 12h16M4 18h16", "List"],
