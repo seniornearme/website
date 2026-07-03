@@ -466,7 +466,11 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
       maxZoom: MAX_ZOOM,
       renderWorldCopies: false,
       canvasContextAttributes: { antialias: true },
+      // OSM data attribution is required by its license; keep it as a compact
+      // collapsed control in the bottom-left instead of the default banner.
+      attributionControl: false,
     });
+    map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
     mapRef.current = map;
     if (
       process.env.NODE_ENV === "development" &&
@@ -711,6 +715,15 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
       });
 
       map.on("moveend", () => recomputeRef.current());
+
+      // The compact attribution auto-expands on load; collapse it after a
+      // moment (it stays accessible behind the info button).
+      setTimeout(() => {
+        const attrib = map.getContainer().querySelector(".maplibregl-ctrl-attrib");
+        attrib?.removeAttribute("open");
+        attrib?.classList.remove("maplibregl-compact-show");
+      }, 4000);
+
       setMapReady(true);
     });
 
@@ -863,18 +876,18 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
     <div className="relative h-full w-full overflow-hidden">
       <div ref={mapContainer} className="h-full w-full" />
 
-      {/* Floating boundary chip on the map (Google-Maps-style) */}
+      {/* Floating boundary-removal button on the map */}
       {boundary && (
         <button
           type="button"
           onClick={clearBoundary}
-          aria-label={`Remove ${boundary.label} boundary`}
-          className="absolute left-1/2 top-3 z-10 flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-red-200 bg-white/95 px-3.5 py-1.5 text-sm font-medium text-red-700 shadow-lg backdrop-blur hover:bg-red-50 md:left-[calc(50%+192px)] dark:border-red-900 dark:bg-zinc-900/95 dark:text-red-300 dark:hover:bg-red-950"
+          aria-label="Remove boundary"
+          className="absolute bottom-[calc(40vh+0.75rem)] right-12 z-10 flex items-center gap-1.5 rounded-full border border-red-200 bg-white/95 px-3.5 py-1.5 text-sm font-medium text-red-700 shadow-lg backdrop-blur hover:bg-red-50 md:bottom-3 dark:border-red-900 dark:bg-zinc-900/95 dark:text-red-300 dark:hover:bg-red-950"
         >
-          {boundary.label}
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
             <path d="M18 6 6 18M6 6l12 12" />
           </svg>
+          Remove boundary
         </button>
       )}
 
