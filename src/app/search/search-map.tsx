@@ -18,6 +18,7 @@ export type FacilityGeo = {
   capacity: number | null;
   lng: number;
   lat: number;
+  photo: string | null;
 };
 
 type TypeFilter = "all" | "rcfe" | "arf";
@@ -33,6 +34,38 @@ type FacilityHit = {
   street_address: string | null;
 };
 type BoundaryHit = { kind: "city" | "zip"; slug: string; name: string };
+type ActiveBoundary = {
+  label: string;
+  feature: GeoJSON.Feature<GeoJSON.Polygon | GeoJSON.MultiPolygon>;
+  bbox: [number, number, number, number];
+};
+type ViewMode = "list" | "listimg" | "grid";
+
+// Ray-cast point-in-polygon (Polygon or MultiPolygon), with bbox short-circuit.
+function pointInRing(lng: number, lat: number, ring: number[][]): boolean {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [xi, yi] = ring[i];
+    const [xj, yj] = ring[j];
+    if (yi > lat !== yj > lat && lng < ((xj - xi) * (lat - yi)) / (yj - yi) + xi)
+      inside = !inside;
+  }
+  return inside;
+}
+
+function pointInPolygonCoords(lng: number, lat: number, poly: number[][][]): boolean {
+  if (!pointInRing(lng, lat, poly[0])) return false; // outer ring
+  for (let h = 1; h < poly.length; h++) if (pointInRing(lng, lat, poly[h])) return false; // holes
+  return true;
+}
+
+function pointInBoundary(lng: number, lat: number, b: ActiveBoundary): boolean {
+  const [w, s, e, n] = b.bbox;
+  if (lng < w || lng > e || lat < s || lat > n) return false;
+  const g = b.feature.geometry;
+  if (g.type === "Polygon") return pointInPolygonCoords(lng, lat, g.coordinates as number[][][]);
+  return (g.coordinates as number[][][][]).some((p) => pointInPolygonCoords(lng, lat, p));
+}
 
 const STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
 const LABEL_FONT = "Noto Sans Regular";
@@ -167,12 +200,13 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
     boundaries: BoundaryHit[];
   }>({ facilities: [], boundaries: [] });
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [boundaryLabel, setBoundaryLabel] = useState<string | null>(null);
+  const [boundary, setBoundary] = useState<ActiveBoundary | null>(null);
+  const [viewMode, setViewMode] = useState<ViewMode>("list");
   const addressMarkerRef = useRef<maplibregl.Marker | null>(null);
   const searchParams = useSearchParams();
 
-  // Map pins reflect type + beds + radius (not the text query, which only
-  // narrows the list so an address query never blanks the map).
+  // Map pins reflect type + beds + radius + active boundary (not the text
+  // query, which only narrows the list so an address query never blanks the map).
   const filtered = useMemo(() => {
     let r = facilities;
     if (typeFilter !== "all")
@@ -185,8 +219,9 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
           radiusMiles,
       );
     }
+    if (boundary) r = r.filter((f) => pointInBoundary(f.lng, f.lat, boundary));
     return r;
-  }, [facilities, typeFilter, bedsFilter, userLocation, radiusMiles]);
+  }, [facilities, typeFilter, bedsFilter, userLocation, radiusMiles, boundary]);
 
   const filteredById = useMemo(() => {
     const map = new Map<string, FacilityGeo>();
@@ -213,6 +248,8 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
           facility_type: f.facility_type,
           city: f.city ?? "",
           capacity: f.capacity ?? 0,
+          slug: f.slug,
+          photo: f.photo ?? "",
         },
       })),
     }),
@@ -273,7 +310,7 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
   const clearBoundary = useCallback(() => {
     const src = mapRef.current?.getSource("boundary") as maplibregl.GeoJSONSource | undefined;
     src?.setData({ type: "FeatureCollection", features: [] });
-    setBoundaryLabel(null);
+    setBoundary(null);
   }, []);
 
   const clearAddressPin = useCallback(() => {
@@ -296,7 +333,8 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
       const src = map.getSource("boundary") as maplibregl.GeoJSONSource | undefined;
       if (!src) return false;
       src.setData(data.geojson as GeoJSON.Feature);
-      const [w, s, e, n] = data.bbox as [number, number, number, number];
+      const bbox = data.bbox as [number, number, number, number];
+      const [w, s, e, n] = bbox;
       map.fitBounds(
         [
           [w, s],
@@ -304,7 +342,11 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
         ],
         { padding: panelPadding(), duration: 900, maxZoom: 14 },
       );
-      setBoundaryLabel(kind === "zip" ? `ZIP ${data.name}` : data.name);
+      setBoundary({
+        label: kind === "zip" ? `ZIP ${data.name}` : data.name,
+        feature: data.geojson as ActiveBoundary["feature"],
+        bbox,
+      });
       return true;
     },
     [panelPadding],
@@ -322,11 +364,12 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
       addressMarkerRef.current = new maplibregl.Marker({ color: "#dc2626" })
         .setLngLat([lng, lat])
         .addTo(map);
-      map.flyTo({ center: [lng, lat], zoom: 14, duration: 900 });
+      // padding keeps the pin centered in the VISIBLE map area (panel offset)
+      map.flyTo({ center: [lng, lat], zoom: 14, duration: 900, padding: panelPadding() });
     } catch {
       /* geocode unavailable */
     }
-  }, [clearAddressPin]);
+  }, [clearAddressPin, panelPadding]);
 
   // Debounced global search across the whole DB: facility name, street
   // address, or license number — plus city/ZIP boundaries.
@@ -340,16 +383,17 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
     const t = setTimeout(async () => {
       const supabase = createClient();
       const isZip = /^\d{5}$/.test(q);
+      const orParts = [`name.ilike.%${q}%`, `street_address.ilike.%${q}%`];
+      if (isZip) orParts.push(`zip.eq.${q}`);
+      if (/^\d+$/.test(q)) orParts.push(`license_number.eq.${q}`);
       const [f, b] = await Promise.all([
         supabase
           .from("facilities")
           .select("id, name, slug, city, street_address")
           .eq("status", "active")
-          .or(
-            `name.ilike.%${q}%,street_address.ilike.%${q}%,license_number.eq.${/^\d+$/.test(q) ? q : "0"}`,
-          )
+          .or(orParts.join(","))
           .order("name")
-          .limit(6),
+          .limit(isZip ? 8 : 6),
         isZip
           ? supabase.from("boundaries").select("kind, slug, name").eq("kind", "zip").eq("slug", q).limit(1)
           : supabase
@@ -551,7 +595,18 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
         offset: 24,
         className: "facility-hover-popup",
       });
+      // Keep the popup open while the cursor is over it, so its link is clickable.
+      let hoverHideTimer: ReturnType<typeof setTimeout> | null = null;
+      const scheduleHoverHide = () => {
+        if (hoverHideTimer) clearTimeout(hoverHideTimer);
+        hoverHideTimer = setTimeout(() => hoverPopup.remove(), 250);
+      };
+      const cancelHoverHide = () => {
+        if (hoverHideTimer) clearTimeout(hoverHideTimer);
+        hoverHideTimer = null;
+      };
       const showHover = (e: maplibregl.MapLayerMouseEvent) => {
+        cancelHoverHide();
         const f = e.features?.[0];
         if (!f) return;
         const p = f.properties as {
@@ -559,20 +614,31 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
           city?: string;
           facility_type?: string;
           capacity?: number;
+          slug?: string;
+          photo?: string;
         };
         const type = (p.facility_type || "").toUpperCase();
         const sub = [p.city, type].filter(Boolean).join(" · ");
         const beds = p.capacity ? ` · ${p.capacity} beds` : "";
         const geom = f.geometry as GeoJSON.Point;
+        const thumb = p.photo
+          ? `<img class="fhp-img" src="${escapeHtml(p.photo)}" alt="" loading="lazy" />`
+          : `<div class="fhp-thumb"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#185fa5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg></div>`;
         hoverPopup
           .setLngLat(geom.coordinates as [number, number])
           .setHTML(
-            `<div class="fhp-card">` +
-              `<div class="fhp-thumb"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#185fa5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg></div>` +
+            `<a class="fhp-card" href="/facilities/${escapeHtml(p.slug || "")}">` +
+              thumb +
               `<div><div class="fhp-name">${escapeHtml(p.label || "")}</div>` +
-              `<div class="fhp-sub">${escapeHtml(sub + beds)}</div></div></div>`,
+              `<div class="fhp-sub">${escapeHtml(sub + beds)}</div>` +
+              `<div class="fhp-link">View details →</div></div></a>`,
           )
           .addTo(map);
+        const el = hoverPopup.getElement();
+        if (el) {
+          el.addEventListener("mouseenter", cancelHoverHide);
+          el.addEventListener("mouseleave", scheduleHoverHide);
+        }
       };
 
       map.on("click", "clusters", async (e) => {
@@ -611,7 +677,7 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
       });
       map.on("mouseleave", "facility-markers", () => {
         setCursor("");
-        hoverPopup.remove();
+        scheduleHoverHide();
       });
 
       map.on("moveend", () => recomputeRef.current());
@@ -711,12 +777,17 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
 
   const pickFacilityHit = (hit: FacilityHit) => {
     setDropdownOpen(false);
+    setQuery(""); // committed — leftover text would filter the results list
     const f = facilitiesById.get(hit.id);
-    if (f) selectFacility(f);
+    if (!f) return;
+    // a facility outside the active boundary would be filtered off the map
+    if (boundary && !pointInBoundary(f.lng, f.lat, boundary)) clearBoundary();
+    selectFacility(f);
   };
 
   const pickBoundaryHit = (hit: BoundaryHit) => {
     setDropdownOpen(false);
+    setQuery("");
     clearAddressPin();
     void showBoundary(hit.kind, hit.slug);
   };
@@ -852,12 +923,52 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
               </select>
             )}
           </div>
-          <p className="mt-1 px-1 text-xs text-zinc-500">
-            {filtered.length.toLocaleString()} facilities
-            {userLocation && radiusMiles != null ? ` within ${radiusMiles} mi` : ""}
-            {boundaryLabel ? ` · showing ${boundaryLabel}` : ""}
-            {outsideCA ? " · you appear to be outside California" : ""}
-          </p>
+          <div className="mt-1.5 flex items-center justify-between gap-2 px-1">
+            <p className="min-w-0 truncate text-xs text-zinc-500">
+              {filtered.length.toLocaleString()} facilities
+              {userLocation && radiusMiles != null ? ` within ${radiusMiles} mi` : ""}
+              {boundary ? ` in ${boundary.label}` : ""}
+              {outsideCA ? " · outside CA" : ""}
+            </p>
+            <div className="flex shrink-0 items-center gap-1">
+              {boundary && (
+                <button
+                  type="button"
+                  onClick={clearBoundary}
+                  className="flex items-center gap-1 rounded-full border border-red-200 bg-red-50 px-2 py-0.5 text-[11px] font-medium text-red-700 hover:bg-red-100 dark:border-red-900 dark:bg-red-950 dark:text-red-300"
+                >
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" aria-hidden="true">
+                    <path d="M18 6 6 18M6 6l12 12" />
+                  </svg>
+                  Remove boundary
+                </button>
+              )}
+              {(
+                [
+                  ["list", "M4 6h16M4 12h16M4 18h16", "List"],
+                  ["listimg", "M4 5h5v5H4zM12 6h8M12 9h6M4 14h5v5H4zM12 15h8M12 18h6", "List with photos"],
+                  ["grid", "M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z", "Grid"],
+                ] as [ViewMode, string, string][]
+              ).map(([mode, path, label]) => (
+                <button
+                  key={mode}
+                  type="button"
+                  onClick={() => setViewMode(mode)}
+                  aria-label={label}
+                  title={label}
+                  className={`rounded-md p-1 ${
+                    viewMode === mode
+                      ? "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
+                      : "text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800"
+                  }`}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d={path} />
+                  </svg>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Global search results — whole DB, not just what's in view */}
@@ -912,42 +1023,95 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
             </button>
           </div>
         )}
-        <ul className="flex-1 overflow-y-auto divide-y divide-zinc-100 dark:divide-zinc-800">
+        <ul
+          className={
+            viewMode === "grid"
+              ? "grid flex-1 auto-rows-min grid-cols-2 gap-2 overflow-y-auto p-2"
+              : "flex-1 overflow-y-auto divide-y divide-zinc-100 dark:divide-zinc-800"
+          }
+        >
           {visibleList.length === 0 && (
-            <li className="p-4 text-sm text-zinc-500">
+            <li className="col-span-2 p-4 text-sm text-zinc-500">
               {q
                 ? "No matches in view. Press Enter to search this address or city."
-                : "Pan or zoom the map to see facilities here."}
+                : boundary
+                  ? `No facilities match your filters in ${boundary.label}.`
+                  : "Pan or zoom the map to see facilities here."}
             </li>
           )}
-          {visibleList.map(({ facility: f, distance }) => (
-            <li key={f.id}>
-              <button
-                type="button"
-                className={`w-full text-left p-3 transition-colors ${
-                  selectedId === f.id
-                    ? "bg-blue-50 dark:bg-blue-950"
-                    : "hover:bg-zinc-50 dark:hover:bg-zinc-900"
-                }`}
-                onClick={() => selectFacility(f)}
-              >
-                <div className="flex items-baseline justify-between gap-2">
-                  <span className="text-sm font-medium">{titleCase(f.name)}</span>
-                  {distance != null && (
-                    <span className="shrink-0 text-xs font-medium text-blue-600 dark:text-blue-400">
-                      {formatMiles(distance)}
-                    </span>
+          {visibleList.map(({ facility: f, distance }) =>
+            viewMode === "grid" ? (
+              <li key={f.id}>
+                <button
+                  type="button"
+                  onClick={() => selectFacility(f)}
+                  className={`w-full overflow-hidden rounded-xl border text-left transition-colors ${
+                    selectedId === f.id
+                      ? "border-blue-400 bg-blue-50 dark:bg-blue-950"
+                      : "border-zinc-200 hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-900"
+                  }`}
+                >
+                  {f.photo ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={f.photo} alt="" loading="lazy" className="h-20 w-full object-cover" />
+                  ) : (
+                    <div className="flex h-20 w-full items-center justify-center bg-gradient-to-br from-blue-500 to-blue-700 text-white/90">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                        <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </div>
                   )}
-                </div>
-                <div className="mt-0.5 text-xs text-zinc-500">
-                  {[f.city, f.facility_type.toUpperCase()]
-                    .filter(Boolean)
-                    .join(" · ")}
-                  {f.capacity ? ` · ${f.capacity} beds` : ""}
-                </div>
-              </button>
-            </li>
-          ))}
+                  <div className="p-2">
+                    <div className="truncate text-xs font-medium">{titleCase(f.name)}</div>
+                    <div className="mt-0.5 truncate text-[11px] text-zinc-500">
+                      {f.capacity ? `${f.capacity} beds` : f.facility_type.toUpperCase()}
+                      {distance != null ? ` · ${formatMiles(distance)}` : ""}
+                    </div>
+                  </div>
+                </button>
+              </li>
+            ) : (
+              <li key={f.id}>
+                <button
+                  type="button"
+                  className={`flex w-full items-center gap-3 p-3 text-left transition-colors ${
+                    selectedId === f.id
+                      ? "bg-blue-50 dark:bg-blue-950"
+                      : "hover:bg-zinc-50 dark:hover:bg-zinc-900"
+                  }`}
+                  onClick={() => selectFacility(f)}
+                >
+                  {viewMode === "listimg" &&
+                    (f.photo ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={f.photo} alt="" loading="lazy" className="h-12 w-14 shrink-0 rounded-lg object-cover" />
+                    ) : (
+                      <div className="flex h-12 w-14 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 text-white/90">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                          <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </div>
+                    ))}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-baseline justify-between gap-2">
+                      <span className="truncate text-sm font-medium">{titleCase(f.name)}</span>
+                      {distance != null && (
+                        <span className="shrink-0 text-xs font-medium text-blue-600 dark:text-blue-400">
+                          {formatMiles(distance)}
+                        </span>
+                      )}
+                    </div>
+                    <div className="mt-0.5 text-xs text-zinc-500">
+                      {[f.city, f.facility_type.toUpperCase()]
+                        .filter(Boolean)
+                        .join(" · ")}
+                      {f.capacity ? ` · ${f.capacity} beds` : ""}
+                    </div>
+                  </div>
+                </button>
+              </li>
+            ),
+          )}
         </ul>
       </aside>
 

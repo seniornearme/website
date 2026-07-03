@@ -37,7 +37,25 @@ body {
   align-items: center;
   gap: 8px;
   padding: 8px;
-  width: 210px;
+  width: 230px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.facility-hover-popup .fhp-img {
+  width: 56px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.facility-hover-popup .fhp-link {
+  font-size: 11px;
+  font-weight: 500;
+  color: #2563eb;
+  margin-top: 3px;
+}
+.facility-hover-popup .fhp-card:hover .fhp-link {
+  text-decoration: underline;
 }
 .facility-hover-popup .fhp-thumb {
   width: 44px;

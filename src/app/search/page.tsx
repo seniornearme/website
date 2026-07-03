@@ -19,7 +19,7 @@ async function fetchAllActive(supabase: Awaited<ReturnType<typeof createClient>>
     Array.from({ length: pages }, (_, i) =>
       supabase
         .from("facilities_search")
-        .select("id,name,slug,facility_type,status,city,county,capacity,lng,lat")
+        .select("id,name,slug,facility_type,status,city,county,capacity,lng,lat,photo")
         .eq("status", "active")
         .order("id")
         .range(i * PAGE_SIZE, (i + 1) * PAGE_SIZE - 1),
