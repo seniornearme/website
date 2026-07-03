@@ -119,10 +119,19 @@ export function FacilitySearch() {
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (hits.facilities[0]) router.push(`/facilities/${hits.facilities[0].slug}`);
-    else if (hits.cities[0]) router.push(`/search?city=${slugifyCity(hits.cities[0].city)}`);
-    else if (hits.zips[0]) router.push(`/search?zip=${hits.zips[0].slug}`);
-    else if (hits.addresses[0]) goAddress(hits.addresses[0]);
+    const q = query.trim().toLowerCase();
+    // Intent-aware priority: ZIP-looking queries and exact city names go to
+    // the area view, even when facility names also match the text.
+    if (/^\d{3,5}$/.test(q) && hits.zips[0])
+      return void router.push(`/search?zip=${hits.zips[0].slug}`);
+    const exactCity = hits.cities.find((c) => c.city.toLowerCase() === q);
+    if (exactCity) return void router.push(`/search?city=${slugifyCity(exactCity.city)}`);
+    const facilityPrefix = hits.facilities.find((f) => f.name.toLowerCase().startsWith(q));
+    if (facilityPrefix) return void router.push(`/facilities/${facilityPrefix.slug}`);
+    if (hits.cities[0]) return void router.push(`/search?city=${slugifyCity(hits.cities[0].city)}`);
+    if (hits.facilities[0]) return void router.push(`/facilities/${hits.facilities[0].slug}`);
+    if (hits.zips[0]) return void router.push(`/search?zip=${hits.zips[0].slug}`);
+    if (hits.addresses[0]) goAddress(hits.addresses[0]);
   }
 
   const hasResults =

@@ -835,9 +835,21 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
   const handleSearchSubmit = () => {
     const term = query.trim();
     if (!term) return;
-    // Priority: facility -> boundary -> address suggestion -> geocode fallback.
-    if (searchHits.facilities[0]) return pickFacilityHit(searchHits.facilities[0]);
+    const q = term.toLowerCase();
+    // Intent-aware priority: a ZIP-looking query or an exact city name means
+    // "take me to that area", even when facilities also match the text.
+    const zipHit = /^\d{3,5}$/.test(q)
+      ? searchHits.boundaries.find((b) => b.kind === "zip")
+      : undefined;
+    if (zipHit) return pickBoundaryHit(zipHit);
+    const exactCity = searchHits.boundaries.find((b) => b.name.toLowerCase() === q);
+    if (exactCity) return pickBoundaryHit(exactCity);
+    const facilityPrefix = searchHits.facilities.find((f) =>
+      f.name.toLowerCase().startsWith(q),
+    );
+    if (facilityPrefix) return pickFacilityHit(facilityPrefix);
     if (searchHits.boundaries[0]) return pickBoundaryHit(searchHits.boundaries[0]);
+    if (searchHits.facilities[0]) return pickFacilityHit(searchHits.facilities[0]);
     if (searchHits.addresses[0]) return pickAddressHit(searchHits.addresses[0]);
     setDropdownOpen(false);
     clearBoundary();
