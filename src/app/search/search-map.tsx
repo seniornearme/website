@@ -34,6 +34,7 @@ type FacilityHit = {
   street_address: string | null;
 };
 type BoundaryHit = { kind: "city" | "zip"; slug: string; name: string };
+type AddressHit = { label: string; lng: number; lat: number };
 type ActiveBoundary = {
   label: string;
   feature: GeoJSON.Feature<GeoJSON.Polygon | GeoJSON.MultiPolygon>;
@@ -198,11 +199,13 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
   const [searchHits, setSearchHits] = useState<{
     facilities: FacilityHit[];
     boundaries: BoundaryHit[];
-  }>({ facilities: [], boundaries: [] });
+    addresses: AddressHit[];
+  }>({ facilities: [], boundaries: [], addresses: [] });
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [boundary, setBoundary] = useState<ActiveBoundary | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const addressMarkerRef = useRef<maplibregl.Marker | null>(null);
+  const latestQuery = useRef("");
   const searchParams = useSearchParams();
 
   // Map pins reflect type + beds + radius + active boundary (not the text
@@ -352,77 +355,104 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
     [panelPadding],
   );
 
-  const searchAddress = useCallback(async (term: string) => {
-    const map = mapRef.current;
-    if (!map) return;
-    try {
-      const res = await fetch(`/api/geocode?q=${encodeURIComponent(term)}`);
-      const data = await res.json();
-      if (!data?.result) return;
-      const { lng, lat } = data.result;
+  // Drop a pin and center it in the VISIBLE map area (panel-aware padding).
+  const dropPin = useCallback(
+    (lng: number, lat: number) => {
+      const map = mapRef.current;
+      if (!map) return;
       clearAddressPin();
       addressMarkerRef.current = new maplibregl.Marker({ color: "#dc2626" })
         .setLngLat([lng, lat])
         .addTo(map);
-      // padding keeps the pin centered in the VISIBLE map area (panel offset)
       map.flyTo({ center: [lng, lat], zoom: 14, duration: 900, padding: panelPadding() });
+    },
+    [clearAddressPin, panelPadding],
+  );
+
+  const searchAddress = useCallback(async (term: string) => {
+    try {
+      const res = await fetch(`/api/geocode?q=${encodeURIComponent(term)}`);
+      const data = await res.json();
+      if (data?.result) dropPin(data.result.lng, data.result.lat);
     } catch {
       /* geocode unavailable */
     }
-  }, [clearAddressPin, panelPadding]);
+  }, [dropPin]);
 
   // Debounced global search across the whole DB: facility name, street
   // address, or license number — plus city/ZIP boundaries.
   useEffect(() => {
     const q = query.trim();
+    latestQuery.current = q;
     if (q.length < 2) {
-      setSearchHits({ facilities: [], boundaries: [] });
+      setSearchHits({ facilities: [], boundaries: [], addresses: [] });
       setDropdownOpen(false);
       return;
     }
     const t = setTimeout(async () => {
       const supabase = createClient();
-      const isZip = /^\d{5}$/.test(q);
+      const digits = /^\d+$/.test(q);
+      const zipish = /^\d{3,5}$/.test(q);
+      const addressish = /\d/.test(q) && !digits && q.length >= 4;
       const orParts = [`name.ilike.%${q}%`, `street_address.ilike.%${q}%`];
-      if (isZip) orParts.push(`zip.eq.${q}`);
-      if (/^\d+$/.test(q)) orParts.push(`license_number.eq.${q}`);
-      const [f, b] = await Promise.all([
+      if (/^\d{5}$/.test(q)) orParts.push(`zip.eq.${q}`);
+      if (digits) orParts.push(`license_number.eq.${q}`);
+      const [f, b, a] = await Promise.all([
         supabase
           .from("facilities")
           .select("id, name, slug, city, street_address")
           .eq("status", "active")
           .or(orParts.join(","))
           .order("name")
-          .limit(isZip ? 8 : 6),
-        isZip
-          ? supabase.from("boundaries").select("kind, slug, name").eq("kind", "zip").eq("slug", q).limit(1)
-          : supabase
+          .limit(zipish ? 8 : 6),
+        zipish
+          ? supabase
               .from("boundaries")
               .select("kind, slug, name")
-              .eq("kind", "city")
-              .ilike("name", `${q}%`)
-              .order("name")
-              .limit(3),
+              .eq("kind", "zip")
+              .ilike("slug", `${q}%`)
+              .order("slug")
+              .limit(3)
+          : digits
+            ? Promise.resolve({ data: [] })
+            : supabase
+                .from("boundaries")
+                .select("kind, slug, name")
+                .eq("kind", "city")
+                .ilike("name", `${q}%`)
+                .order("name")
+                .limit(3),
+        addressish
+          ? fetch(`/api/geocode?suggest=1&q=${encodeURIComponent(q)}`)
+              .then((r) => r.json())
+              .then((d) => ({ data: (d.suggestions ?? []) as AddressHit[] }))
+              .catch(() => ({ data: [] }))
+          : Promise.resolve({ data: [] }),
       ]);
+      if (latestQuery.current !== q) return; // stale response — a newer query is in flight
       setSearchHits({
         facilities: (f.data as FacilityHit[] | null) ?? [],
         boundaries: (b.data as BoundaryHit[] | null) ?? [],
+        addresses: (a.data as AddressHit[] | null) ?? [],
       });
       setDropdownOpen(true);
     }, 250);
     return () => clearTimeout(t);
   }, [query]);
 
-  // Deep links: /search?city=reseda or /search?zip=91335 open with a boundary.
+  // Deep links: /search?city=reseda, ?zip=91335, or ?lng=&lat= (address pin).
   const deepLinkDone = useRef(false);
   useEffect(() => {
     if (!mapReady || deepLinkDone.current) return;
     deepLinkDone.current = true;
     const city = searchParams.get("city");
     const zip = searchParams.get("zip");
+    const lng = parseFloat(searchParams.get("lng") ?? "");
+    const lat = parseFloat(searchParams.get("lat") ?? "");
     if (city) void showBoundary("city", city);
     else if (zip) void showBoundary("zip", zip);
-  }, [mapReady, searchParams, showBoundary]);
+    else if (Number.isFinite(lng) && Number.isFinite(lat)) dropPin(lng, lat);
+  }, [mapReady, searchParams, showBoundary, dropPin]);
 
   useEffect(() => {
     if (!mapContainer.current || mapRef.current) return;
@@ -792,12 +822,20 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
     void showBoundary(hit.kind, hit.slug);
   };
 
+  const pickAddressHit = (hit: AddressHit) => {
+    setDropdownOpen(false);
+    setQuery("");
+    clearBoundary();
+    dropPin(hit.lng, hit.lat);
+  };
+
   const handleSearchSubmit = () => {
     const term = query.trim();
     if (!term) return;
-    // Priority: top facility hit -> boundary hit -> geocode as an address.
+    // Priority: facility -> boundary -> address suggestion -> geocode fallback.
     if (searchHits.facilities[0]) return pickFacilityHit(searchHits.facilities[0]);
     if (searchHits.boundaries[0]) return pickBoundaryHit(searchHits.boundaries[0]);
+    if (searchHits.addresses[0]) return pickAddressHit(searchHits.addresses[0]);
     setDropdownOpen(false);
     clearBoundary();
     void searchAddress(term);
@@ -1007,10 +1045,24 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
                 </span>
               </button>
             ))}
+            {searchHits.addresses.map((a) => (
+              <button
+                key={a.label}
+                type="button"
+                onClick={() => pickAddressHit(a)}
+                className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm hover:bg-zinc-50 dark:hover:bg-zinc-900"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="shrink-0 text-zinc-400" aria-hidden="true">
+                  <path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11Zm0-8.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+                </svg>
+                <span className="truncate">{a.label}</span>
+              </button>
+            ))}
             <button
               type="button"
               onClick={() => {
                 setDropdownOpen(false);
+                setQuery("");
                 clearBoundary();
                 void searchAddress(query.trim());
               }}
