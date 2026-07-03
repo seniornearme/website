@@ -21,6 +21,27 @@ export type FacilityGeo = {
   photo: string | null;
 };
 
+// Compact row shape from /api/facilities (active-only, so status is implied).
+type ApiRow = [
+  string, string, string, string, string | null, number | null, number, number, string | null,
+];
+
+function parseRows(rows: ApiRow[]): FacilityGeo[] {
+  return rows.map(([id, name, slug, facility_type, city, capacity, lng, lat, photo]) => ({
+    id,
+    name,
+    slug,
+    facility_type: facility_type as FacilityGeo["facility_type"],
+    status: "active",
+    city,
+    county: null,
+    capacity,
+    lng,
+    lat,
+    photo,
+  }));
+}
+
 type TypeFilter = "all" | "rcfe" | "arf";
 type BedsFilter = "any" | "small" | "medium" | "large";
 type LngLat = { lng: number; lat: number };
@@ -182,10 +203,31 @@ function makeMarkerImageData(color: string): ImageData | null {
   return ctx.getImageData(0, 0, 30 * scale, 40 * scale);
 }
 
-export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
+export function SearchMap() {
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const [mapReady, setMapReady] = useState(false);
+  const [facilities, setFacilities] = useState<FacilityGeo[]>([]);
+  const [dataLoading, setDataLoading] = useState(true);
+
+  // Load the compact facility dataset (cached at the CDN + by the browser).
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const res = await fetch("/api/facilities");
+        const data = (await res.json()) as { rows?: ApiRow[] };
+        if (active && data.rows) setFacilities(parseRows(data.rows));
+      } catch {
+        /* keep empty; user can reload */
+      } finally {
+        if (active) setDataLoading(false);
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, []);
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
   const [bedsFilter, setBedsFilter] = useState<BedsFilter>("any");
   const [query, setQuery] = useState("");
@@ -993,10 +1035,12 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
           </div>
           <div className="mt-1.5 flex items-center justify-between gap-2 px-1">
             <p className="min-w-0 truncate text-xs text-zinc-500">
-              {filtered.length.toLocaleString()} facilities
-              {userLocation && radiusMiles != null ? ` within ${radiusMiles} mi` : ""}
-              {boundary ? ` in ${boundary.label}` : ""}
-              {outsideCA ? " · outside CA" : ""}
+              {dataLoading
+                ? "Loading facilities…"
+                : `${filtered.length.toLocaleString()} facilities` +
+                  (userLocation && radiusMiles != null ? ` within ${radiusMiles} mi` : "") +
+                  (boundary ? ` in ${boundary.label}` : "") +
+                  (outsideCA ? " · outside CA" : "")}
             </p>
             <div className="flex shrink-0 items-center gap-1">
               {(
@@ -1102,11 +1146,13 @@ export function SearchMap({ facilities }: { facilities: FacilityGeo[] }) {
         >
           {visibleList.length === 0 && (
             <li className="col-span-2 p-4 text-sm text-zinc-500">
-              {q
-                ? "No matches in view. Press Enter to search this address or city."
-                : boundary
-                  ? `No facilities match your filters in ${boundary.label}.`
-                  : "Pan or zoom the map to see facilities here."}
+              {dataLoading
+                ? "Loading facilities…"
+                : q
+                  ? "No matches in view. Press Enter to search this address or city."
+                  : boundary
+                    ? `No facilities match your filters in ${boundary.label}.`
+                    : "Pan or zoom the map to see facilities here."}
             </li>
           )}
           {visibleList.map(({ facility: f, distance }) =>
