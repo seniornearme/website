@@ -31,6 +31,12 @@ export default async function AccountPage() {
     .order("created_at", { ascending: false })
     .returns<Claim[]>();
 
+  const { data: owned } = await supabase
+    .from("facilities")
+    .select("id, name, city")
+    .eq("owner_id", user.id)
+    .order("name");
+
   return (
     <main className="mx-auto w-full max-w-2xl flex-1 px-6 py-12">
       <div className="flex items-start justify-between gap-4">
@@ -47,6 +53,30 @@ export default async function AccountPage() {
           </button>
         </form>
       </div>
+
+      {(owned?.length ?? 0) > 0 && (
+        <section className="mt-10">
+          <h2 className="text-lg font-semibold">Your facilities</h2>
+          <ul className="mt-4 divide-y divide-zinc-100 rounded-xl border border-zinc-200 dark:divide-zinc-800 dark:border-zinc-800">
+            {owned!.map((f) => (
+              <li key={f.id} className="flex items-center justify-between gap-3 px-4 py-3">
+                <div className="min-w-0">
+                  <span className="font-medium">{titleCase(f.name)}</span>
+                  {f.city && (
+                    <span className="ml-2 text-sm text-zinc-500">{titleCase(f.city)}, CA</span>
+                  )}
+                </div>
+                <Link
+                  href={`/account/facilities/${f.id}`}
+                  className="shrink-0 rounded-lg bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700"
+                >
+                  Manage
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className="mt-10">
         <div className="flex items-center justify-between">
