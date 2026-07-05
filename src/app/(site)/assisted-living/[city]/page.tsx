@@ -63,6 +63,7 @@ export default async function CityPage({
       "id, name, slug, street_address, capacity, facility_type, cdss_num_complaints, facility_photos(url, thumb_url, position)",
     )
     .eq("status", "active")
+    .neq("facility_type", "arf")
     .eq("city", stat.city)
     .order("name")
     .range(from, from + PER_PAGE - 1);

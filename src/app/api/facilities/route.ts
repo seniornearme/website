@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
 // Compact facility dataset for the map: array-of-arrays instead of objects,
-// active facilities only. Served cached (per-deployment + CDN) so the /search
+// active facilities only. RCFE-only: facilities_search excludes ARFs (adult
+// residential facilities are out of scope for a senior-care directory).
+// Served cached (per-deployment + CDN) so the /search
 // page itself stays tiny — phones fetch and JSON.parse this instead of
 // hydrating a multi-MB RSC payload. Counties are indexed against a lookup
 // array to keep rows small. Closed facilities live at /api/facilities/closed.

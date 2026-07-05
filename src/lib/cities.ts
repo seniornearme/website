@@ -44,6 +44,7 @@ export async function fetchAllFacilitySlugs(): Promise<{ slug: string; updated_a
       .from("facilities")
       .select("slug, updated_at")
       .eq("status", "active")
+      .neq("facility_type", "arf")
       .order("id")
       .range(from, from + PAGE - 1);
     if (error) throw error;

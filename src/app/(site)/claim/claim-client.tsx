@@ -48,6 +48,7 @@ export function ClaimClient({
         .select("id, name, slug, city, street_address, license_number, owner_id")
         .or(`name.ilike.%${q}%,license_number.eq.${/^\d+$/.test(q) ? q : "0"}`)
         .eq("status", "active")
+        .neq("facility_type", "arf")
         .limit(8);
       setResults((data as ClaimFacility[] | null) ?? []);
     }, 250);

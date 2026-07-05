@@ -44,7 +44,6 @@ function parseRows(rows: ApiRow[], counties: string[]): FacilityGeo[] {
   );
 }
 
-type TypeFilter = "all" | "rcfe" | "arf";
 type BedsFilter = "any" | "small" | "medium" | "large";
 type LngLat = { lng: number; lat: number };
 
@@ -211,6 +210,7 @@ export function SearchMap() {
   const mapRef = useRef<MapLibreMap | null>(null);
   const [mapReady, setMapReady] = useState(false);
   const [facilities, setFacilities] = useState<FacilityGeo[]>([]);
+  // (type filter removed — the site is RCFE-only)
   const [closedFacilities, setClosedFacilities] = useState<FacilityGeo[] | null>(null);
   const [dataLoading, setDataLoading] = useState(true);
   const [countyFilter, setCountyFilter] = useState("all");
@@ -262,7 +262,6 @@ export function SearchMap() {
     () => [...new Set(facilities.map((f) => f.county).filter(Boolean) as string[])].sort(),
     [facilities],
   );
-  const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
   const [bedsFilter, setBedsFilter] = useState<BedsFilter>("any");
   const [query, setQuery] = useState("");
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -289,8 +288,6 @@ export function SearchMap() {
   // the map).
   const filtered = useMemo(() => {
     let r = allFacilities;
-    if (typeFilter !== "all")
-      r = r.filter((f) => f.facility_type === typeFilter);
     if (bedsFilter !== "any") r = r.filter((f) => bedsMatch(f.capacity, bedsFilter));
     if (countyFilter !== "all") r = r.filter((f) => f.county === countyFilter);
     if (userLocation && radiusMiles != null) {
@@ -302,7 +299,7 @@ export function SearchMap() {
     }
     if (boundary) r = r.filter((f) => pointInBoundary(f.lng, f.lat, boundary));
     return r;
-  }, [allFacilities, typeFilter, bedsFilter, countyFilter, userLocation, radiusMiles, boundary]);
+  }, [allFacilities, bedsFilter, countyFilter, userLocation, radiusMiles, boundary]);
 
   const filteredById = useMemo(() => {
     const map = new Map<string, FacilityGeo>();
@@ -481,6 +478,7 @@ export function SearchMap() {
           .from("facilities")
           .select("id, name, slug, city, street_address")
           .eq("status", "active")
+          .neq("facility_type", "arf")
           .or(orParts.join(","))
           .order("name")
           .limit(zipish ? 8 : 6),
@@ -861,8 +859,9 @@ export function SearchMap() {
 
   const outsideCA = userLocation ? isOutsideCalifornia(userLocation) : false;
   const activeFilterCount =
-    (typeFilter !== "all" ? 1 : 0) +
     (bedsFilter !== "any" ? 1 : 0) +
+    (countyFilter !== "all" ? 1 : 0) +
+    (includeClosed ? 1 : 0) +
     (radiusMiles != null ? 1 : 0);
   const selectedFacility = selectedId
     ? (facilitiesById.get(selectedId) ?? null)
@@ -1038,16 +1037,6 @@ export function SearchMap() {
           <div
             className={`${filtersOpen ? "flex" : "hidden"} mt-2 flex-wrap gap-2 md:flex`}
           >
-            <select
-              className={chipClass}
-              value={typeFilter}
-              onChange={(e) => setTypeFilter(e.target.value as TypeFilter)}
-              aria-label="Facility type"
-            >
-              <option value="all">All types</option>
-              <option value="rcfe">RCFE</option>
-              <option value="arf">ARF</option>
-            </select>
             <select
               className={chipClass}
               value={bedsFilter}

@@ -152,7 +152,7 @@ export default async function FacilityPage({
 }) {
   const { slug } = await params;
   const f = await getFacility(slug);
-  if (!f) notFound();
+  if (!f || f.facility_type === "arf") notFound(); // ARFs are out of scope
 
   const photos = await getPhotos(f.id);
   const amenities = f.amenities ?? [];

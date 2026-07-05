@@ -36,8 +36,8 @@ export default function Home() {
         </p>
         <div className="mt-14 grid gap-6 border-t border-zinc-100 pt-8 text-sm text-zinc-600 sm:grid-cols-3 dark:border-zinc-800 dark:text-zinc-400">
           <div>
-            <div className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">15,000+</div>
-            licensed facilities, from 4-bed care homes to large communities
+            <div className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">7,900+</div>
+            licensed assisted living facilities, from 6-bed care homes to large communities
           </div>
           <div>
             <div className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">Official records</div>

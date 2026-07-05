@@ -55,6 +55,7 @@ export function FacilitySearch() {
           .from("facilities")
           .select("slug, name, city, capacity")
           .eq("status", "active")
+          .neq("facility_type", "arf")
           .or(orParts.join(","))
           .order("name")
           .limit(12),
