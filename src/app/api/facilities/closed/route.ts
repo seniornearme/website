@@ -1,19 +1,17 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-// Compact facility dataset for the map: array-of-arrays instead of objects,
-// active facilities only. Served cached (per-deployment + CDN) so the /search
-// page itself stays tiny — phones fetch and JSON.parse this instead of
-// hydrating a multi-MB RSC payload. Counties are indexed against a lookup
-// array to keep rows small. Closed facilities live at /api/facilities/closed.
+// Non-active facilities (closed/suspended/pending), fetched lazily only when
+// the map's "include closed" toggle is on. Same compact shape as the active
+// endpoint plus a status column.
 export const dynamic = "force-static";
 export const revalidate = 3600;
 
 const PAGE = 1000;
 
-// [id, name, slug, facility_type, city, capacity, lng, lat, photo, countyIdx]
-export type FacilityRow = [
-  string, string, string, string, string | null, number | null, number, number, string | null, number,
+// [id, name, slug, facility_type, city, capacity, lng, lat, photo, countyIdx, status]
+export type ClosedRow = [
+  string, string, string, string, string | null, number | null, number, number, string | null, number, string,
 ];
 
 export async function GET() {
@@ -34,12 +32,12 @@ export async function GET() {
     return countyIdx.get(key)!;
   };
 
-  const rows: FacilityRow[] = [];
+  const rows: ClosedRow[] = [];
   for (let from = 0; ; from += PAGE) {
     const { data, error } = await supabase
       .from("facilities_search")
-      .select("id,name,slug,facility_type,city,county,capacity,lng,lat,photo")
-      .eq("status", "active")
+      .select("id,name,slug,facility_type,status,city,county,capacity,lng,lat,photo")
+      .neq("status", "active")
       .order("id")
       .range(from, from + PAGE - 1);
     if (error) {
@@ -58,6 +56,7 @@ export async function GET() {
         Math.round(f.lat * 1e5) / 1e5,
         f.photo,
         idxFor(f.county),
+        f.status,
       ]);
     }
     if (data.length < PAGE) break;

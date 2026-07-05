@@ -21,25 +21,27 @@ export type FacilityGeo = {
   photo: string | null;
 };
 
-// Compact row shape from /api/facilities (active-only, so status is implied).
+// Compact row shapes from /api/facilities (+ /closed adds a status column).
 type ApiRow = [
-  string, string, string, string, string | null, number | null, number, number, string | null,
+  string, string, string, string, string | null, number | null, number, number, string | null, number, string?,
 ];
 
-function parseRows(rows: ApiRow[]): FacilityGeo[] {
-  return rows.map(([id, name, slug, facility_type, city, capacity, lng, lat, photo]) => ({
-    id,
-    name,
-    slug,
-    facility_type: facility_type as FacilityGeo["facility_type"],
-    status: "active",
-    city,
-    county: null,
-    capacity,
-    lng,
-    lat,
-    photo,
-  }));
+function parseRows(rows: ApiRow[], counties: string[]): FacilityGeo[] {
+  return rows.map(
+    ([id, name, slug, facility_type, city, capacity, lng, lat, photo, countyIdx, status]) => ({
+      id,
+      name,
+      slug,
+      facility_type: facility_type as FacilityGeo["facility_type"],
+      status: status ?? "active",
+      city,
+      county: counties[countyIdx] || null,
+      capacity,
+      lng,
+      lat,
+      photo,
+    }),
+  );
 }
 
 type TypeFilter = "all" | "rcfe" | "arf";
@@ -101,6 +103,7 @@ const MARKER_COLORS: Record<string, string> = {
   rcfe: "#2563eb",
   arf: "#059669",
   other: "#6b7280",
+  closed: "#9ca3af",
 };
 
 function isOutsideCalifornia(loc: LngLat): boolean {
@@ -208,7 +211,10 @@ export function SearchMap() {
   const mapRef = useRef<MapLibreMap | null>(null);
   const [mapReady, setMapReady] = useState(false);
   const [facilities, setFacilities] = useState<FacilityGeo[]>([]);
+  const [closedFacilities, setClosedFacilities] = useState<FacilityGeo[] | null>(null);
   const [dataLoading, setDataLoading] = useState(true);
+  const [countyFilter, setCountyFilter] = useState("all");
+  const [includeClosed, setIncludeClosed] = useState(false);
 
   // Load the compact facility dataset (cached at the CDN + by the browser).
   useEffect(() => {
@@ -216,8 +222,8 @@ export function SearchMap() {
     (async () => {
       try {
         const res = await fetch("/api/facilities");
-        const data = (await res.json()) as { rows?: ApiRow[] };
-        if (active && data.rows) setFacilities(parseRows(data.rows));
+        const data = (await res.json()) as { counties?: string[]; rows?: ApiRow[] };
+        if (active && data.rows) setFacilities(parseRows(data.rows, data.counties ?? []));
       } catch {
         /* keep empty; user can reload */
       } finally {
@@ -228,6 +234,34 @@ export function SearchMap() {
       active = false;
     };
   }, []);
+
+  // Closed facilities load lazily, once, when the toggle first turns on.
+  useEffect(() => {
+    if (!includeClosed || closedFacilities !== null) return;
+    let active = true;
+    (async () => {
+      try {
+        const res = await fetch("/api/facilities/closed");
+        const data = (await res.json()) as { counties?: string[]; rows?: ApiRow[] };
+        if (active) setClosedFacilities(data.rows ? parseRows(data.rows, data.counties ?? []) : []);
+      } catch {
+        if (active) setClosedFacilities([]);
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [includeClosed, closedFacilities]);
+
+  const allFacilities = useMemo(
+    () => (includeClosed && closedFacilities ? [...facilities, ...closedFacilities] : facilities),
+    [facilities, closedFacilities, includeClosed],
+  );
+
+  const counties = useMemo(
+    () => [...new Set(facilities.map((f) => f.county).filter(Boolean) as string[])].sort(),
+    [facilities],
+  );
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
   const [bedsFilter, setBedsFilter] = useState<BedsFilter>("any");
   const [query, setQuery] = useState("");
@@ -250,13 +284,15 @@ export function SearchMap() {
   const latestQuery = useRef("");
   const searchParams = useSearchParams();
 
-  // Map pins reflect type + beds + radius + active boundary (not the text
-  // query, which only narrows the list so an address query never blanks the map).
+  // Map pins reflect type + beds + county + radius + active boundary (not the
+  // text query, which only narrows the list so an address query never blanks
+  // the map).
   const filtered = useMemo(() => {
-    let r = facilities;
+    let r = allFacilities;
     if (typeFilter !== "all")
       r = r.filter((f) => f.facility_type === typeFilter);
     if (bedsFilter !== "any") r = r.filter((f) => bedsMatch(f.capacity, bedsFilter));
+    if (countyFilter !== "all") r = r.filter((f) => f.county === countyFilter);
     if (userLocation && radiusMiles != null) {
       r = r.filter(
         (f) =>
@@ -266,7 +302,7 @@ export function SearchMap() {
     }
     if (boundary) r = r.filter((f) => pointInBoundary(f.lng, f.lat, boundary));
     return r;
-  }, [facilities, typeFilter, bedsFilter, userLocation, radiusMiles, boundary]);
+  }, [allFacilities, typeFilter, bedsFilter, countyFilter, userLocation, radiusMiles, boundary]);
 
   const filteredById = useMemo(() => {
     const map = new Map<string, FacilityGeo>();
@@ -276,9 +312,9 @@ export function SearchMap() {
 
   const facilitiesById = useMemo(() => {
     const map = new Map<string, FacilityGeo>();
-    for (const f of facilities) map.set(f.id, f);
+    for (const f of allFacilities) map.set(f.id, f);
     return map;
-  }, [facilities]);
+  }, [allFacilities]);
 
   const geojson = useMemo(
     () => ({
@@ -295,6 +331,7 @@ export function SearchMap() {
           capacity: f.capacity ?? 0,
           slug: f.slug,
           photo: f.photo ?? "",
+          status: f.status,
         },
       })),
     }),
@@ -638,13 +675,18 @@ export function SearchMap() {
         filter: ["!", ["has", "point_count"]],
         layout: {
           "icon-image": [
-            "match",
-            ["get", "facility_type"],
-            "rcfe",
-            "marker-rcfe",
-            "arf",
-            "marker-arf",
-            "marker-other",
+            "case",
+            ["!=", ["get", "status"], "active"],
+            "marker-closed",
+            [
+              "match",
+              ["get", "facility_type"],
+              "rcfe",
+              "marker-rcfe",
+              "arf",
+              "marker-arf",
+              "marker-other",
+            ],
           ],
           "icon-size": 0.85,
           "icon-anchor": "bottom",
@@ -994,7 +1036,7 @@ export function SearchMap() {
             </button>
           </div>
           <div
-            className={`${filtersOpen ? "flex" : "hidden"} mt-2 gap-2 md:flex`}
+            className={`${filtersOpen ? "flex" : "hidden"} mt-2 flex-wrap gap-2 md:flex`}
           >
             <select
               className={chipClass}
@@ -1017,6 +1059,19 @@ export function SearchMap() {
               <option value="medium">7–15</option>
               <option value="large">16+</option>
             </select>
+            <select
+              className={chipClass}
+              value={countyFilter}
+              onChange={(e) => setCountyFilter(e.target.value)}
+              aria-label="County"
+            >
+              <option value="all">All counties</option>
+              {counties.map((c) => (
+                <option key={c} value={c}>
+                  {titleCase(c)}
+                </option>
+              ))}
+            </select>
             {userLocation && (
               <select
                 className={chipClass}
@@ -1032,6 +1087,15 @@ export function SearchMap() {
                 ))}
               </select>
             )}
+            <label className="flex min-w-0 flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-full border border-zinc-300 bg-white px-3 py-1.5 text-sm whitespace-nowrap dark:border-zinc-700 dark:bg-zinc-800">
+              <input
+                type="checkbox"
+                checked={includeClosed}
+                onChange={(e) => setIncludeClosed(e.target.checked)}
+                className="accent-blue-600"
+              />
+              Closed too
+            </label>
           </div>
           <div className="mt-1.5 flex items-center justify-between gap-2 px-1">
             <p className="min-w-0 truncate text-xs text-zinc-500">
@@ -1222,6 +1286,11 @@ export function SearchMap() {
                         .filter(Boolean)
                         .join(" · ")}
                       {f.capacity ? ` · ${f.capacity} beds` : ""}
+                      {f.status !== "active" && (
+                        <span className="ml-1.5 rounded bg-zinc-200 px-1.5 py-0.5 text-[10px] font-medium uppercase text-zinc-600 dark:bg-zinc-700 dark:text-zinc-300">
+                          {f.status}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </button>

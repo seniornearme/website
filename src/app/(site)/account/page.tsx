@@ -37,6 +37,12 @@ export default async function AccountPage() {
     .eq("owner_id", user.id)
     .order("name");
 
+  const { data: saved } = await supabase
+    .from("saved_facilities")
+    .select("facility_id, facilities(name, slug, city)")
+    .order("created_at", { ascending: false })
+    .returns<{ facility_id: string; facilities: { name: string; slug: string; city: string | null } | null }[]>();
+
   return (
     <main className="mx-auto w-full max-w-2xl flex-1 px-6 py-12">
       <div className="flex items-start justify-between gap-4">
@@ -74,6 +80,32 @@ export default async function AccountPage() {
                 </Link>
               </li>
             ))}
+          </ul>
+        </section>
+      )}
+
+      {(saved?.length ?? 0) > 0 && (
+        <section className="mt-10">
+          <h2 className="text-lg font-semibold">Saved facilities</h2>
+          <ul className="mt-4 divide-y divide-zinc-100 rounded-xl border border-zinc-200 dark:divide-zinc-800 dark:border-zinc-800">
+            {saved!.map(
+              (s) =>
+                s.facilities && (
+                  <li key={s.facility_id} className="px-4 py-3">
+                    <Link
+                      href={`/facilities/${s.facilities.slug}`}
+                      className="font-medium text-blue-600 hover:underline"
+                    >
+                      {titleCase(s.facilities.name)}
+                    </Link>
+                    {s.facilities.city && (
+                      <span className="ml-2 text-sm text-zinc-500">
+                        {titleCase(s.facilities.city)}, CA
+                      </span>
+                    )}
+                  </li>
+                ),
+            )}
           </ul>
         </section>
       )}

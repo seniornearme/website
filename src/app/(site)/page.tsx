@@ -34,6 +34,20 @@ export default function Home() {
           </Link>
           .
         </p>
+        <div className="mt-14 grid gap-6 border-t border-zinc-100 pt-8 text-sm text-zinc-600 sm:grid-cols-3 dark:border-zinc-800 dark:text-zinc-400">
+          <div>
+            <div className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">15,000+</div>
+            licensed facilities, from 4-bed care homes to large communities
+          </div>
+          <div>
+            <div className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">Official records</div>
+            state inspection and complaint history on every listing
+          </div>
+          <div>
+            <div className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">Free</div>
+            for families — no fees, no referral pressure, no selling your info
+          </div>
+        </div>
       </div>
     </main>
   );

@@ -6,6 +6,8 @@ import { titleCase, fmtDate, typeLabel, normalizeWebsite } from "@/lib/format";
 import { getGoogleReviews } from "@/lib/google-reviews";
 import { slugifyCity } from "@/lib/cities";
 import { PhotoGallery } from "./photo-gallery";
+import { InquiryForm } from "./inquiry-form";
+import { SaveButton } from "./save-button";
 
 async function supabaseGeo(facilityId: string) {
   const supabase = await createClient();
@@ -14,6 +16,44 @@ async function supabaseGeo(facilityId: string) {
     .select("lat,lng")
     .eq("id", facilityId)
     .single<{ lat: number; lng: number }>();
+}
+
+type Nearby = {
+  id: string;
+  name: string;
+  slug: string;
+  city: string | null;
+  capacity: number | null;
+  lat: number;
+  lng: number;
+  photo: string | null;
+  miles: number;
+};
+
+// Active facilities within a small box around the point, nearest first.
+async function getNearby(facilityId: string, lat: number, lng: number): Promise<Nearby[]> {
+  const supabase = await createClient();
+  const d = 0.05; // ~3.5 miles
+  const { data } = await supabase
+    .from("facilities_search")
+    .select("id,name,slug,city,capacity,lat,lng,photo")
+    .eq("status", "active")
+    .neq("id", facilityId)
+    .gte("lat", lat - d)
+    .lte("lat", lat + d)
+    .gte("lng", lng - d)
+    .lte("lng", lng + d)
+    .limit(60);
+  const toRad = (x: number) => (x * Math.PI) / 180;
+  return ((data as Omit<Nearby, "miles">[] | null) ?? [])
+    .map((f) => {
+      const h =
+        Math.sin(toRad(f.lat - lat) / 2) ** 2 +
+        Math.cos(toRad(lat)) * Math.cos(toRad(f.lat)) * Math.sin(toRad(f.lng - lng) / 2) ** 2;
+      return { ...f, miles: 2 * 3958.8 * Math.asin(Math.sqrt(h)) };
+    })
+    .sort((a, b) => a.miles - b.miles)
+    .slice(0, 6);
 }
 
 type Photo = { url: string; thumb_url: string | null; label: string | null };
@@ -126,8 +166,23 @@ export default async function FacilityPage({
   const reviews = f.google_place_id ? await getGoogleReviews(f.google_place_id) : null;
   const citations = (f.cdss_citations_type_a ?? 0) + (f.cdss_citations_type_b ?? 0);
 
+  // saved state for the signed-in user (anon -> just a sign-in prompt on click)
+  const supabaseUser = await createClient();
+  const { data: { user } } = await supabaseUser.auth.getUser();
+  let initialSaved = false;
+  if (user) {
+    const { data: savedRow } = await supabaseUser
+      .from("saved_facilities")
+      .select("facility_id")
+      .eq("consumer_id", user.id)
+      .eq("facility_id", f.id)
+      .maybeSingle();
+    initialSaved = !!savedRow;
+  }
+
   // geo for structured data (PostGIS point exposed by the search view)
   const { data: geo } = await supabaseGeo(f.id);
+  const nearby = geo ? await getNearby(f.id, geo.lat, geo.lng) : [];
   const base = process.env.NEXT_PUBLIC_APP_URL ?? "https://seniornearme.com";
   const citySlug = f.city ? slugifyCity(f.city) : null;
   const jsonLd = {
@@ -169,7 +224,7 @@ export default async function FacilityPage({
   };
 
   return (
-    <main className="mx-auto max-w-4xl px-4 pb-16 pt-4">
+    <main className="mx-auto w-full max-w-4xl px-4 pb-16 pt-4">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -259,6 +314,12 @@ export default async function FacilityPage({
         >
           Directions
         </a>
+        <SaveButton
+          facilityId={f.id}
+          slug={f.slug}
+          userId={user?.id ?? null}
+          initialSaved={initialSaved}
+        />
       </div>
 
       <div className="mt-6 grid gap-6 md:grid-cols-3">
@@ -322,6 +383,7 @@ export default async function FacilityPage({
 
         {/* Sidebar */}
         <aside className="space-y-6">
+          <InquiryForm facilityId={f.id} facilityName={titleCase(f.name)} />
           <section className="rounded-xl border border-zinc-200 p-4 dark:border-zinc-800">
             <h2 className="mb-3 text-sm font-semibold">Facility details</h2>
             <dl className="space-y-2 text-sm">
@@ -377,6 +439,44 @@ export default async function FacilityPage({
           </Link>
         </aside>
       </div>
+
+      {/* Nearby facilities */}
+      {nearby.length > 0 && (
+        <section className="mt-12">
+          <h2 className="mb-3 text-lg font-semibold">
+            Nearby facilities
+            {f.city ? ` in and around ${titleCase(f.city)}` : ""}
+          </h2>
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {nearby.map((n) => (
+              <li key={n.id} className="min-w-0">
+                <Link
+                  href={`/facilities/${n.slug}`}
+                  className="block overflow-hidden rounded-xl border border-zinc-200 transition-shadow hover:shadow-md dark:border-zinc-800"
+                >
+                  {n.photo ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={n.photo} alt={titleCase(n.name)} loading="lazy" className="h-28 w-full object-cover" />
+                  ) : (
+                    <div className="flex h-28 w-full items-center justify-center bg-gradient-to-br from-blue-500 to-blue-700 text-white/90">
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                        <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </div>
+                  )}
+                  <div className="p-3">
+                    <div className="truncate text-sm font-medium">{titleCase(n.name)}</div>
+                    <div className="mt-0.5 truncate text-xs text-zinc-500">
+                      {n.miles < 0.1 ? "Same block" : `${n.miles.toFixed(1)} mi away`}
+                      {n.capacity ? ` · ${n.capacity} beds` : ""}
+                    </div>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </main>
   );
 }
