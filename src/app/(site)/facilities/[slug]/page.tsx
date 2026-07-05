@@ -74,6 +74,7 @@ type Facility = {
   administrator: string | null;
   licensee: string | null;
   license_number: string | null;
+  license_issue_date: string | null;
   description: string | null;
   amenities: string[] | null;
   google_place_id: string | null;
@@ -87,12 +88,29 @@ type Facility = {
 };
 
 const SELECT =
-  "id,name,slug,facility_type,status,street_address,city,zip,phone,email,website,capacity,administrator,licensee,license_number,description,amenities,google_place_id,cdss_last_visit_date,cdss_num_visits,cdss_num_complaints,cdss_citations_type_a,cdss_citations_type_b,cdss_substantiated_allegations,cdss_synced_at";
+  "id,name,slug,facility_type,status,street_address,city,zip,phone,email,website,capacity,administrator,licensee,license_number,license_issue_date,description,amenities,google_place_id,cdss_last_visit_date,cdss_num_visits,cdss_num_complaints,cdss_citations_type_a,cdss_citations_type_b,cdss_substantiated_allegations,cdss_synced_at";
 
 async function getFacility(slug: string): Promise<Facility | null> {
   const supabase = await createClient();
   const { data } = await supabase.from("facilities").select(SELECT).eq("slug", slug).single();
   return (data as Facility | null) ?? null;
+}
+
+type Report = {
+  report_date: string | null;
+  report_title: string | null;
+  report_type: string | null;
+};
+
+async function getReports(facilityId: string): Promise<Report[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("facility_reports")
+    .select("report_date, report_title, report_type")
+    .eq("facility_id", facilityId)
+    .order("report_date", { ascending: false, nullsFirst: false })
+    .limit(8);
+  return (data as Report[] | null) ?? [];
 }
 
 // RLS returns only `visible` rows for anonymous readers; owners see all of
@@ -183,6 +201,13 @@ export default async function FacilityPage({
   // geo for structured data (PostGIS point exposed by the search view)
   const { data: geo } = await supabaseGeo(f.id);
   const nearby = geo ? await getNearby(f.id, geo.lat, geo.lng) : [];
+  const reports = f.cdss_synced_at ? await getReports(f.id) : [];
+
+  const licensedYears = f.license_issue_date
+    ? Math.floor(
+        (Date.now() - new Date(f.license_issue_date).getTime()) / (365.25 * 24 * 3600 * 1000),
+      )
+    : null;
   const base = process.env.NEXT_PUBLIC_APP_URL ?? "https://seniornearme.com";
   const citySlug = f.city ? slugifyCity(f.city) : null;
   const jsonLd = {
@@ -396,6 +421,14 @@ export default async function FacilityPage({
                 </Row>
               )}
               {f.license_number && <Row label="License #">{f.license_number}</Row>}
+              {f.license_issue_date && (
+                <Row label="Licensed since">
+                  {fmtDate(f.license_issue_date)}
+                  {licensedYears != null && licensedYears >= 1
+                    ? ` (${licensedYears} ${licensedYears === 1 ? "year" : "years"})`
+                    : ""}
+                </Row>
+              )}
               {f.administrator && <Row label="Administrator">{titleCase(f.administrator)}</Row>}
               {f.licensee && <Row label="Licensee">{titleCase(f.licensee)}</Row>}
             </dl>
@@ -423,6 +456,37 @@ export default async function FacilityPage({
                   <span className="font-medium">{f.cdss_citations_type_a ?? 0} Type A</span> ·{" "}
                   {f.cdss_citations_type_b ?? 0} Type B citations
                 </div>
+              )}
+
+              {reports.length > 0 && (
+                <div className="mt-4 border-t border-zinc-100 pt-3 dark:border-zinc-800">
+                  <h3 className="text-xs font-semibold uppercase tracking-wide text-zinc-400">
+                    Visit history
+                  </h3>
+                  <ul className="mt-2 space-y-1.5 text-xs">
+                    {reports.map((r, i) => (
+                      <li key={i} className="flex items-baseline justify-between gap-2">
+                        <span className="text-zinc-600 dark:text-zinc-400">
+                          {r.report_title || r.report_type || "Visit"}
+                        </span>
+                        <span className="shrink-0 text-zinc-400">
+                          {fmtDate(r.report_date) ?? "—"}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {f.license_number && (
+                <a
+                  href={`https://www.ccld.dss.ca.gov/carefacilitysearch/FacDetail/${f.license_number}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-block text-xs font-medium text-blue-600 hover:underline"
+                >
+                  View the official state record →
+                </a>
               )}
               <p className="mt-2 text-[11px] leading-snug text-zinc-400">
                 Inspection and complaint history from the California Dept. of Social Services,
