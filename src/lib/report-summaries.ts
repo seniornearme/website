@@ -35,6 +35,26 @@ function htmlToLines(html: string): string[] {
 
 const LABEL = /^[A-Z][A-Z /()'&-]{3,}:?$/; // form field labels like "MET WITH:"
 
+function firstSentence(body: string[]): string | null {
+  const text = body.join(" ").replace(/\s+/g, " ").trim();
+  if (!text) return null;
+  const first = text.split(/(?<=[.!?])\s+/)[0] ?? "";
+  return first.length > 240 ? `${first.slice(0, 237)}…` : first;
+}
+
+// Body lines following a section header, skipping the line-number gutter.
+function sectionBody(lines: string[], start: number, stop: RegExp): string[] {
+  const body: string[] = [];
+  for (let i = start; i < lines.length; i++) {
+    const l = lines[i];
+    if (/^\d{1,3}$/.test(l)) continue; // gutter numbers
+    if (stop.test(l)) break;
+    body.push(l);
+    if (body.join(" ").length > 1200) break;
+  }
+  return body;
+}
+
 function extract(html: string): { visitType: string | null; summary: string | null } {
   const lines = htmlToLines(html);
 
@@ -55,18 +75,22 @@ function extract(html: string): { visitType: string | null; summary: string | nu
   let summary: string | null = null;
   const nIdx = lines.findIndex((l) => /^NARRATIVE$/i.test(l));
   if (nIdx >= 0) {
-    const body: string[] = [];
-    for (let i = nIdx + 1; i < lines.length; i++) {
-      const l = lines[i];
-      if (/^\d{1,3}$/.test(l)) continue; // gutter numbers
-      if (/^(NAME OF LICENSING|SUPERVISOR'S NAME|LICENSING PROGRAM ANALYST SIGNATURE|ESTIMATED DAYS)/i.test(l)) break;
-      body.push(l);
-      if (body.join(" ").length > 1200) break;
-    }
-    const text = body.join(" ").replace(/\s+/g, " ").trim();
-    if (text) {
-      const first = text.split(/(?<=[.!?])\s+/)[0] ?? "";
-      summary = first.length > 240 ? `${first.slice(0, 237)}…` : first;
+    summary = firstSentence(sectionBody(
+      lines,
+      nIdx + 1,
+      /^(NAME OF LICENSING|SUPERVISOR'S NAME|LICENSING PROGRAM ANALYST SIGNATURE|ESTIMATED DAYS)/i,
+    ));
+  }
+
+  // Complaint-investigation form: no TYPE OF VISIT / NARRATIVE fields. The
+  // header carries the disposition and ALLEGATION(S) states the reason for
+  // the visit.
+  if (!visitType && !summary && lines.some((l) => /^COMPLAINT INVESTIGATION REPORT$/i.test(l))) {
+    const disp = lines.slice(0, 30).find((l) => /^(Substantiated|Unsubstantiated|Inconclusive)$/i.test(l));
+    visitType = disp ? `Complaint Investigation (${disp})` : "Complaint Investigation";
+    const aIdx = lines.findIndex((l) => /^ALLEGATION\(?S\)?:?$/i.test(l));
+    if (aIdx >= 0) {
+      summary = firstSentence(sectionBody(lines, aIdx + 1, /^INVESTIGATION FINDINGS/i));
     }
   }
 
