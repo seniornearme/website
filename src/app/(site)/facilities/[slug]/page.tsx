@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { titleCase, fmtDate, typeLabel, normalizeWebsite } from "@/lib/format";
 import { getGoogleReviews } from "@/lib/google-reviews";
 import { slugifyCity } from "@/lib/cities";
+import { scoreTier } from "@/lib/inspection";
 import { PhotoGallery } from "./photo-gallery";
 import { InquiryForm } from "./inquiry-form";
 import { SaveButton } from "./save-button";
@@ -85,10 +86,11 @@ type Facility = {
   cdss_citations_type_b: number | null;
   cdss_substantiated_allegations: number | null;
   cdss_synced_at: string | null;
+  inspection_score: number | null;
 };
 
 const SELECT =
-  "id,name,slug,facility_type,status,street_address,city,zip,phone,email,website,capacity,administrator,licensee,license_number,license_issue_date,description,amenities,google_place_id,cdss_last_visit_date,cdss_num_visits,cdss_num_complaints,cdss_citations_type_a,cdss_citations_type_b,cdss_substantiated_allegations,cdss_synced_at";
+  "id,name,slug,facility_type,status,street_address,city,zip,phone,email,website,capacity,administrator,licensee,license_number,license_issue_date,description,amenities,google_place_id,cdss_last_visit_date,cdss_num_visits,cdss_num_complaints,cdss_citations_type_a,cdss_citations_type_b,cdss_substantiated_allegations,cdss_synced_at,inspection_score";
 
 async function getFacility(slug: string): Promise<Facility | null> {
   const supabase = await createClient();
@@ -441,6 +443,24 @@ export default async function FacilityPage({
                 <h2 className="text-sm font-semibold">State inspection record</h2>
                 <span className="text-[10px] uppercase tracking-wide text-zinc-400">CA CDSS</span>
               </div>
+              {f.inspection_score != null && (
+                <div className="mb-3 flex items-center gap-2">
+                  <span className="text-2xl font-semibold">{f.inspection_score}</span>
+                  <div className="min-w-0">
+                    <span
+                      className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${scoreTier(f.inspection_score).chip}`}
+                    >
+                      {scoreTier(f.inspection_score).label}
+                    </span>
+                    <Link
+                      href="/about-our-data#inspection-score"
+                      className="block text-[11px] text-zinc-400 hover:underline"
+                    >
+                      Inspection record score · how it&apos;s calculated
+                    </Link>
+                  </div>
+                </div>
+              )}
               <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                 <Stat label="Last visit" value={fmtDate(f.cdss_last_visit_date) ?? "—"} />
                 <Stat label="Total visits" value={f.cdss_num_visits ?? 0} />

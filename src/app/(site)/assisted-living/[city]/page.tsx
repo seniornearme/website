@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { findCityBySlug, slugifyCity } from "@/lib/cities";
 import { titleCase, typeLabel } from "@/lib/format";
+import { scoreTier } from "@/lib/inspection";
 
 export const revalidate = 86400;
 
@@ -18,6 +19,7 @@ type Row = {
   capacity: number | null;
   facility_type: "rcfe" | "arf" | "other";
   cdss_num_complaints: number | null;
+  inspection_score: number | null;
   facility_photos: { url: string; thumb_url: string | null; position: number }[] | null;
 };
 
@@ -60,7 +62,7 @@ export default async function CityPage({
   const { data } = await supabase
     .from("facilities")
     .select(
-      "id, name, slug, street_address, capacity, facility_type, cdss_num_complaints, facility_photos(url, thumb_url, position)",
+      "id, name, slug, street_address, capacity, facility_type, cdss_num_complaints, inspection_score, facility_photos(url, thumb_url, position)",
     )
     .eq("status", "active")
     .neq("facility_type", "arf")
@@ -133,7 +135,17 @@ export default async function CityPage({
                   </div>
                 )}
                 <div className="p-3">
-                  <div className="truncate font-medium">{titleCase(f.name)}</div>
+                  <div className="flex items-baseline justify-between gap-2">
+                    <div className="truncate font-medium">{titleCase(f.name)}</div>
+                    {f.inspection_score != null && (
+                      <span
+                        className={`shrink-0 rounded-full px-1.5 py-0.5 text-[10px] font-semibold ${scoreTier(f.inspection_score).chip}`}
+                        title={`Inspection record score: ${f.inspection_score}`}
+                      >
+                        {f.inspection_score}
+                      </span>
+                    )}
+                  </div>
                   <div className="mt-0.5 truncate text-sm text-zinc-500">
                     {typeLabel(f.facility_type)}
                     {f.capacity ? ` · ${f.capacity} beds` : ""}

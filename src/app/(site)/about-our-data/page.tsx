@@ -57,6 +57,34 @@ export default function AboutOurDataPage() {
         </p>
       </LegalSection>
 
+      <section id="inspection-score">
+        <h2 className="text-lg font-semibold">The Inspection Record Score</h2>
+        <div className="mt-2 space-y-3 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
+          <p>
+            Each facility&apos;s score (0–100) is simple, disclosed arithmetic over its
+            official CDSS record — nothing subjective, nothing hidden:
+          </p>
+          <p className="rounded-lg bg-zinc-50 px-4 py-3 font-mono text-xs dark:bg-zinc-900">
+            100 − 20 × Type A citations (max 3 counted) − 5 × Type B citations (max 4)
+            − 12 × substantiated allegations (max 4), never below 0
+          </p>
+          <p>
+            Type A citations are the state&apos;s most serious category — violations posing
+            an immediate risk to residents&apos; health, safety, or personal rights — so they
+            weigh the most. <span className="font-medium">Unsubstantiated complaints are
+            never scored</span>: anyone can file a complaint, so only findings the state
+            confirmed count against a facility. Facilities without inspection data yet are
+            unrated rather than penalized.
+          </p>
+          <p>
+            Tiers: 90–100 strong record · 70–89 minor issues · 50–69 mixed record · below
+            50 significant citations. The score reflects a facility&apos;s regulatory record,
+            not a judgment of care quality — always read the underlying reports and visit in
+            person. Data refreshes weekly from CDSS.
+          </p>
+        </div>
+      </section>
+
       <LegalSection heading="Ratings & reviews">
         <p>
           Ratings and reviews shown on facility pages are provided live by Google and are

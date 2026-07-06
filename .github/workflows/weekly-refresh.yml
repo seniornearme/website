@@ -1,0 +1,36 @@
+# Weekly data refresh: live licensing status + CDSS inspection/complaint
+# aggregates for every facility. Inspection Record Scores recompute
+# automatically because they're a SQL function over these columns, and the
+# map's /api/facilities cache re-generates within its hourly revalidate.
+#
+# Runs Mondays 09:00 UTC (~1-2am Pacific); also triggerable manually from the
+# Actions tab (workflow_dispatch).
+name: Weekly data refresh
+
+on:
+  schedule:
+    - cron: "0 9 * * 1"
+  workflow_dispatch:
+
+concurrency:
+  group: weekly-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Refresh licensing status (live CCLD)
+        run: npx tsx scripts/refresh-status.ts
+      - name: Refresh CDSS inspection data (full re-enrich)
+        run: npx tsx scripts/enrich-cdss.ts --force
