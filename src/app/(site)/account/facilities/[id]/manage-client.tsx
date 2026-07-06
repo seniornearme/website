@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { CARE_TAXONOMY, sortCareFeatures } from "@/lib/care-taxonomy";
 
 export function WebsiteConnect({
   facilityId,
@@ -74,6 +75,99 @@ export function WebsiteConnect({
           : "No photos on file yet"}
         {websiteSource ? ` · current website source: ${websiteSource.replace(/_/g, " ")}` : ""}
       </p>
+    </section>
+  );
+}
+
+export function CareFeaturesEditor({
+  facilityId,
+  initial,
+  source,
+}: {
+  facilityId: string;
+  initial: string[];
+  source: string | null;
+}) {
+  const [selected, setSelected] = useState<Set<string>>(() => new Set(initial));
+  const [state, setState] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [error, setError] = useState("");
+
+  function toggle(key: string) {
+    setSelected((s) => {
+      const next = new Set(s);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+    setState("idle");
+  }
+
+  async function save() {
+    setState("saving");
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("facilities")
+      .update({ amenities: sortCareFeatures([...selected]), amenities_source: "owner" })
+      .eq("id", facilityId);
+    if (error) {
+      setError(error.message);
+      setState("error");
+    } else {
+      setState("saved");
+    }
+  }
+
+  return (
+    <section className="rounded-xl border border-zinc-200 p-5 dark:border-zinc-800">
+      <h2 className="font-semibold">Care &amp; amenities</h2>
+      <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+        Check everything your facility offers — this is what visitors see on your listing.
+        {source !== "owner" && initial.length > 0 &&
+          " The current selections were detected from your website; saving replaces them with your choices."}
+      </p>
+
+      <div className="mt-4 space-y-5">
+        {CARE_TAXONOMY.map((g) => (
+          <fieldset key={g.key}>
+            <legend className="mb-2 text-xs font-semibold uppercase tracking-wide text-zinc-400">
+              {g.label}
+            </legend>
+            <div className="grid grid-cols-1 gap-x-4 gap-y-1.5 sm:grid-cols-2">
+              {g.features.map((ft) => (
+                <label
+                  key={ft.key}
+                  className="flex cursor-pointer items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300"
+                >
+                  <input
+                    type="checkbox"
+                    checked={selected.has(ft.key)}
+                    onChange={() => toggle(ft.key)}
+                    className="h-4 w-4 rounded border-zinc-300 accent-blue-600"
+                  />
+                  {ft.label}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        ))}
+      </div>
+
+      <div className="mt-5 flex items-center gap-3">
+        <button
+          type="button"
+          onClick={save}
+          disabled={state === "saving"}
+          className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-60"
+        >
+          {state === "saving" ? "Saving…" : "Save amenities"}
+        </button>
+        {state === "saved" && (
+          <span className="text-sm text-green-700 dark:text-green-400">
+            Saved — your listing is updated.
+          </span>
+        )}
+        {state === "error" && <span className="text-sm text-red-600">{error}</span>}
+      </div>
     </section>
   );
 }

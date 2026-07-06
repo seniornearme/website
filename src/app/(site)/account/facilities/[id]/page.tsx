@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { titleCase } from "@/lib/format";
-import { WebsiteConnect, GoogleConnect } from "./manage-client";
+import { WebsiteConnect, GoogleConnect, CareFeaturesEditor } from "./manage-client";
 
 export const metadata: Metadata = { title: "Manage facility" };
 
@@ -19,7 +19,7 @@ export default async function ManageFacilityPage({
 
   const { data: f } = await supabase
     .from("facilities")
-    .select("id, name, slug, street_address, city, zip, license_number, website, website_source, photos_synced_at, owner_id")
+    .select("id, name, slug, street_address, city, zip, license_number, website, website_source, photos_synced_at, owner_id, amenities, amenities_source")
     .eq("id", id)
     .single();
   if (!f || f.owner_id !== user.id) notFound();
@@ -69,6 +69,11 @@ export default async function ManageFacilityPage({
         <GoogleConnect
           facilityId={f.id}
           connection={connection as { status: string; google_email: string | null; connected_at: string } | null}
+        />
+        <CareFeaturesEditor
+          facilityId={f.id}
+          initial={(f.amenities as string[] | null) ?? []}
+          source={f.amenities_source}
         />
       </div>
     </main>

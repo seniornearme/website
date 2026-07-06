@@ -7,6 +7,7 @@ import { titleCase, fmtDate, typeLabel, normalizeWebsite } from "@/lib/format";
 import { getGoogleReviews } from "@/lib/google-reviews";
 import { slugifyCity } from "@/lib/cities";
 import { scoreTier } from "@/lib/inspection";
+import { groupCareFeatures } from "@/lib/care-taxonomy";
 import { reportUrl, summarizeFacilityReports } from "@/lib/report-summaries";
 import { PhotoGallery } from "./photo-gallery";
 import { InquiryForm } from "./inquiry-form";
@@ -80,6 +81,7 @@ type Facility = {
   license_issue_date: string | null;
   description: string | null;
   amenities: string[] | null;
+  amenities_source: string | null;
   google_place_id: string | null;
   cdss_last_visit_date: string | null;
   cdss_num_visits: number | null;
@@ -93,7 +95,7 @@ type Facility = {
 };
 
 const SELECT =
-  "id,name,slug,facility_type,status,street_address,city,zip,phone,email,website,capacity,administrator,licensee,license_number,license_issue_date,description,amenities,google_place_id,google_connected,cdss_last_visit_date,cdss_num_visits,cdss_num_complaints,cdss_citations_type_a,cdss_citations_type_b,cdss_substantiated_allegations,cdss_synced_at,inspection_score";
+  "id,name,slug,facility_type,status,street_address,city,zip,phone,email,website,capacity,administrator,licensee,license_number,license_issue_date,description,amenities,amenities_source,google_place_id,google_connected,cdss_last_visit_date,cdss_num_visits,cdss_num_complaints,cdss_citations_type_a,cdss_citations_type_b,cdss_substantiated_allegations,cdss_synced_at,inspection_score";
 
 async function getFacility(slug: string): Promise<Facility | null> {
   const supabase = await createClient();
@@ -163,16 +165,6 @@ export async function generateMetadata({
   };
 }
 
-function amenityLabel(a: string): string {
-  const map: Record<string, string> = {
-    "24/7": "24/7 care",
-    "24-hour": "24-hour care",
-    rn: "RN on staff",
-    lvn: "LVN on staff",
-  };
-  return map[a] ?? a.replace(/\b\w/g, (c) => c.toUpperCase());
-}
-
 export default async function FacilityPage({
   params,
 }: {
@@ -183,7 +175,7 @@ export default async function FacilityPage({
   if (!f || f.facility_type === "arf") notFound(); // ARFs are out of scope
 
   const photos = await getPhotos(f.id);
-  const amenities = f.amenities ?? [];
+  const amenityGroups = groupCareFeatures(f.amenities ?? []);
   const cityLine = [f.city ? titleCase(f.city) : null, "CA", f.zip].filter(Boolean).join(" ");
   const address = [f.street_address ? titleCase(f.street_address) : null, cityLine]
     .filter(Boolean)
@@ -388,21 +380,32 @@ export default async function FacilityPage({
           )}
 
           {/* Amenities */}
-          {amenities.length > 0 && (
+          {amenityGroups.length > 0 && (
             <section>
-              <h2 className="mb-2 text-lg font-semibold">Care &amp; amenities</h2>
-              <div className="flex flex-wrap gap-2">
-                {amenities.map((a) => (
-                  <span
-                    key={a}
-                    className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs font-medium text-zinc-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300"
-                  >
-                    {amenityLabel(a)}
-                  </span>
+              <h2 className="mb-3 text-lg font-semibold">Care &amp; amenities</h2>
+              <div className="space-y-4">
+                {amenityGroups.map((g) => (
+                  <div key={g.key}>
+                    <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-zinc-400">
+                      {g.label}
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {g.features.map((ft) => (
+                        <span
+                          key={ft.key}
+                          className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs font-medium text-zinc-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300"
+                        >
+                          {ft.label}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
-              <p className="mt-2 text-[11px] text-zinc-400">
-                Amenities detected from the facility&apos;s website — verify directly with the facility.
+              <p className="mt-3 text-[11px] text-zinc-400">
+                {f.amenities_source === "owner"
+                  ? "Provided by the facility."
+                  : "Detected from the facility's website — verify directly with the facility."}
               </p>
             </section>
           )}

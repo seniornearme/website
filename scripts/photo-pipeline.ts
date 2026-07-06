@@ -31,6 +31,7 @@ import { chromium, type Browser } from "playwright";
 import sharp from "sharp";
 import { createHash } from "node:crypto";
 import { config } from "dotenv";
+import { extractCareFeatures, sortCareFeatures } from "../src/lib/care-taxonomy";
 
 config({ path: ".env.local" });
 
@@ -128,6 +129,21 @@ const largestSrcset = (ss: string) => {
 };
 const declaredW = (url: string, tag: string) =>
   parseInt(url.match(/[/,]w_(\d+)/)?.[1] ?? tag.match(/\bwidth\s*=\s*["']?(\d+)/i)?.[1] ?? url.match(/[?&](?:w|width|maxwidth)=(\d+)/i)?.[1] ?? "0");
+// Width encoded in the URL itself — CDNs that serve size variants of the SAME
+// filename from width directories (/720/x.webp vs /1920/x.webp) collide on
+// fileKey, so the hint decides which variant survives dedup.
+const urlWidthHint = (u: string) => {
+  let path = u;
+  try { path = new URL(u).pathname; } catch { /* keep raw */ }
+  const m =
+    path.match(/(?:^|\/)(\d{3,4})\//) ||          // /1920/photo.webp
+    path.match(/[-_](\d{3,4})x\d{2,4}\.\w+$/) ||  // photo-1024x683.jpg
+    path.match(/[-_](\d{3,4})w\.\w+$/) ||         // photo-800w.jpg
+    u.match(/[/,]w_(\d{3,4})(?:[,/]|$)/) ||       // cloudinary w_1024
+    u.match(/[?&](?:w|width|maxwidth)=(\d{2,4})/i);
+  const w = m ? parseInt(m[1], 10) : 0;
+  return w >= 200 && w <= 4000 ? w : 0;
+};
 
 function harvestHtml(html: string, base: string, acc: Map<string, Cand>) {
   const add = (raw: string | null, w: number, score: number, og: boolean) => {
@@ -135,8 +151,10 @@ function harvestHtml(html: string, base: string, acc: Map<string, Cand>) {
     const url = abs(raw, base);
     if (!url || /^data:/i.test(url) || /\.(svg|gif|ico|bmp)(\?|$)/i.test(url) || JUNK.test(url)) return;
     const k = fileKey(url);
+    const hint = Math.max(w, urlWidthHint(url));
     const prev = acc.get(k);
-    if (!prev || score > prev.score) acc.set(k, { url, w, score, og: og || prev?.og || false });
+    if (!prev || hint > prev.w || (hint === prev.w && score > prev.score))
+      acc.set(k, { url, w: hint, score: Math.max(score, prev?.score ?? 0), og: og || prev?.og || false });
   };
   for (const m of html.matchAll(/<img\b[^>]*>/gi)) {
     const tag = m[0];
@@ -173,21 +191,32 @@ function subpageLinks(html: string, base: string, host: string): string[] {
   return out.sort((a, b) => (/(gallery|photo|tour|room)/i.test(b) ? 1 : 0) - (/(gallery|photo|tour|room)/i.test(a) ? 1 : 0)).slice(0, SUBPAGES);
 }
 
-async function staticHarvest(site: string): Promise<{ reachable: boolean; cands: Map<string, Cand> }> {
+const htmlToText = (html: string) =>
+  html
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;|&#160;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/\s+/g, " ");
+
+async function staticHarvest(site: string): Promise<{ reachable: boolean; cands: Map<string, Cand>; texts: string[] }> {
   const cands = new Map<string, Cand>();
+  const texts: string[] = [];
   const home = await fetchHtml(site.startsWith("http") ? site : `https://${site}`);
-  if (!home) return { reachable: false, cands };
+  if (!home) return { reachable: false, cands, texts };
   harvestHtml(home.html, home.finalUrl, cands);
+  texts.push(htmlToText(home.html));
   const host = hostOf(home.finalUrl);
   for (const sp of subpageLinks(home.html, home.finalUrl, host)) {
     const r = await fetchHtml(sp);
-    if (r) harvestHtml(r.html, r.finalUrl, cands);
+    if (r) { harvestHtml(r.html, r.finalUrl, cands); texts.push(htmlToText(r.html)); }
   }
-  return { reachable: true, cands };
+  return { reachable: true, cands, texts };
 }
 
 // ---------- headless harvest ----------
-async function headlessHarvest(browser: Browser, site: string, cands: Map<string, Cand>): Promise<boolean> {
+async function headlessHarvest(browser: Browser, site: string, cands: Map<string, Cand>, texts: string[]): Promise<boolean> {
   const ctx = await browser.newContext({ userAgent: UA, viewport: { width: 1366, height: 900 } });
   const page = await ctx.newPage();
   // tsx/esbuild wraps evaluate()'d functions with a __name helper; define it in-page.
@@ -219,7 +248,10 @@ async function headlessHarvest(browser: Browser, site: string, cands: Map<string
     for (const u of urls) {
       if (/^data:/i.test(u) || /\.(svg|gif|ico|bmp)(\?|$)/i.test(u) || JUNK.test(u)) continue;
       const k = fileKey(u);
-      if (!cands.has(k)) cands.set(k, { url: u, w: 0, score: heurScore(u, 0, ""), og: false });
+      const hint = urlWidthHint(u);
+      const prev = cands.get(k);
+      if (!prev || hint > prev.w)
+        cands.set(k, { url: u, w: hint, score: Math.max(heurScore(u, hint, ""), prev?.score ?? 0), og: prev?.og ?? false });
     }
   };
   const scroll = async () => {
@@ -232,10 +264,14 @@ async function headlessHarvest(browser: Browser, site: string, cands: Map<string
     await page.waitForTimeout(600);
   };
 
+  const grabText = async () => {
+    try { texts.push(await page.evaluate(() => document.body?.innerText ?? "")); } catch { /* optional */ }
+  };
+
   try {
     await page.goto(site.startsWith("http") ? site : `https://${site}`, { waitUntil: "domcontentloaded", timeout: 30000 });
     await page.waitForTimeout(1200);
-    await scroll(); await collect();
+    await scroll(); await collect(); await grabText();
     const host = hostOf(page.url());
     const links: string[] = await page.evaluate(() => Array.from(document.querySelectorAll("a[href]")).map((a) => (a as HTMLAnchorElement).href));
     const galleryKw = /(gallery|photo|tour|room)/i;
@@ -244,7 +280,7 @@ async function headlessHarvest(browser: Browser, site: string, cands: Map<string
       try {
         await page.goto(g, { waitUntil: "domcontentloaded", timeout: 25000 });
         await page.waitForTimeout(1000);
-        await scroll(); await collect();
+        await scroll(); await collect(); await grabText();
         // lightbox galleries: click the first tile and read the opened image
         try {
           await page.click("[class*=gallery] img, [class*=Gallery] img, [data-lightbox], [class*=lightbox] img", { timeout: 2500 });
@@ -263,6 +299,23 @@ async function headlessHarvest(browser: Browser, site: string, cands: Map<string
 }
 
 // ---------- verify + download ----------
+// Width-directory CDNs (/720/x.webp) often host larger variants the page never
+// declares in srcset; probe the standard sizes and take the biggest that exists.
+async function upgradeWidthVariant(url: string): Promise<string> {
+  const m = url.match(/(?<=\/)(\d{3,4})(?=\/[^/]+$)/);
+  const cur = m ? parseInt(m[1], 10) : 0;
+  if (!cur || cur < 200 || cur >= 1920) return url;
+  for (const w of [1920, 1600]) {
+    if (w <= cur) break;
+    const candidate = url.replace(/(?<=\/)\d{3,4}(?=\/[^/]+$)/, String(w));
+    try {
+      const res = await fetch(candidate, { method: "HEAD", headers: { "User-Agent": UA }, signal: AbortSignal.timeout(6000) });
+      if (res.ok && (res.headers.get("content-type") || "").startsWith("image/")) return candidate;
+    } catch { /* keep trying smaller */ }
+  }
+  return url;
+}
+
 async function download(url: string, referer: string): Promise<Buffer | null> {
   try {
     const res = await fetch(url, { headers: { "User-Agent": UA, Accept: "image/*", Referer: referer }, redirect: "follow", signal: AbortSignal.timeout(20000) });
@@ -344,13 +397,13 @@ async function storePhoto(license: string, buf: Buffer): Promise<{ key: string; 
 }
 
 // ---------- main ----------
-type Target = { id: string; license_number: string; name: string; website: string };
+type Target = { id: string; license_number: string; name: string; website: string; amenities_source: string | null };
 
 async function fetchTargets(): Promise<Target[]> {
   const PAGE = 1000; const out: Target[] = [];
   for (let from = 0; ; from += PAGE) {
     let q = supabase.from("facilities")
-      .select("id, license_number, name, website")
+      .select("id, license_number, name, website, amenities_source")
       .not("website", "is", null).not("license_number", "is", null)
       .eq("status", "active").order("id").range(from, from + PAGE - 1);
     if (CITY) q = q.ilike("city", CITY);
@@ -392,12 +445,24 @@ async function main() {
     }
 
     // 1-2. harvest (static, headless fallback)
-    const { reachable, cands } = await staticHarvest(site);
+    const { reachable, cands, texts } = await staticHarvest(site);
     let usedHeadless = false;
     if (!NO_HEADLESS && (!reachable || cands.size < HEADLESS_THRESHOLD)) {
       browser ??= await chromium.launch({ headless: true });
-      usedHeadless = await headlessHarvest(browser, site, cands);
+      usedHeadless = await headlessHarvest(browser, site, cands, texts);
     }
+
+    // care & amenities from the site's own text — never overwrites owner curation
+    const features = sortCareFeatures(extractCareFeatures(texts.join(" ")));
+    if (features.length) {
+      for (const m of members) {
+        if (m.amenities_source === "owner") continue;
+        await supabase.from("facilities")
+          .update({ amenities: features, amenities_source: "scrape" })
+          .eq("id", m.id);
+      }
+    }
+
     if (!cands.size) {
       console.log(reachable || usedHeadless ? "0 candidates" : "unreachable");
       for (const m of members) await supabase.from("facilities").update({ photos_synced_at: new Date().toISOString() }).eq("id", m.id);
@@ -409,7 +474,11 @@ async function main() {
     const downloaded: (Ranked | null)[] = [];
     for (let i = 0; i < top.length && downloaded.filter(Boolean).length < MAX_STORE; i += 10) {
       const chunk = top.slice(i, i + 10);
-      const bufs = await Promise.all(chunk.map((c) => download(c.url, site)));
+      const bufs = await Promise.all(chunk.map(async (c) => {
+        const url = await upgradeWidthVariant(c.url);
+        const buf = await download(url, site);
+        return buf ?? (url !== c.url ? await download(c.url, site) : null);
+      }));
       chunk.forEach((c, j) => {
         downloaded.push(bufs[j] ? { ...c, buf: bufs[j]!, kind: heurKind(c.url, c.og), label: null, final: c.score } : null);
       });
@@ -458,7 +527,7 @@ async function main() {
       stored += rows.length;
     }
     const vis = photos.filter((p) => p.kind === "facility").length;
-    console.log(`${photos.length} stored (${vis} visible, ${photos.length - vis} hidden-stock)${usedHeadless ? " [headless]" : ""}${members.length > 1 ? ` ×${members.length} facilities` : ""}`);
+    console.log(`${photos.length} stored (${vis} visible, ${photos.length - vis} hidden-stock), ${features.length} features${usedHeadless ? " [headless]" : ""}${members.length > 1 ? ` ×${members.length} facilities` : ""}`);
   }
 
   if (browser) await browser.close();
