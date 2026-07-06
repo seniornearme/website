@@ -31,7 +31,7 @@ export const CARE_TAXONOMY: CareGroup[] = [
       { key: "24_hour_care", label: "24-hour care & supervision", pattern: /\b24\s?\/\s?7\b|\b24[- ]?(hours?|hrs?)\b|around.?the.?clock|round.?the.?clock/i },
       { key: "awake_night_staff", label: "Awake overnight staff", pattern: /awake (night|overnight|staff)|staff awake|overnight supervision/i },
       { key: "nurse_on_staff", label: "Nurse on staff (RN/LVN)", pattern: /\brn\b|\blvn\b|registered nurse|vocational nurse|licensed nurse/i },
-      { key: "visiting_physician", label: "Visiting physician & podiatry", pattern: /visiting (physician|doctor|podiatrist|nurse)|physician[a-z ]{0,15}(visit|house call)|doctor visits/i },
+      { key: "visiting_physician", label: "Visiting physician", pattern: /visiting (physician|doctor|podiatrist|nurse)|physician[a-z ]{0,15}(visit|house call)|doctor visits/i },
       { key: "therapy_services", label: "Physical, occupational & speech therapy", pattern: /physical therap|occupational therap|speech therap/i },
     ],
   },
@@ -41,7 +41,6 @@ export const CARE_TAXONOMY: CareGroup[] = [
     features: [
       { key: "private_rooms", label: "Private rooms", pattern: /private (room|bedroom|suite)/i },
       { key: "shared_rooms", label: "Shared rooms", pattern: /(shared|semi.?private|companion) (room|bedroom|suite)/i },
-      { key: "private_bathrooms", label: "Private bathrooms", pattern: /private (bath|bathroom|restroom)/i },
       { key: "furnished_rooms", label: "Furnished rooms", pattern: /furnish/i },
       { key: "wheelchair_accessible", label: "Wheelchair accessible", pattern: /wheelchair (accessible|ramp|friendly)|handicap access|ada (accessible|compliant)|barrier.?free|accessible (bathroom|shower)/i },
       { key: "single_story", label: "Single-story home", pattern: /single.?story|one.?story|single.?level/i },
@@ -55,7 +54,8 @@ export const CARE_TAXONOMY: CareGroup[] = [
     label: "Dining",
     features: [
       { key: "home_cooked_meals", label: "Home-cooked meals", pattern: /home.?(cooked|made) meal|freshly (cooked|prepared)|home.?cooking/i },
-      { key: "three_meals_daily", label: "Three meals a day + snacks", pattern: /three (daily )?meals|3 meals|meals (a|per) day|daily meals|nutritious meals|snacks/i },
+      { key: "cafeteria_style_meals", label: "Cafeteria-style meals", pattern: /cafeteria/i },
+      { key: "restaurant_style_meals", label: "Restaurant-style meals", pattern: /restaurant.?style|chef.?prepared/i },
       { key: "special_diets", label: "Special diets accommodated", pattern: /special diet|dietary (need|restriction|requirement|preference)|diabetic (diet|meal)|low.?sodium|pureed|vegetarian|kosher/i },
     ],
   },
@@ -66,7 +66,9 @@ export const CARE_TAXONOMY: CareGroup[] = [
       { key: "daily_activities", label: "Daily activities program", pattern: /daily activit|activit(y|ies) program|social activit|group activit|recreational/i },
       { key: "exercise_programs", label: "Exercise & fitness", pattern: /exercise|fitness|yoga|stretching|tai chi/i },
       { key: "outdoor_space", label: "Garden & outdoor space", pattern: /garden|patio|courtyard|backyard|outdoor (space|area|seating)|landscaped/i },
-      { key: "transportation", label: "Transportation & outings", pattern: /transportation|outings|field trips|shopping trips|escort[a-z ]{0,20}appointment/i },
+      { key: "transportation", label: "Transportation", pattern: /transportation(?!\s?(coordination|arrang))|escort[a-z ]{0,20}appointment/i },
+      { key: "outings", label: "Outings", pattern: /outings|field trips|shopping trips|excursions|day trips/i },
+      { key: "transportation_coordination", label: "Transportation coordination", pattern: /transportation (coordination|arrangements?)|(coordinate|arrange)[a-z ]{0,20}transport/i },
       { key: "religious_services", label: "Religious services", pattern: /religious|church|worship|bible|spiritual (service|care)|\bmass\b/i },
       { key: "pet_friendly", label: "Pet friendly", pattern: /pet.?friendly|pets? (allowed|welcome|visits?)/i },
       { key: "tv_wifi", label: "Cable TV & WiFi", pattern: /cable tv|cable television|wi.?fi|wireless internet|smart tv/i },
@@ -81,7 +83,7 @@ export const CARE_TAXONOMY: CareGroup[] = [
       { key: "private_pay", label: "Private pay", pattern: /private pay/i },
       { key: "ltc_insurance", label: "Long-term care insurance", pattern: /long.?term care insurance|ltc insurance/i },
       { key: "va_benefits", label: "VA benefits (Aid & Attendance)", pattern: /va (aid|benefit)|veterans? (aid|benefit|affairs)|aid (and|&) attendance/i },
-      { key: "ssi_accepted", label: "SSI accepted", pattern: /\bssi\b/i },
+      { key: "calaim_accepted", label: "CalAIM accepted", pattern: /\bcal.?aim\b/i },
       { key: "medi_cal_alw", label: "Assisted Living Waiver (Medi-Cal)", pattern: /assisted living waiver|\balw\b|medi[-\s]cal\b/i },
     ],
   },
@@ -89,6 +91,25 @@ export const CARE_TAXONOMY: CareGroup[] = [
 
 const ALL_FEATURES = CARE_TAXONOMY.flatMap((g) => g.features);
 const FEATURE_ORDER = new Map(ALL_FEATURES.map((f, i) => [f.key, i]));
+
+/**
+ * Table-stakes services every licensed RCFE provides — shown on every listing
+ * and pre-checked in the owner editor, regardless of what the website says.
+ * Owner-curated sets are taken verbatim (an owner can uncheck these).
+ */
+export const DEFAULT_FEATURES = [
+  "medication_management",
+  "24_hour_care",
+  "personal_care",
+  "housekeeping",
+  "private_pay",
+];
+
+export function withDefaultFeatures(keys: string[], source: string | null): string[] {
+  return source === "owner"
+    ? sortCareFeatures(keys)
+    : sortCareFeatures([...keys, ...DEFAULT_FEATURES]);
+}
 
 /** Scan free text (a facility's own website copy) for taxonomy features. */
 export function extractCareFeatures(text: string): string[] {

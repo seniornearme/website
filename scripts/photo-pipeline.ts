@@ -31,7 +31,7 @@ import { chromium, type Browser } from "playwright";
 import sharp from "sharp";
 import { createHash } from "node:crypto";
 import { config } from "dotenv";
-import { extractCareFeatures, sortCareFeatures } from "../src/lib/care-taxonomy";
+import { extractCareFeatures, sortCareFeatures, DEFAULT_FEATURES } from "../src/lib/care-taxonomy";
 
 config({ path: ".env.local" });
 
@@ -452,8 +452,11 @@ async function main() {
       usedHeadless = await headlessHarvest(browser, site, cands, texts);
     }
 
-    // care & amenities from the site's own text — never overwrites owner curation
-    const features = sortCareFeatures(extractCareFeatures(texts.join(" ")));
+    // care & amenities from the site's own text (plus the universal baseline)
+    // — never overwrites owner curation
+    const features = texts.join(" ").trim()
+      ? sortCareFeatures([...DEFAULT_FEATURES, ...extractCareFeatures(texts.join(" "))])
+      : [];
     if (features.length) {
       for (const m of members) {
         if (m.amenities_source === "owner") continue;

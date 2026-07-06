@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { titleCase } from "@/lib/format";
+import { withDefaultFeatures } from "@/lib/care-taxonomy";
 import { WebsiteConnect, GoogleConnect, CareFeaturesEditor } from "./manage-client";
 
 export const metadata: Metadata = { title: "Manage facility" };
@@ -72,7 +73,7 @@ export default async function ManageFacilityPage({
         />
         <CareFeaturesEditor
           facilityId={f.id}
-          initial={(f.amenities as string[] | null) ?? []}
+          initial={withDefaultFeatures((f.amenities as string[] | null) ?? [], f.amenities_source)}
           source={f.amenities_source}
         />
       </div>

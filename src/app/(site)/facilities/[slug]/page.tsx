@@ -7,7 +7,7 @@ import { titleCase, fmtDate, typeLabel, normalizeWebsite } from "@/lib/format";
 import { getGoogleReviews } from "@/lib/google-reviews";
 import { slugifyCity } from "@/lib/cities";
 import { scoreTier } from "@/lib/inspection";
-import { groupCareFeatures } from "@/lib/care-taxonomy";
+import { groupCareFeatures, withDefaultFeatures } from "@/lib/care-taxonomy";
 import { reportUrl, summarizeFacilityReports } from "@/lib/report-summaries";
 import { PhotoGallery } from "./photo-gallery";
 import { InquiryForm } from "./inquiry-form";
@@ -175,7 +175,9 @@ export default async function FacilityPage({
   if (!f || f.facility_type === "arf") notFound(); // ARFs are out of scope
 
   const photos = await getPhotos(f.id);
-  const amenityGroups = groupCareFeatures(f.amenities ?? []);
+  const amenityGroups = groupCareFeatures(
+    withDefaultFeatures(f.amenities ?? [], f.amenities_source),
+  );
   const cityLine = [f.city ? titleCase(f.city) : null, "CA", f.zip].filter(Boolean).join(" ");
   const address = [f.street_address ? titleCase(f.street_address) : null, cityLine]
     .filter(Boolean)
@@ -405,7 +407,9 @@ export default async function FacilityPage({
               <p className="mt-3 text-[11px] text-zinc-400">
                 {f.amenities_source === "owner"
                   ? "Provided by the facility."
-                  : "Detected from the facility's website — verify directly with the facility."}
+                  : f.amenities_source === "scrape"
+                    ? "Includes standard licensed residential care services plus offerings detected from the facility's website — verify directly with the facility."
+                    : "Standard services for licensed residential care — verify details directly with the facility."}
               </p>
             </section>
           )}
