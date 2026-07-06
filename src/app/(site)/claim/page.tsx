@@ -33,7 +33,12 @@ export default async function ClaimPage({
       <h1 className="text-2xl font-semibold">Claim your facility listing</h1>
       <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
         Claiming is free. Once we verify you&apos;re affiliated with the facility, you can
-        manage the listing&apos;s photos and details and receive inquiries from families.
+        manage the listing&apos;s photos and details, receive inquiries from families, and
+        track your CDSS paperwork with the built-in{" "}
+        <Link href="/compliance-forms" className="font-medium text-blue-600 hover:underline">
+          compliance forms library
+        </Link>{" "}
+        and reminder system.
       </p>
 
       {user ? (

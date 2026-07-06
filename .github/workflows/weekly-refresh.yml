@@ -36,3 +36,8 @@ jobs:
         run: npx tsx scripts/enrich-cdss.ts --force
       - name: Summarize new inspection reports
         run: npx tsx scripts/summarize-reports.ts
+      - name: Send compliance reminders
+        if: always()
+        env:
+          POSTMARK_SERVER_TOKEN: ${{ secrets.POSTMARK_SERVER_TOKEN }}
+        run: npx tsx scripts/compliance-reminders.ts

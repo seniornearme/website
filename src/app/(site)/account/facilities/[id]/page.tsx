@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { titleCase } from "@/lib/format";
 import { withDefaultFeatures } from "@/lib/care-taxonomy";
 import { WebsiteConnect, GoogleConnect, CareFeaturesEditor } from "./manage-client";
+import { ComplianceTracker, type ComplianceItem } from "./compliance-client";
 
 export const metadata: Metadata = { title: "Manage facility" };
 
@@ -35,6 +36,12 @@ export default async function ManageFacilityPage({
     .from("facility_photos")
     .select("*", { count: "exact", head: true })
     .eq("facility_id", id);
+
+  const { data: complianceItems } = await supabase
+    .from("compliance_items")
+    .select("id, form_key, label, last_completed, due_date, applies")
+    .eq("facility_id", id)
+    .order("created_at");
 
   const address = [
     f.street_address ? titleCase(f.street_address) : null,
@@ -75,6 +82,10 @@ export default async function ManageFacilityPage({
           facilityId={f.id}
           initial={withDefaultFeatures((f.amenities as string[] | null) ?? [], f.amenities_source)}
           source={f.amenities_source}
+        />
+        <ComplianceTracker
+          facilityId={f.id}
+          initialItems={(complianceItems as ComplianceItem[] | null) ?? []}
         />
       </div>
     </main>
