@@ -117,11 +117,21 @@ export const COMPLIANCE_LIBRARY: ComplianceCategory[] = [
       },
       {
         key: "theft_loss_policy",
-        code: null,
+        code: "LIC 9060",
         name: "Theft & loss policy and records",
         description:
-          "Written policy and ongoing log for resident property theft or loss (Health & Safety Code §1569.153).",
-        url: null,
+          "Written policy plus an ongoing loss record for resident property theft or loss (Health & Safety Code §1569.153). LIC 9060 is the loss-record form.",
+        url: `${CDSS}/LIC9060.pdf`,
+        per: "facility",
+        recurrence: { kind: "once" },
+      },
+      {
+        key: "lic9020",
+        code: "LIC 9020",
+        name: "Register of Facility Clients/Residents",
+        description:
+          "Current register of everyone in care. Keep it up to date as residents are admitted or leave.",
+        url: `${CDSS}/LIC9020.pdf`,
         per: "facility",
         recurrence: { kind: "once" },
       },
@@ -273,6 +283,16 @@ export const COMPLIANCE_LIBRARY: ComplianceCategory[] = [
         per: "resident",
         recurrence: { kind: "once" },
       },
+      {
+        key: "lic405",
+        code: "LIC 405",
+        name: "Record of Safeguarded Cash Resources",
+        description:
+          "Running ledger of a resident's cash the facility safeguards. Required only when you hold resident funds — mark N/A otherwise.",
+        url: `${CDSS}/LIC405.pdf`,
+        per: "resident",
+        recurrence: { kind: "once" },
+      },
     ],
   },
   {
@@ -287,6 +307,16 @@ export const COMPLIANCE_LIBRARY: ComplianceCategory[] = [
         description:
           "Report incidents to CCLD by phone the next working day and submit the written report within 7 days.",
         url: `${CDSS}/LIC624.pdf`,
+        per: "facility",
+        recurrence: { kind: "event" },
+      },
+      {
+        key: "lic624a",
+        code: "LIC 624A",
+        name: "Death Report",
+        description:
+          "Filed with CCLD after a resident death — report by phone the next working day, written report within 7 days.",
+        url: `${CDSS}/LIC624A.pdf`,
         per: "facility",
         recurrence: { kind: "event" },
       },
@@ -319,6 +349,14 @@ export const COMPLIANCE_FORM_MAP = new Map(ALL_COMPLIANCE_FORMS.map((f) => [f.ke
 
 /** Items the tracker schedules (event-driven ones are reference-only). */
 export const isTrackable = (f: ComplianceForm) => f.recurrence.kind !== "event";
+
+/**
+ * Every CDSS PDF in this library is a fillable AcroForm — audited 2026-07-06
+ * with pdf.js (4–546 fields each). Owners can type into them in any browser
+ * or PDF viewer and save/print. Non-PDF urls (program webpages) are not.
+ */
+export const isFillablePdf = (f: ComplianceForm) =>
+  !!f.url && f.url.toLowerCase().endsWith(".pdf");
 
 /** Next due date after completing an item on `completed` (YYYY-MM-DD). */
 export function nextDueDate(form: ComplianceForm, completed: string): string | null {

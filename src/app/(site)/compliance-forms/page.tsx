@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { COMPLIANCE_LIBRARY } from "@/lib/compliance-forms";
+import { COMPLIANCE_LIBRARY, isFillablePdf } from "@/lib/compliance-forms";
 
 export const metadata: Metadata = {
   title: "California RCFE Compliance Forms Library | SeniorNearMe",
   description:
-    "Every CDSS form a California assisted living facility (RCFE) needs — licensing, staff, and resident forms with official PDF links, plus when each is required.",
+    "Every CDSS form a California assisted living facility (RCFE) needs — licensing, staff, and resident forms as fillable official PDFs, plus when each is required.",
   alternates: { canonical: "/compliance-forms" },
 };
 
@@ -24,7 +24,9 @@ export default function ComplianceFormsPage() {
       <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
         The California Department of Social Services (CDSS) forms and recurring requirements
         for a licensed Residential Care Facility for the Elderly, organized by what they
-        cover. Each form links to the official CDSS PDF.
+        cover. Every form links to the official CDSS PDF — all of them are fillable, so you
+        can open one, type your entries right in your browser or PDF viewer, and save or
+        print the completed form.
       </p>
       <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
         Facility owners:{" "}
@@ -70,7 +72,9 @@ export default function ComplianceFormsPage() {
                       rel="noopener noreferrer"
                       className="mt-1.5 inline-block text-xs font-medium text-blue-600 hover:underline"
                     >
-                      {form.code ? `${form.code} — official PDF ↗` : "Official page ↗"}
+                      {isFillablePdf(form)
+                        ? `${form.code ?? "Official form"} — fill out on your computer ↗`
+                        : "Official page ↗"}
                     </a>
                   )}
                 </li>
