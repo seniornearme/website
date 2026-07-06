@@ -76,6 +76,9 @@ export async function GET(request: NextRequest) {
     return back(null, "error");
   }
 
+  // Public flag that gates the on-page Google reviews section.
+  await supabase.from("facilities").update({ google_connected: true }).eq("id", facilityId);
+
   const res = back(null, "connected");
   res.cookies.delete("gb_oauth_nonce");
   return res;

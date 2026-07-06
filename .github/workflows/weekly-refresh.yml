@@ -19,7 +19,7 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 300
+    timeout-minutes: 350
     env:
       NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
@@ -34,3 +34,5 @@ jobs:
         run: npx tsx scripts/refresh-status.ts
       - name: Refresh CDSS inspection data (full re-enrich)
         run: npx tsx scripts/enrich-cdss.ts --force
+      - name: Summarize new inspection reports
+        run: npx tsx scripts/summarize-reports.ts

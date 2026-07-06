@@ -89,10 +89,11 @@ type Facility = {
   cdss_substantiated_allegations: number | null;
   cdss_synced_at: string | null;
   inspection_score: number | null;
+  google_connected: boolean;
 };
 
 const SELECT =
-  "id,name,slug,facility_type,status,street_address,city,zip,phone,email,website,capacity,administrator,licensee,license_number,license_issue_date,description,amenities,google_place_id,cdss_last_visit_date,cdss_num_visits,cdss_num_complaints,cdss_citations_type_a,cdss_citations_type_b,cdss_substantiated_allegations,cdss_synced_at,inspection_score";
+  "id,name,slug,facility_type,status,street_address,city,zip,phone,email,website,capacity,administrator,licensee,license_number,license_issue_date,description,amenities,google_place_id,google_connected,cdss_last_visit_date,cdss_num_visits,cdss_num_complaints,cdss_citations_type_a,cdss_citations_type_b,cdss_substantiated_allegations,cdss_synced_at,inspection_score";
 
 async function getFacility(slug: string): Promise<Facility | null> {
   const supabase = await createClient();
@@ -190,7 +191,14 @@ export default async function FacilityPage({
   const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`;
   const telHref = f.phone ? `tel:${f.phone.replace(/[^0-9+]/g, "")}` : null;
 
-  const reviews = f.google_place_id ? await getGoogleReviews(f.google_place_id) : null;
+  // Google reviews are OFF by default. They render only when the facility's
+  // owner has claimed the listing and connected their Google Business
+  // Profile, or when globally re-enabled via SHOW_GOOGLE_REVIEWS=true.
+  // (Plumbing intact either way; the fetch is skipped when hidden.)
+  const showReviews =
+    process.env.SHOW_GOOGLE_REVIEWS === "true" || f.google_connected === true;
+  const reviews =
+    showReviews && f.google_place_id ? await getGoogleReviews(f.google_place_id) : null;
   const citations = (f.cdss_citations_type_a ?? 0) + (f.cdss_citations_type_b ?? 0);
 
   // saved state for the signed-in user (anon -> just a sign-in prompt on click)
@@ -473,9 +481,25 @@ export default async function FacilityPage({
               )}
 
               {reports.length > 0 && (
-                <div className="mt-5">
-                  <h3 className="text-sm font-semibold">Visit history</h3>
-                  <ul className="mt-2 space-y-3">
+                <details className="group mt-4">
+                  <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-900 [&::-webkit-details-marker]:hidden">
+                    View visit history ({reports.length})
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="transition-transform group-open:rotate-180"
+                      aria-hidden="true"
+                    >
+                      <path d="m6 9 6 6 6-6" />
+                    </svg>
+                  </summary>
+                  <ul className="mt-3 space-y-3">
                     {reports.map((r) => (
                       <li
                         key={r.id}
@@ -515,7 +539,7 @@ export default async function FacilityPage({
                     Each link opens the full official report. Summaries are excerpts from the
                     state inspector&apos;s narrative.
                   </p>
-                </div>
+                </details>
               )}
 
               {f.license_number && (

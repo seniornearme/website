@@ -65,8 +65,8 @@ function extract(html: string): { visitType: string | null; summary: string | nu
     }
     const text = body.join(" ").replace(/\s+/g, " ").trim();
     if (text) {
-      const sentences = text.split(/(?<=[.!?])\s+/).slice(0, 2).join(" ");
-      summary = sentences.length > 340 ? `${sentences.slice(0, 337)}…` : sentences;
+      const first = text.split(/(?<=[.!?])\s+/)[0] ?? "";
+      summary = first.length > 240 ? `${first.slice(0, 237)}…` : first;
     }
   }
 
