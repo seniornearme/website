@@ -509,18 +509,9 @@ export default async function FacilityPage({
                         className="rounded-xl border border-zinc-100 p-3 dark:border-zinc-800"
                       >
                         <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-                          <a
-                            href={
-                              f.license_number
-                                ? reportUrl(f.license_number, r.report_index)
-                                : "#"
-                            }
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm font-medium text-blue-600 hover:underline"
-                          >
-                            {titleCase(r.report_title || r.report_type || "Visit report")} →
-                          </a>
+                          <span className="text-sm font-medium">
+                            {titleCase(r.report_title || r.report_type || "Visit report")}
+                          </span>
                           <span className="text-xs text-zinc-400">
                             {fmtDate(r.report_date) ?? "—"}
                           </span>
@@ -532,8 +523,21 @@ export default async function FacilityPage({
                         )}
                         {r.summary && (
                           <p className="mt-1.5 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+                            <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                              Summary:
+                            </span>{" "}
                             {r.summary}
                           </p>
+                        )}
+                        {f.license_number && (
+                          <a
+                            href={reportUrl(f.license_number, r.report_index)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-1.5 inline-block text-xs font-medium text-blue-600 hover:underline"
+                          >
+                            See full report →
+                          </a>
                         )}
                       </li>
                     ))}
@@ -542,18 +546,17 @@ export default async function FacilityPage({
                     Each link opens the full official report. Summaries are excerpts from the
                     state inspector&apos;s narrative.
                   </p>
+                  {f.license_number && (
+                    <a
+                      href={`https://www.ccld.dss.ca.gov/carefacilitysearch/FacDetail/${f.license_number}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-2 inline-block text-xs font-medium text-blue-600 hover:underline"
+                    >
+                      View the complete state record at CDSS →
+                    </a>
+                  )}
                 </details>
-              )}
-
-              {f.license_number && (
-                <a
-                  href={`https://www.ccld.dss.ca.gov/carefacilitysearch/FacDetail/${f.license_number}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-3 inline-block text-xs font-medium text-blue-600 hover:underline"
-                >
-                  View the complete state record at CDSS →
-                </a>
               )}
               <p className="mt-1 text-[11px] leading-snug text-zinc-400">
                 Inspection and complaint history from the California Dept. of Social Services,
