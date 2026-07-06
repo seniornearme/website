@@ -149,7 +149,11 @@ async function main() {
   };
 
   for (let i = 0; i < facilities.length; i += CONCURRENCY) {
+    const batchStart = Date.now();
     await Promise.all(facilities.slice(i, i + CONCURRENCY).map(processOne));
+    // pace to ~480 req/min — under the default 600/min SearchTextRequest quota
+    const wait = 1000 - (Date.now() - batchStart);
+    if (wait > 0) await new Promise((r) => setTimeout(r, wait));
     done += Math.min(CONCURRENCY, facilities.length - i);
     if (done % 500 < CONCURRENCY || done >= facilities.length) {
       console.log(`  ${done}/${facilities.length}  matched=${matched}  errors=${errors}`);
