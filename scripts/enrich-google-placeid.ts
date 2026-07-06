@@ -81,7 +81,11 @@ async function fetchTargets(): Promise<Target[]> {
   return out;
 }
 
-async function findPlaceId(f: Target): Promise<string | null> {
+type Lookup = { ok: true; id: string | null } | { ok: false };
+
+// ok:false (HTTP error, quota, timeout) must NOT stamp google_synced_at —
+// an unattended run that hits quota would burn its targets permanently.
+async function findPlaceId(f: Target): Promise<Lookup> {
   const query = `${f.name}, ${[f.street_address, f.city, "CA", f.zip]
     .filter(Boolean)
     .join(", ")}`;
@@ -92,6 +96,8 @@ async function findPlaceId(f: Target): Promise<string | null> {
         "Content-Type": "application/json",
         "X-Goog-Api-Key": API_KEY!,
         "X-Goog-FieldMask": "places.id",
+        // the key is HTTP-referrer restricted; send the allowlisted referer
+        Referer: "http://localhost:3000",
       },
       body: JSON.stringify({
         textQuery: query,
@@ -104,13 +110,13 @@ async function findPlaceId(f: Target): Promise<string | null> {
       // Surface the first error loudly (bad key, API not enabled, billing off).
       const body = await res.text();
       console.error(`  HTTP ${res.status}: ${body.slice(0, 200)}`);
-      return null;
+      return { ok: false };
     }
     const data = (await res.json()) as { places?: { id?: string }[] };
-    return data.places?.[0]?.id ?? null;
+    return { ok: true, id: data.places?.[0]?.id ?? null };
   } catch (e) {
     console.error(`  ${f.name}:`, (e as Error).message);
-    return null;
+    return { ok: false };
   }
 }
 
@@ -126,30 +132,36 @@ async function main() {
 
   let matched = 0;
   let done = 0;
+  let errors = 0;
 
   const processOne = async (f: Target) => {
-    const placeId = await findPlaceId(f);
+    const result = await findPlaceId(f);
+    if (!result.ok) { errors++; return; } // left un-stamped for a later retry
     const { error } = await supabase
       .from("facilities")
       .update({
-        google_place_id: placeId,
+        google_place_id: result.id,
         google_synced_at: new Date().toISOString(),
       })
       .eq("id", f.id);
     if (error) console.error(`  update ${f.name}:`, error.message);
-    else if (placeId) matched++;
+    else if (result.id) matched++;
   };
 
   for (let i = 0; i < facilities.length; i += CONCURRENCY) {
     await Promise.all(facilities.slice(i, i + CONCURRENCY).map(processOne));
     done += Math.min(CONCURRENCY, facilities.length - i);
     if (done % 500 < CONCURRENCY || done >= facilities.length) {
-      console.log(`  ${done}/${facilities.length}  matched=${matched}`);
+      console.log(`  ${done}/${facilities.length}  matched=${matched}  errors=${errors}`);
+    }
+    if (errors >= 25) {
+      console.log("Stopping: repeated API errors (quota/key/billing). Un-stamped rows retry next run.");
+      break;
     }
   }
 
   console.log("Done.");
-  console.log(`  matched=${matched} / ${facilities.length}`);
+  console.log(`  matched=${matched} (${errors} errors left for retry)`);
 }
 
 main().catch((e) => {

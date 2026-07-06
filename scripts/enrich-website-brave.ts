@@ -86,7 +86,11 @@ function isBlocked(host: string): boolean {
 
 type BraveResult = { url: string; title?: string };
 
-async function findWebsite(name: string, city: string | null): Promise<string | null> {
+type Lookup = { status: "found"; url: string } | { status: "none" } | { status: "error" };
+
+// "none" is a real no-match and stamps website_checked_at; "error" (timeouts,
+// 429s, exhausted quota) leaves the row untouched so a later run retries it.
+async function findWebsite(name: string, city: string | null): Promise<Lookup> {
   const q = `${name} ${city ?? ""} CA`.trim();
   const url = `${SEARCH}?q=${encodeURIComponent(q)}&count=10&country=us`;
   let res: Response;
@@ -96,20 +100,20 @@ async function findWebsite(name: string, city: string | null): Promise<string | 
       signal: AbortSignal.timeout(15000),
     });
   } catch {
-    return null;
+    return { status: "error" };
   }
   if (res.status === 429) {
     await sleep(2000);
-    return null; // skip this one; it'll be retried on a later run
+    return { status: "error" };
   }
   if (!res.ok) {
     console.error(`  brave ${res.status} for "${name}"`);
-    return null;
+    return { status: "error" };
   }
   const data = (await res.json()) as { web?: { results?: BraveResult[] } };
   const results = data.web?.results ?? [];
   const tokens = nameTokens(name);
-  if (!tokens.length) return null;
+  if (!tokens.length) return { status: "none" };
 
   let best: { url: string; score: number } | null = null;
   for (const r of results) {
@@ -124,7 +128,7 @@ async function findWebsite(name: string, city: string | null): Promise<string | 
       best = { url: `https://${host}`, score };
     }
   }
-  return best?.url ?? null;
+  return best ? { status: "found", url: best.url } : { status: "none" };
 }
 
 type Target = { id: string; name: string; city: string | null };
@@ -138,10 +142,13 @@ async function fetchTargets(): Promise<Target[]> {
       .select("id, name, city")
       .not("license_number", "is", null)
       .eq("status", "active")
+      .eq("facility_type", "rcfe") // ARFs aren't shown on the site — don't spend quota
       .order("id")
       .range(from, from + PAGE - 1);
     if (CITY_FILTER) q = q.ilike("city", CITY_FILTER);
-    if (!FORCE) q = q.is("website_checked_at", null);
+    // never re-query or overwrite a facility that already has a website
+    // (owner-entered, experiment-curated, or from a prior sweep)
+    if (!FORCE) q = q.is("website_checked_at", null).is("website", null);
     const { data, error } = await q;
     if (error) throw error;
     if (!data?.length) break;
@@ -164,13 +171,25 @@ async function main() {
 
   let found = 0;
   let done = 0;
+  let consecutiveErrors = 0;
   for (const f of targets) {
-    const website = await findWebsite(f.name, f.city);
+    const result = await findWebsite(f.name, f.city);
+    if (result.status === "error") {
+      // monthly quota exhausted or outage — stop rather than churn errors;
+      // untouched rows are retried by the next run
+      if (++consecutiveErrors >= 5) {
+        console.log(`\nStopping after ${consecutiveErrors} consecutive errors (quota likely exhausted).`);
+        break;
+      }
+      await sleep(1100);
+      continue;
+    }
+    consecutiveErrors = 0;
     const update: Record<string, unknown> = {
       website_checked_at: new Date().toISOString(),
     };
-    if (website) {
-      update.website = website;
+    if (result.status === "found") {
+      update.website = result.url;
       update.website_source = "brave";
       found++;
     }
@@ -183,7 +202,7 @@ async function main() {
     await sleep(1100); // stay under Brave's 1 query/sec free limit
   }
 
-  console.log(`Done. Found websites for ${found} / ${targets.length}.`);
+  console.log(`Done. Checked ${done} / ${targets.length}, found websites for ${found}.`);
 }
 
 main().catch((e) => {

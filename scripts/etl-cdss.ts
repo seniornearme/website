@@ -7,6 +7,8 @@
  *
  * Run:
  *   npm run seed:facilities
+ *   npx tsx scripts/etl-cdss.ts --new-only   # weekly: insert only unseen
+ *                                            # license numbers (no overwrite)
  *
  * Env required:
  *   NEXT_PUBLIC_SUPABASE_URL
@@ -43,7 +45,27 @@ const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
   auth: { persistSession: false },
 });
 
+const NEW_ONLY = process.argv.includes("--new-only");
+
 const UPSERT_CHUNK = 500;
+
+async function fetchExistingLicenses(): Promise<Set<string>> {
+  const PAGE = 1000;
+  const seen = new Set<string>();
+  for (let from = 0; ; from += PAGE) {
+    const { data, error } = await supabase
+      .from("facilities")
+      .select("license_number")
+      .not("license_number", "is", null)
+      .order("license_number")
+      .range(from, from + PAGE - 1);
+    if (error) throw error;
+    if (!data?.length) break;
+    for (const r of data) seen.add(r.license_number as string);
+    if (data.length < PAGE) break;
+  }
+  return seen;
+}
 
 async function upsertChunked(rows: (FacilityRow & { location?: string | null })[]) {
   for (let i = 0; i < rows.length; i += UPSERT_CHUNK) {
@@ -78,8 +100,18 @@ async function main() {
   // Dedupe by license_number: some records exist in both feeds due to overlap
   const byLicense = new Map<string, FacilityRow>();
   for (const r of mapped) byLicense.set(r.license_number, r);
-  const deduped = [...byLicense.values()];
+  let deduped = [...byLicense.values()];
   console.log(`  ${deduped.length} unique after dedup`);
+
+  if (NEW_ONLY) {
+    const existing = await fetchExistingLicenses();
+    deduped = deduped.filter((r) => !existing.has(r.license_number));
+    console.log(`  ${deduped.length} NEW facilities not yet in the database`);
+    if (!deduped.length) {
+      console.log("No new facilities this week. Done.");
+      return;
+    }
+  }
 
   console.log("Geocoding addresses (US Census)…");
   const geocodeInput: AddressInput[] = deduped
