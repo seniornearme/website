@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { after } from "next/server";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
@@ -6,6 +7,7 @@ import { titleCase, fmtDate, typeLabel, normalizeWebsite } from "@/lib/format";
 import { getGoogleReviews } from "@/lib/google-reviews";
 import { slugifyCity } from "@/lib/cities";
 import { scoreTier } from "@/lib/inspection";
+import { reportUrl, summarizeFacilityReports } from "@/lib/report-summaries";
 import { PhotoGallery } from "./photo-gallery";
 import { InquiryForm } from "./inquiry-form";
 import { SaveButton } from "./save-button";
@@ -99,19 +101,24 @@ async function getFacility(slug: string): Promise<Facility | null> {
 }
 
 type Report = {
+  id: string;
+  report_index: number;
   report_date: string | null;
   report_title: string | null;
   report_type: string | null;
+  visit_type: string | null;
+  summary: string | null;
+  summarized_at: string | null;
 };
 
 async function getReports(facilityId: string): Promise<Report[]> {
   const supabase = await createClient();
   const { data } = await supabase
     .from("facility_reports")
-    .select("report_date, report_title, report_type")
+    .select("id, report_index, report_date, report_title, report_type, visit_type, summary, summarized_at")
     .eq("facility_id", facilityId)
     .order("report_date", { ascending: false, nullsFirst: false })
-    .limit(8);
+    .limit(10);
   return (data as Report[] | null) ?? [];
 }
 
@@ -204,6 +211,19 @@ export default async function FacilityPage({
   const { data: geo } = await supabaseGeo(f.id);
   const nearby = geo ? await getNearby(f.id, geo.lat, geo.lng) : [];
   const reports = f.cdss_synced_at ? await getReports(f.id) : [];
+
+  // Report summaries fill lazily: parse + store after this response is sent,
+  // so the next visitor sees them without anyone waiting on CCLD fetches.
+  const pendingSummaries = reports.filter((r) => !r.summarized_at);
+  if (pendingSummaries.length && f.license_number) {
+    const license = f.license_number;
+    after(() =>
+      summarizeFacilityReports(
+        license,
+        pendingSummaries.map((r) => ({ id: r.id, report_index: r.report_index })),
+      ),
+    );
+  }
 
   const licensedYears = f.license_issue_date
     ? Math.floor(
@@ -406,6 +426,114 @@ export default async function FacilityPage({
               <p className="mt-2 text-[11px] text-zinc-400">Ratings and reviews provided by Google.</p>
             </section>
           )}
+
+          {/* State inspection record (official CDSS data) */}
+          {f.cdss_synced_at && (
+            <section>
+              <div className="mb-2 flex items-center justify-between">
+                <h2 className="text-lg font-semibold">State inspection record</h2>
+                <span className="text-[11px] uppercase tracking-wide text-zinc-400">CA CDSS</span>
+              </div>
+
+              {f.inspection_score != null && (
+                <div className="mb-4 flex items-center gap-3">
+                  <span className="text-3xl font-semibold">{f.inspection_score}</span>
+                  <div className="min-w-0">
+                    <span
+                      className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${scoreTier(f.inspection_score).chip}`}
+                    >
+                      {scoreTier(f.inspection_score).label}
+                    </span>
+                    <Link
+                      href="/about-our-data#inspection-score"
+                      className="block text-[11px] text-zinc-400 hover:underline"
+                    >
+                      Inspection record score · how it&apos;s calculated
+                    </Link>
+                  </div>
+                </div>
+              )}
+
+              <div className="grid grid-cols-2 gap-x-4 gap-y-2 rounded-xl border border-zinc-100 p-4 text-sm sm:grid-cols-4 dark:border-zinc-800">
+                <Stat label="Last visit" value={fmtDate(f.cdss_last_visit_date) ?? "—"} />
+                <Stat label="Total visits" value={f.cdss_num_visits ?? 0} />
+                <Stat label="Complaints" value={f.cdss_num_complaints ?? 0} />
+                <Stat
+                  label="Substantiated"
+                  value={f.cdss_substantiated_allegations ?? 0}
+                  warn={(f.cdss_substantiated_allegations ?? 0) > 0}
+                />
+              </div>
+              {citations > 0 && (
+                <div className="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+                  <span className="font-medium">{f.cdss_citations_type_a ?? 0} Type A</span> ·{" "}
+                  {f.cdss_citations_type_b ?? 0} Type B citations. Type A = a violation posing
+                  immediate risk to health, safety, or personal rights.
+                </div>
+              )}
+
+              {reports.length > 0 && (
+                <div className="mt-5">
+                  <h3 className="text-sm font-semibold">Visit history</h3>
+                  <ul className="mt-2 space-y-3">
+                    {reports.map((r) => (
+                      <li
+                        key={r.id}
+                        className="rounded-xl border border-zinc-100 p-3 dark:border-zinc-800"
+                      >
+                        <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                          <a
+                            href={
+                              f.license_number
+                                ? reportUrl(f.license_number, r.report_index)
+                                : "#"
+                            }
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm font-medium text-blue-600 hover:underline"
+                          >
+                            {titleCase(r.report_title || r.report_type || "Visit report")} →
+                          </a>
+                          <span className="text-xs text-zinc-400">
+                            {fmtDate(r.report_date) ?? "—"}
+                          </span>
+                        </div>
+                        {r.visit_type && (
+                          <span className="mt-1 inline-block rounded bg-zinc-100 px-1.5 py-0.5 text-[11px] font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                            {r.visit_type}
+                          </span>
+                        )}
+                        {r.summary && (
+                          <p className="mt-1.5 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+                            {r.summary}
+                          </p>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-2 text-[11px] text-zinc-400">
+                    Each link opens the full official report. Summaries are excerpts from the
+                    state inspector&apos;s narrative.
+                  </p>
+                </div>
+              )}
+
+              {f.license_number && (
+                <a
+                  href={`https://www.ccld.dss.ca.gov/carefacilitysearch/FacDetail/${f.license_number}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-block text-xs font-medium text-blue-600 hover:underline"
+                >
+                  View the complete state record at CDSS →
+                </a>
+              )}
+              <p className="mt-1 text-[11px] leading-snug text-zinc-400">
+                Inspection and complaint history from the California Dept. of Social Services,
+                Community Care Licensing.
+              </p>
+            </section>
+          )}
         </div>
 
         {/* Sidebar */}
@@ -435,85 +563,6 @@ export default async function FacilityPage({
               {f.licensee && <Row label="Licensee">{titleCase(f.licensee)}</Row>}
             </dl>
           </section>
-
-          {/* CDSS inspections */}
-          {f.cdss_synced_at && (
-            <section className="rounded-xl border border-zinc-200 p-4 dark:border-zinc-800">
-              <div className="mb-2 flex items-center justify-between">
-                <h2 className="text-sm font-semibold">State inspection record</h2>
-                <span className="text-[10px] uppercase tracking-wide text-zinc-400">CA CDSS</span>
-              </div>
-              {f.inspection_score != null && (
-                <div className="mb-3 flex items-center gap-2">
-                  <span className="text-2xl font-semibold">{f.inspection_score}</span>
-                  <div className="min-w-0">
-                    <span
-                      className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${scoreTier(f.inspection_score).chip}`}
-                    >
-                      {scoreTier(f.inspection_score).label}
-                    </span>
-                    <Link
-                      href="/about-our-data#inspection-score"
-                      className="block text-[11px] text-zinc-400 hover:underline"
-                    >
-                      Inspection record score · how it&apos;s calculated
-                    </Link>
-                  </div>
-                </div>
-              )}
-              <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                <Stat label="Last visit" value={fmtDate(f.cdss_last_visit_date) ?? "—"} />
-                <Stat label="Total visits" value={f.cdss_num_visits ?? 0} />
-                <Stat label="Complaints" value={f.cdss_num_complaints ?? 0} />
-                <Stat
-                  label="Substantiated"
-                  value={f.cdss_substantiated_allegations ?? 0}
-                  warn={(f.cdss_substantiated_allegations ?? 0) > 0}
-                />
-              </div>
-              {citations > 0 && (
-                <div className="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:bg-amber-950 dark:text-amber-300">
-                  <span className="font-medium">{f.cdss_citations_type_a ?? 0} Type A</span> ·{" "}
-                  {f.cdss_citations_type_b ?? 0} Type B citations
-                </div>
-              )}
-
-              {reports.length > 0 && (
-                <div className="mt-4 border-t border-zinc-100 pt-3 dark:border-zinc-800">
-                  <h3 className="text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                    Visit history
-                  </h3>
-                  <ul className="mt-2 space-y-1.5 text-xs">
-                    {reports.map((r, i) => (
-                      <li key={i} className="flex items-baseline justify-between gap-2">
-                        <span className="text-zinc-600 dark:text-zinc-400">
-                          {r.report_title || r.report_type || "Visit"}
-                        </span>
-                        <span className="shrink-0 text-zinc-400">
-                          {fmtDate(r.report_date) ?? "—"}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {f.license_number && (
-                <a
-                  href={`https://www.ccld.dss.ca.gov/carefacilitysearch/FacDetail/${f.license_number}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-3 inline-block text-xs font-medium text-blue-600 hover:underline"
-                >
-                  View the official state record →
-                </a>
-              )}
-              <p className="mt-2 text-[11px] leading-snug text-zinc-400">
-                Inspection and complaint history from the California Dept. of Social Services,
-                Community Care Licensing.
-              </p>
-            </section>
-          )}
 
           <Link
             href={`/claim?facility=${f.slug}`}
