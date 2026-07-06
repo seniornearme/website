@@ -39,7 +39,7 @@ export default async function ManageFacilityPage({
 
   const { data: complianceItems } = await supabase
     .from("compliance_items")
-    .select("id, form_key, label, last_completed, due_date, applies")
+    .select("id, form_key, label, last_completed, due_date, applies, document_path")
     .eq("facility_id", id)
     .order("created_at");
 

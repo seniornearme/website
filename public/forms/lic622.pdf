@@ -1,0 +1,2762 @@
+%PDF-1.6
+%ø˜¢˛
+1 0 obj
+<< /AcroForm 3 0 R /Metadata 4 0 R /OpenAction 5 0 R /Outlines 6 0 R /PageLayout /SinglePage /Pages 7 0 R /Perms << /UR3 << /ByteRange [ 0 5684 15218 100325 ] /Contents <30820efb06092a864886f70d010702a0820eec30820ee8020101310b300906052b0e03021a0500300b06092a864886f70d010701a0820db83082041f30820307a003020102020208ea300d06092a864886f70d0101050500305f310b300906035504061302555331163014060355040a130d47656f547275737420496e632e311d301b060355040b131441646f6265205472757374205365727669636573311930170603550403131050726f64756374205365727669636573301e170d3036303632303139343833315a170d3233303130383038303030305a308180312d302b06035504031324415245204163726f6261742050726f647563742076382e30205032332030303032333337311d301b060355040b131441646f626520547275737420536572766963657331233021060355040a131a41646f62652053797374656d7320496e636f72706f7261746564310b300906035504061302555330819f300d06092a864886f70d010101050003818d0030818902818100974434ec7acfa2692c3e6bf74fe5fd741e6dd88c288fc1a033f5370df28268c6aea85c3d3baeea1c02c2391b527c1ed3f63cc652b7b210c79b87c59b7667bfab4d99eb87f1ac399151c543210e531566a4dad106eec5c1f687a12c1a4bd7aa95393a58d43ab9cf24e48a85b555654a6ba587fc5ac02a7428785052eef2034abb0203010001a382014530820141300b0603551d0f04040302078030320603551d1f042b30293027a025a0238621687474703a2f2f63726c2e61646f62652e636f6d2f70726f64537663652e63726c30140603551d25040d300b06092a864886f72f010107300f0603551d130101ff040530030201003081ba0603551d200481b23081af3081ac06092a864886f72f01020330819e30819b06082b0601050507020230818e1a818b596f7520617265206e6f74207065726d697474656420746f207573652074686973204c6963656e736520436572746966696361746520657863657074206173207065726d697474656420627920746865206c6963656e73652061677265656d656e74206163636f6d70616e79696e67207468652041646f6265204163726f62617420736f6674776172652e301a060a2a864886f72f01010701040c300a020101030200b70a0101300d06092a864886f70d0101050500038201010065783dc2e9ed8b816ff38f5f7734b6c2fc4492cca9443ac11b13295ca9c52805049668ead31e16567a5065aec05e0eb231050b6ac645973c6d065cad508da6f8e64e0758d8773425dbf606515c31f89500293f34880dbc1485cad8a59d5ae7466e5bb20a1cc27426c42f47e5b67acec2d9f6107efcf77a08a5d065791b0770d455d1a3885115f406130ea74d0c114714d7798ac37c3f845081ca97cf884e004ce913b407c4f61981d59bdda26300bd616547b5adc4371396f842be7bc3424c1f79327b8ace83909d1da99abb186a015b9d39d88f590082d1fb10d31f0d67c41a85de7e353e4135fc686fb47d1cb5215fc5024abe8920831a15df001800c464eb308204a130820389a00302010202043e1cbd28300d06092a864886f70d01010505003069310b300906035504061302555331233021060355040a131a41646f62652053797374656d7320496e636f72706f7261746564311d301b060355040b131441646f6265205472757374205365727669636573311630140603550403130d41646f626520526f6f74204341301e170d3033303130383233333732335a170d3233303130393030303732335a3069310b300906035504061302555331233021060355040a131a41646f62652053797374656d7320496e636f72706f7261746564311d301b060355040b131441646f6265205472757374205365727669636573311630140603550403130d41646f626520526f6f7420434130820122300d06092a864886f70d01010105000382010f003082010a0282010100cc4f5484f7a7a2e733537f3f9c12886b2c9947677e0f1eb9ad1488f9c310d81df0f0d59f690a2f5935b0cc6ca94c9c15a09fce20bfa0cf54e2e02066453f3986387e9cc48e0722c624f60112b035df55ea6990b0db85371ee24e07b242a16a1369a066ea809111592a9b08795a20442dc9bd73388b3c2fe0431b5db30bf0af351a29feefa692dd814c9d3d598ead313c407e9b913606fce25c8dd18d26d55c45cfaf653fb1aad26296f4a838eaba6042f4f41c4a3515cef84e22560f9518c5f8969f9ffbb0b77825e9806bbdd60af0c674949df30f50db9a77ce4b7083238da0ca7820445c3c5464f1eaa230199fea4c064d06784b5e92df22d2c967b37ad2010203010001a382014f3082014b301106096086480186f842010104040302000730818e0603551d1f048186308183308180a07ea07ca47a3078310b300906035504061302555331233021060355040a131a41646f62652053797374656d7320496e636f72706f7261746564311d301b060355040b131441646f6265205472757374205365727669636573311630140603550403130d41646f626520526f6f74204341310d300b0603550403130443524c31302b0603551d1004243022800f32303033303130383233333732335a810f32303233303130393030303732335a300b0603551d0f040403020106301f0603551d2304183016801482b7384a93aa9b10ef80bbd954e2f10ffb809cde301d0603551d0e0416041482b7384a93aa9b10ef80bbd954e2f10ffb809cde300c0603551d13040530030101ff301d06092a864886f67d0741000410300e1b0856362e303a342e3003020490300d06092a864886f70d0101050500038201010032da9f4375c1fa6fc96fdbab1d36373ebc611936b7023c1d2359986c9eee4d85e754c8201fa7d4bbe2bf00777d246b702f5cc13a7649b5d3e023842a716a22f3c127299815f63590e4044cc38dbc9f611ce7fd248cd144438c16ba9b4da5d4352fbc11cebdf751378d9f90e414f1183fbee9591235f93392f39ee0d56b9a719b994bc871c3e1b16109c4e5fa91f0423a377d34f972e8cdaa621c21e9d5f48210e37b05b62d68560b7e7e922c6f4d72820ced5674b29db9ab2d2b1d105fdb2775708ffd1dd7e202a079e51ce5ffaf6440512d9e9b47db42a57c1fc2a648b0d7be92694da4f62957c5781118dc8751ca13b2629d4f2b32bd31a5c1fa52ab0588c8308204ec308203d4a00302010202043e1cbdcc300d06092a864886f70d01010505003069310b300906035504061302555331233021060355040a131a41646f62652053797374656d7320496e636f72706f7261746564311d301b060355040b131441646f6265205472757374205365727669636573311630140603550403130d41646f626520526f6f74204341301e170d3034303430323138333834355a170d3233303130383038303030305a305f310b300906035504061302555331163014060355040a130d47656f547275737420496e632e311d301b060355040b131441646f6265205472757374205365727669636573311930170603550403131050726f6475637420536572766963657330820122300d06092a864886f70d01010105000382010f003082010a0282010100a65e1f5ab78fb8f13a179a13566af92c2a73a9c30911ecc9b51cff8e0a08bbe6aa5747ee18b44a871c780c1d2ccfe6cc52121cfec6249d46796ec545af57bfda8715aa7ed438e605fa2abbbbcca4948d1b0dfe0f66411b8110af2de2ec409ca8c87cd7580a1fea9d613ce115585285ddb059295986d91adfbe90edceece16a2d006e1ecfb850c625164c7c0fd72b4a5fa186593625b54cfc5de1f27cf4829fca97efd6e416473a16f6fffa5e8600a40b9caab4cd815e12a0960241e7c1f94d56b39e71c54dcb4864ac0ee2764f436444babbdaba633c1c1c17e76b73e9cdc7583a60409071e2be8a80d65ed98ab3c124fc6442f5daab1cf1c21cd1b12359c1cd0203010001a38201a4308201a030120603551d130101ff040830060101ff02010130570603551d200450304e304c06092a864886f72f010203303f303d06082b06010505070201163168747470733a2f2f7777772e61646f62652e636f6d2f6d6973632f706b692f70726f645f737663655f6370732e68746d6c30140603551d25040d300b06092a864886f72f0101073081b20603551d1f0481aa3081a73022a020a01e861c687474703a2f2f63726c2e61646f62652e636f6d2f6364732e63726c308180a07ea07ca47a3078310b300906035504061302555331233021060355040a131a41646f62652053797374656d7320496e636f72706f7261746564311d301b060355040b131441646f6265205472757374205365727669636573311630140603550403130d41646f626520526f6f74204341310d300b0603550403130443524c31300b0603551d0f040403020106301f0603551d2304183016801482b7384a93aa9b10ef80bbd954e2f10ffb809cde301d0603551d0e04160414d0a904d3876d28c7afb863ddaeec4acec44ffef3301906092a864886f67d074100040c300a1b0456362e3003020490300d06092a864886f70d01010505000382010100acaba2d69e9e20f5b36876f20c8a5b4aa3d33790faced79c799634416edd8353fc1b6a88d4dc44fd27706800fa07d0950174c32c71219c0fe782a674dbcf9a0d50008831d6670708c551612d2496e3d91da39afba749103927398862a5ab00777facc5645625aceb900bc0c88c8a2d7fea0f8508371f7113573ec3173a34f58dcb2490e9a685427cf97b78d8144c7c15cde4d4c6816ca4f3bca2db58552988e63f91dbddcf829219113b1ff301368a26a71384a21a7a361be6526c9b4e06d67fc40f4278cb022620db2d9821b8d0c87217df5e318495da44c647f5ef2d3319770e1072bf79ba59a667ad15c0c716e710f95649873a242bc5844307534d7647993182010b308201070201013065305f310b300906035504061302555331163014060355040a130d47656f547275737420496e632e311d301b060355040b131441646f6265205472757374205365727669636573311930170603550403131050726f64756374205365727669636573020208ea300906052b0e03021a0500300d06092a864886f70d010101050004818004dec9fe026a2321d5336971b4877ec1a0bf3aae00ddcf8b5630394bc79d681cc27ef21d71fbeed19bda8547dc6dbea81b136916ae7e90b8b187ae76604a4b0b532a5b6ca724a9d870d4929d1284fa4e6b642593da00669d4de1fab9f315c4153d2cdd1d93d0b8418eddd38c97027e7d759fda6e7b688c6aa2bd7c1398498947000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000> /Filter /Adobe.PPKLite /M (D:20090416080735-07'00') /Name (ARE Acrobat Product v8.0 P23 0002337) /Prop_Build << /App << /Name /Exchange-Pro /OS [ /Win ] /R 524547 /REx (8.1.3) /TrustedMode true >> /Filter << /Date (Oct 14 2008 21:13:46) /Name /Adobe.PPKLite /R 131102 >> /PubSec << /Date (Oct 14 2008 21:11:06) /NonEFontNoWarn true /R 131102 >> >> /Reference [ << /Data 1 0 R /TransformMethod /UR3 /TransformParams << /Annots [ /Create /Delete /Modify /Copy /Import /Export ] /Document [ /FullSave ] /Form [ /Add /FillIn /Delete /SubmitStandalone ] /Signature [ /Modify ] /Type /TransformParams /V /2.2 >> /Type /SigRef >> ] /SubFilter /adbe.pkcs7.detached /Type /Sig >> >> /Type /Catalog /ViewerPreferences << /CenterWindow true >> >>
+endobj
+2 0 obj
+<< /Author (CA Dept. of Social Services) /CreationDate (D:19990610132145Z) /ModDate (D:20090416080735-07'00') /Producer (Acrobat Distiller 4.0 for Macintosh) /Title (LIC 622 ) >>
+endobj
+3 0 obj
+<< /DA (/Helv 0 Tf 0 g ) /DR 8 0 R /Fields [ 9 0 R 10 0 R 11 0 R 12 0 R 13 0 R 14 0 R 15 0 R 16 0 R 17 0 R 18 0 R 19 0 R 20 0 R 21 0 R 22 0 R 23 0 R 24 0 R 25 0 R 26 0 R 27 0 R 28 0 R 29 0 R 30 0 R 31 0 R 32 0 R 33 0 R 34 0 R 35 0 R 36 0 R 37 0 R 38 0 R 39 0 R 40 0 R 41 0 R 42 0 R 43 0 R 44 0 R 45 0 R 46 0 R 47 0 R 48 0 R 49 0 R 50 0 R 51 0 R 52 0 R 53 0 R 54 0 R 55 0 R 56 0 R 57 0 R 58 0 R 59 0 R 60 0 R 61 0 R 62 0 R 63 0 R 64 0 R 65 0 R 66 0 R 67 0 R 68 0 R 69 0 R 70 0 R 71 0 R 72 0 R 73 0 R 74 0 R 75 0 R 76 0 R 77 0 R 78 0 R 79 0 R 80 0 R 81 0 R 82 0 R 83 0 R 84 0 R 85 0 R 86 0 R 87 0 R 88 0 R 89 0 R 90 0 R 91 0 R 92 0 R 93 0 R 94 0 R 95 0 R 96 0 R 97 0 R 98 0 R 99 0 R 100 0 R 101 0 R 102 0 R 103 0 R 104 0 R 105 0 R 106 0 R 107 0 R 108 0 R 109 0 R 110 0 R 111 0 R 112 0 R 113 0 R 114 0 R 115 0 R 116 0 R 117 0 R 118 0 R 119 0 R 120 0 R 121 0 R 122 0 R 123 0 R 124 0 R 125 0 R 126 0 R 127 0 R 128 0 R 129 0 R 130 0 R 131 0 R 132 0 R 133 0 R 134 0 R 135 0 R 136 0 R 137 0 R 138 0 R 139 0 R 140 0 R 141 0 R 142 0 R 143 0 R 144 0 R 145 0 R 146 0 R 147 0 R 148 0 R 149 0 R 150 0 R 151 0 R 152 0 R 153 0 R 154 0 R 155 0 R 156 0 R 157 0 R 158 0 R 159 0 R 160 0 R 161 0 R 162 0 R 163 0 R 164 0 R 165 0 R 166 0 R 167 0 R 168 0 R 169 0 R 170 0 R 171 0 R 172 0 R 173 0 R 174 0 R 175 0 R 176 0 R 177 0 R 178 0 R 179 0 R 180 0 R 181 0 R 182 0 R 183 0 R 184 0 R 185 0 R 186 0 R 187 0 R 188 0 R 189 0 R 190 0 R 191 0 R 192 0 R 193 0 R 194 0 R 195 0 R 196 0 R 197 0 R 198 0 R 199 0 R 200 0 R 201 0 R 202 0 R 203 0 R 204 0 R 205 0 R 206 0 R 207 0 R 208 0 R 209 0 R 210 0 R 211 0 R 212 0 R 213 0 R 214 0 R 215 0 R 216 0 R 217 0 R 218 0 R 219 0 R 220 0 R 221 0 R 222 0 R 223 0 R 224 0 R 225 0 R 226 0 R 227 0 R 228 0 R 229 0 R 230 0 R 231 0 R 232 0 R 233 0 R 234 0 R 235 0 R 236 0 R 237 0 R 238 0 R 239 0 R 240 0 R 241 0 R 242 0 R 243 0 R 244 0 R 245 0 R 246 0 R 247 0 R 248 0 R 249 0 R 250 0 R 251 0 R 252 0 R 253 0 R 254 0 R 255 0 R 256 0 R 257 0 R 258 0 R 259 0 R 260 0 R 261 0 R 262 0 R 263 0 R 264 0 R 265 0 R 266 0 R 267 0 R 268 0 R 269 0 R 270 0 R 271 0 R 272 0 R 273 0 R 274 0 R 275 0 R 276 0 R 277 0 R 278 0 R 279 0 R 280 0 R 281 0 R 282 0 R 283 0 R 284 0 R 285 0 R 286 0 R 287 0 R 288 0 R 289 0 R 290 0 R 291 0 R 292 0 R 293 0 R 294 0 R 295 0 R 296 0 R 297 0 R 298 0 R 299 0 R 300 0 R 301 0 R 302 0 R 303 0 R 304 0 R 305 0 R 306 0 R 307 0 R 308 0 R 309 0 R 310 0 R 311 0 R 312 0 R 313 0 R 314 0 R 315 0 R 316 0 R 317 0 R 318 0 R 319 0 R 320 0 R 321 0 R 322 0 R 323 0 R 324 0 R 325 0 R 326 0 R 327 0 R 328 0 R 329 0 R 330 0 R 331 0 R 332 0 R 333 0 R 334 0 R 335 0 R 336 0 R 337 0 R 338 0 R 339 0 R 340 0 R 341 0 R 342 0 R 343 0 R 344 0 R ] /SigFlags 2 >>
+endobj
+4 0 obj
+<< /Subtype /XML /Type /Metadata /Length 1497 >>
+stream
+<?xpacket begin="Ôªø" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 4.0-c316 44.253921, Sun Oct 01 2006 17:14:39">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description xmlns:pdf="http://ns.adobe.com/pdf/1.3/" rdf:about="">
+         <pdf:Producer>Acrobat Distiller 4.0 for Macintosh</pdf:Producer>
+      </rdf:Description>
+      <rdf:Description xmlns:xap="http://ns.adobe.com/xap/1.0/" rdf:about="">
+         <xap:CreateDate>1999-06-10T13:21:45Z</xap:CreateDate>
+         <xap:ModifyDate>2009-04-16T08:07:35-07:00</xap:ModifyDate>
+         <xap:MetadataDate>2009-04-16T08:07:35-07:00</xap:MetadataDate>
+      </rdf:Description>
+      <rdf:Description xmlns:dc="http://purl.org/dc/elements/1.1/" rdf:about="">
+         <dc:format>application/pdf</dc:format>
+         <dc:title>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">LIC 622 </rdf:li>
+            </rdf:Alt>
+         </dc:title>
+         <dc:creator>
+            <rdf:Seq>
+               <rdf:li>CA Dept. of Social Services</rdf:li>
+            </rdf:Seq>
+         </dc:creator>
+      </rdf:Description>
+      <rdf:Description xmlns:xapMM="http://ns.adobe.com/xap/1.0/mm/" rdf:about="">
+         <xapMM:DocumentID>uuid:5b24442f-3af7-4d72-ba06-046a97b1ff69</xapMM:DocumentID>
+         <xapMM:InstanceID>uuid:1eae78ab-8345-41fa-9858-7448ef38ab88</xapMM:InstanceID>
+      </rdf:Description>
+   </rdf:RDF>
+</x:xmpmeta>
+
+<?xpacket end="w"?>
+
+endstream
+endobj
+5 0 obj
+<< /D [ 345 0 R /Fit ] /S /GoTo >>
+endobj
+6 0 obj
+<< /Count 0 /Type /Outlines >>
+endobj
+7 0 obj
+<< /Count 2 /Kids [ 345 0 R 346 0 R ] /Type /Pages >>
+endobj
+8 0 obj
+<< /Encoding 347 0 R /Font 348 0 R >>
+endobj
+9 0 obj
+<< /DA (/Helv 10 Tf 0 g) /FT /Tx /Kids [ 349 0 R ] /T (facility name1) >>
+endobj
+10 0 obj
+<< /DA (/Helv 10 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 350 0 R ] /T (facility number1) >>
+endobj
+11 0 obj
+<< /DA (/Helv 10 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 351 0 R ] /T (last name1) >>
+endobj
+12 0 obj
+<< /DA (/Helv 10 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 352 0 R ] /T (first name1) >>
+endobj
+13 0 obj
+<< /DA (/Helv 10 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 353 0 R ] /T (middle name1) >>
+endobj
+14 0 obj
+<< /DA (/Helv 10 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 354 0 R ] /T (admin date) >>
+endobj
+15 0 obj
+<< /DA (/Helv 10 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 355 0 R ] /T (atending dr) >>
+endobj
+16 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 10 Tf 0 g) /DR 8 0 R /F 4 /FT /Tx /MK << /R 270 >> /P 345 0 R /Rect [ 464 19 488 153 ] /Subtype /Widget /T (administrator) /Type /Annot >>
+endobj
+17 0 obj
+<< /DA (/Helv 10 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 356 0 R ] /T (med name1) >>
+endobj
+18 0 obj
+<< /DA (/Helv 10 Tf 0 g) /FT /Tx /Kids [ 357 0 R ] /T (strength1) >>
+endobj
+19 0 obj
+<< /DA (/Helv 10 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 358 0 R ] /T (xdate1) >>
+endobj
+20 0 obj
+<< /DA (/Helv 10 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 359 0 R ] /T (fdate1) >>
+endobj
+21 0 obj
+<< /DA (/Helv 10 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 360 0 R ] /T (physician1) >>
+endobj
+22 0 obj
+<< /DA (/Helv 10 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 361 0 R ] /T (perscription1) >>
+endobj
+23 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 362 0 R ] /T (instructions1) >>
+endobj
+24 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 363 0 R ] /T (sdate1) >>
+endobj
+25 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 364 0 R ] /T (refills1) >>
+endobj
+26 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 365 0 R ] /T (pharmacy1) >>
+endobj
+27 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 366 0 R ] /T (med name2) >>
+endobj
+28 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 367 0 R ] /T (strength2) >>
+endobj
+29 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 368 0 R ] /T (instructions2) >>
+endobj
+30 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 369 0 R ] /T (xdate2) >>
+endobj
+31 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 370 0 R ] /T (fdate2) >>
+endobj
+32 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 371 0 R ] /T (sdate2) >>
+endobj
+33 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 372 0 R ] /T (physician2) >>
+endobj
+34 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 373 0 R ] /T (perscription2) >>
+endobj
+35 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 374 0 R ] /T (refills2) >>
+endobj
+36 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 375 0 R ] /T (pharmacy2) >>
+endobj
+37 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 376 0 R ] /T (med name3) >>
+endobj
+38 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 377 0 R ] /T (strength3) >>
+endobj
+39 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 378 0 R ] /T (instructions3) >>
+endobj
+40 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 379 0 R ] /T (xdate3) >>
+endobj
+41 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 380 0 R ] /T (fdate3) >>
+endobj
+42 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 381 0 R ] /T (sdate3) >>
+endobj
+43 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 382 0 R ] /T (physician3) >>
+endobj
+44 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 383 0 R ] /T (perscription3) >>
+endobj
+45 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 384 0 R ] /T (refills3) >>
+endobj
+46 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 385 0 R ] /T (pharmacy3) >>
+endobj
+47 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 386 0 R ] /T (med name4) >>
+endobj
+48 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 387 0 R ] /T (strength4) >>
+endobj
+49 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 388 0 R ] /T (instructions4) >>
+endobj
+50 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 389 0 R ] /T (xdate4) >>
+endobj
+51 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 390 0 R ] /T (fdate4) >>
+endobj
+52 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 391 0 R ] /T (sdate4) >>
+endobj
+53 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 392 0 R ] /T (physician4) >>
+endobj
+54 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 393 0 R ] /T (perscription4) >>
+endobj
+55 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 394 0 R ] /T (refills4) >>
+endobj
+56 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 395 0 R ] /T (pharmacy4) >>
+endobj
+57 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 396 0 R ] /T (med name5) >>
+endobj
+58 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 397 0 R ] /T (strength5) >>
+endobj
+59 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 398 0 R ] /T (instructions5) >>
+endobj
+60 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 399 0 R ] /T (xdate5) >>
+endobj
+61 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 400 0 R ] /T (fdate5) >>
+endobj
+62 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 401 0 R ] /T (sdate5) >>
+endobj
+63 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 402 0 R ] /T (physician5) >>
+endobj
+64 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 403 0 R ] /T (perscription5) >>
+endobj
+65 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 404 0 R ] /T (refills5) >>
+endobj
+66 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 405 0 R ] /T (pharmacy5) >>
+endobj
+67 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 406 0 R ] /T (med name6) >>
+endobj
+68 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 407 0 R ] /T (strength6) >>
+endobj
+69 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 408 0 R ] /T (instructions6) >>
+endobj
+70 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 409 0 R ] /T (xdate6) >>
+endobj
+71 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 410 0 R ] /T (fdate6) >>
+endobj
+72 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 411 0 R ] /T (sdate6) >>
+endobj
+73 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 412 0 R ] /T (physician6) >>
+endobj
+74 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 413 0 R ] /T (perscription6) >>
+endobj
+75 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 414 0 R ] /T (refills6) >>
+endobj
+76 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 415 0 R ] /T (pharmacy6) >>
+endobj
+77 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 416 0 R ] /T (med name7) >>
+endobj
+78 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 417 0 R ] /T (strength7) >>
+endobj
+79 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 418 0 R ] /T (instructions7) >>
+endobj
+80 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 419 0 R ] /T (xdate7) >>
+endobj
+81 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 420 0 R ] /T (fdate7) >>
+endobj
+82 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 421 0 R ] /T (sdate7) >>
+endobj
+83 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 422 0 R ] /T (physician7) >>
+endobj
+84 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 423 0 R ] /T (perscription7) >>
+endobj
+85 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 424 0 R ] /T (refills7) >>
+endobj
+86 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 425 0 R ] /T (pharmacy7) >>
+endobj
+87 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 426 0 R ] /T (med name8) >>
+endobj
+88 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 427 0 R ] /T (strength8) >>
+endobj
+89 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 428 0 R ] /T (instructions8) >>
+endobj
+90 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 429 0 R ] /T (fdate8) >>
+endobj
+91 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 430 0 R ] /T (sdate8) >>
+endobj
+92 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 431 0 R ] /T (physician8) >>
+endobj
+93 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 432 0 R ] /T (perscription8) >>
+endobj
+94 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 433 0 R ] /T (refills8) >>
+endobj
+95 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 434 0 R ] /T (pharmacy8) >>
+endobj
+96 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 435 0 R ] /T (med name9) >>
+endobj
+97 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 436 0 R ] /T (strength9) >>
+endobj
+98 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 437 0 R ] /T (instructions9) >>
+endobj
+99 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 438 0 R ] /T (xdate9) >>
+endobj
+100 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 439 0 R ] /T (fdate9) >>
+endobj
+101 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 440 0 R ] /T (sdate9) >>
+endobj
+102 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 441 0 R ] /T (physician9) >>
+endobj
+103 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 442 0 R ] /T (perscription9) >>
+endobj
+104 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 443 0 R ] /T (refills9) >>
+endobj
+105 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 444 0 R ] /T (pharmacy9) >>
+endobj
+106 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 445 0 R ] /T (med name10) >>
+endobj
+107 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 446 0 R ] /T (strength10) >>
+endobj
+108 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 447 0 R ] /T (instructions10) >>
+endobj
+109 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 448 0 R ] /T (xdate10) >>
+endobj
+110 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 449 0 R ] /T (fdate10) >>
+endobj
+111 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 450 0 R ] /T (sdate10) >>
+endobj
+112 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 451 0 R ] /T (physician10) >>
+endobj
+113 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 452 0 R ] /T (perscription10) >>
+endobj
+114 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 453 0 R ] /T (refills10) >>
+endobj
+115 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 454 0 R ] /T (pharmacy10) >>
+endobj
+116 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 455 0 R ] /T (med name11) >>
+endobj
+117 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 456 0 R ] /T (strength11) >>
+endobj
+118 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 457 0 R ] /T (instructions11) >>
+endobj
+119 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 458 0 R ] /T (xdate11) >>
+endobj
+120 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 459 0 R ] /T (fdate11) >>
+endobj
+121 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 460 0 R ] /T (sdate11) >>
+endobj
+122 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 461 0 R ] /T (physician11) >>
+endobj
+123 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 462 0 R ] /T (perscription11) >>
+endobj
+124 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 463 0 R ] /T (refills11) >>
+endobj
+125 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 464 0 R ] /T (pharmacy11) >>
+endobj
+126 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 465 0 R ] /T (instructions12) >>
+endobj
+127 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 466 0 R ] /T (sdate12) >>
+endobj
+128 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 467 0 R ] /T (physician12) >>
+endobj
+129 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 468 0 R ] /T (perscription12) >>
+endobj
+130 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 469 0 R ] /T (med name12) >>
+endobj
+131 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 470 0 R ] /T (strength12) >>
+endobj
+132 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 471 0 R ] /T (xdate12) >>
+endobj
+133 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 472 0 R ] /T (fdate12) >>
+endobj
+134 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 473 0 R ] /T (refills12) >>
+endobj
+135 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 474 0 R ] /T (pharmacy12) >>
+endobj
+136 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 475 0 R ] /T (med name13) >>
+endobj
+137 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 476 0 R ] /T (strength13) >>
+endobj
+138 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 477 0 R ] /T (instructions13) >>
+endobj
+139 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 478 0 R ] /T (xdate13) >>
+endobj
+140 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 479 0 R ] /T (fdate13) >>
+endobj
+141 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 480 0 R ] /T (sdate13) >>
+endobj
+142 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 481 0 R ] /T (physician13) >>
+endobj
+143 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 482 0 R ] /T (perscription13) >>
+endobj
+144 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 483 0 R ] /T (refills13) >>
+endobj
+145 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 484 0 R ] /T (pharmacy13) >>
+endobj
+146 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 485 0 R ] /T (med name14) >>
+endobj
+147 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 486 0 R ] /T (strength14) >>
+endobj
+148 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 487 0 R ] /T (instructions14) >>
+endobj
+149 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 488 0 R ] /T (xdate14) >>
+endobj
+150 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 489 0 R ] /T (fdate14) >>
+endobj
+151 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 490 0 R ] /T (sdate14) >>
+endobj
+152 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 491 0 R ] /T (physician14) >>
+endobj
+153 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 492 0 R ] /T (perscription14) >>
+endobj
+154 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 493 0 R ] /T (refills14) >>
+endobj
+155 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 494 0 R ] /T (pharmacy14) >>
+endobj
+156 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 495 0 R ] /T (med name15) >>
+endobj
+157 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 496 0 R ] /T (strength15) >>
+endobj
+158 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 497 0 R ] /T (instructions15) >>
+endobj
+159 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 498 0 R ] /T (xdate15) >>
+endobj
+160 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 499 0 R ] /T (fdate15) >>
+endobj
+161 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 500 0 R ] /T (sdate15) >>
+endobj
+162 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 501 0 R ] /T (physician15) >>
+endobj
+163 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 502 0 R ] /T (perscription15) >>
+endobj
+164 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 503 0 R ] /T (refills15) >>
+endobj
+165 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 504 0 R ] /T (pharmacy15) >>
+endobj
+166 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 505 0 R ] /T (med name16) >>
+endobj
+167 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 506 0 R ] /T (strength16) >>
+endobj
+168 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 507 0 R ] /T (instructions16) >>
+endobj
+169 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 508 0 R ] /T (xdate16) >>
+endobj
+170 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 509 0 R ] /T (fdate16) >>
+endobj
+171 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 510 0 R ] /T (sdate16) >>
+endobj
+172 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 511 0 R ] /T (physician16) >>
+endobj
+173 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 512 0 R ] /T (perscription16) >>
+endobj
+174 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 513 0 R ] /T (refills16) >>
+endobj
+175 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 514 0 R ] /T (pharmacy16) >>
+endobj
+176 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /DR 8 0 R /F 4 /FT /Tx /MK << /R 270 >> /P 345 0 R /Rect [ 33 643 60 767 ] /Subtype /Widget /T (med name17) /Type /Annot >>
+endobj
+177 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /DR 8 0 R /F 4 /FT /Tx /MK << /R 270 >> /P 345 0 R /Rect [ 33 578 58 640 ] /Subtype /Widget /T (strength17) /Type /Annot >>
+endobj
+178 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /DR 8 0 R /F 4 /FT /Tx /MK << /R 270 >> /P 345 0 R /Rect [ 33 471 58 574 ] /Subtype /Widget /T (instructions17) /Type /Annot >>
+endobj
+179 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /DR 8 0 R /F 4 /FT /Tx /MK << /R 270 >> /P 345 0 R /Rect [ 33 409 58 466 ] /Subtype /Widget /T (xdate17) /Type /Annot >>
+endobj
+180 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /DR 8 0 R /F 4 /FT /Tx /MK << /R 270 >> /P 345 0 R /Rect [ 33 362 58 406 ] /Subtype /Widget /T (fdate17) /Type /Annot >>
+endobj
+181 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /DR 8 0 R /F 4 /FT /Tx /MK << /R 270 >> /P 345 0 R /Rect [ 33 314 58 358 ] /Subtype /Widget /T (sdate17) /Type /Annot >>
+endobj
+182 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /DR 8 0 R /F 4 /FT /Tx /MK << /R 270 >> /P 345 0 R /Rect [ 33 230 59 309 ] /Subtype /Widget /T (physician17) /Type /Annot >>
+endobj
+183 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /DR 8 0 R /F 4 /FT /Tx /MK << /R 270 >> /P 345 0 R /Rect [ 33 157 59 226 ] /Subtype /Widget /T (perscription17) /Type /Annot >>
+endobj
+184 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /DR 8 0 R /F 4 /FT /Tx /MK << /R 270 >> /P 345 0 R /Rect [ 33 121 59 154 ] /Subtype /Widget /T (refills17) /Type /Annot >>
+endobj
+185 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /DR 8 0 R /F 4 /FT /Tx /MK << /R 270 >> /P 345 0 R /Rect [ 33 22 59 118 ] /Subtype /Widget /T (pharmacy17) /Type /Annot >>
+endobj
+186 0 obj
+<< /DA (/Helv 9 Tf 0 g) /FT /Tx /Kids [ 515 0 R ] /T (med name1 pg2) >>
+endobj
+187 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 516 0 R ] /T (strength1 pg2) >>
+endobj
+188 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 517 0 R ] /T (xdate1 pg2) >>
+endobj
+189 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 518 0 R ] /T (fdate1 pg2) >>
+endobj
+190 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 519 0 R ] /T (sdate1 pg2) >>
+endobj
+191 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 520 0 R ] /T (perscription 1 pg2) >>
+endobj
+192 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 521 0 R ] /T (instructions1 pg2) >>
+endobj
+193 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 522 0 R ] /T (physician1 pg2) >>
+endobj
+194 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 523 0 R ] /T (refills1 pg2) >>
+endobj
+195 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 524 0 R ] /T (pharmacy1 pg2) >>
+endobj
+196 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 525 0 R ] /T (med name2 pg2) >>
+endobj
+197 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 526 0 R ] /T (strength2 pg2) >>
+endobj
+198 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 527 0 R ] /T (instructions2 pg2) >>
+endobj
+199 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 528 0 R ] /T (xdate2 pg2) >>
+endobj
+200 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 529 0 R ] /T (fdate2 pg2) >>
+endobj
+201 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 530 0 R ] /T (sdate2 pg2) >>
+endobj
+202 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 531 0 R ] /T (physician2 pg2) >>
+endobj
+203 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 532 0 R ] /T (perscription2 pg2) >>
+endobj
+204 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 533 0 R ] /T (refills2 pg2) >>
+endobj
+205 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 534 0 R ] /T (pharmacy2 pg2) >>
+endobj
+206 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 535 0 R ] /T (med name3 pg2) >>
+endobj
+207 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 536 0 R ] /T (strength3 pg2) >>
+endobj
+208 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 537 0 R ] /T (instructions3 pg2) >>
+endobj
+209 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 538 0 R ] /T (xdate3 pg2) >>
+endobj
+210 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 539 0 R ] /T (fdate3pg2) >>
+endobj
+211 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 540 0 R ] /T (sdate3 pg2) >>
+endobj
+212 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 541 0 R ] /T (physician3 pg2) >>
+endobj
+213 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 542 0 R ] /T (perscription3 pg2) >>
+endobj
+214 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 543 0 R ] /T (refills3 pg2) >>
+endobj
+215 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 544 0 R ] /T (pharmacy3 pg2) >>
+endobj
+216 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 545 0 R ] /T (med name4 pg2) >>
+endobj
+217 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 546 0 R ] /T (strength4 pg2) >>
+endobj
+218 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 547 0 R ] /T (instructions4 pg2) >>
+endobj
+219 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 548 0 R ] /T (xdate4 pg2) >>
+endobj
+220 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 549 0 R ] /T (fdate4 pg2) >>
+endobj
+221 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 550 0 R ] /T (sdate4 pg2) >>
+endobj
+222 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 551 0 R ] /T (physician4 pg2) >>
+endobj
+223 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 552 0 R ] /T (perscription4 pg2) >>
+endobj
+224 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 553 0 R ] /T (refills4 pg2) >>
+endobj
+225 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 554 0 R ] /T (pharmacy4 pg2) >>
+endobj
+226 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 555 0 R ] /T (med name5 pg2) >>
+endobj
+227 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 556 0 R ] /T (strength5 pg2) >>
+endobj
+228 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 557 0 R ] /T (instructions5 pg2) >>
+endobj
+229 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 558 0 R ] /T (xdate5 pg2) >>
+endobj
+230 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 559 0 R ] /T (fdate5 pg2) >>
+endobj
+231 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 560 0 R ] /T (sdate5 pg2) >>
+endobj
+232 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 561 0 R ] /T (physician5 pg2) >>
+endobj
+233 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 562 0 R ] /T (perscription5 pg2) >>
+endobj
+234 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 563 0 R ] /T (refills5 pg2) >>
+endobj
+235 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 564 0 R ] /T (pharmacy5 pg2) >>
+endobj
+236 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 565 0 R ] /T (med name6 pg2) >>
+endobj
+237 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 566 0 R ] /T (strength6 pg2) >>
+endobj
+238 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 567 0 R ] /T (instructions6 pg2) >>
+endobj
+239 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 568 0 R ] /T (xdate6 pg2) >>
+endobj
+240 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 569 0 R ] /T (fdate6 pg2) >>
+endobj
+241 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 570 0 R ] /T (sdate6 pg2) >>
+endobj
+242 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 571 0 R ] /T (physician6 pg2) >>
+endobj
+243 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 572 0 R ] /T (perscription6 pg2) >>
+endobj
+244 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 573 0 R ] /T (refills6 pg2) >>
+endobj
+245 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 574 0 R ] /T (pharmacy6 pg2) >>
+endobj
+246 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 575 0 R ] /T (med name7 pg2) >>
+endobj
+247 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 576 0 R ] /T (strength7 pg2) >>
+endobj
+248 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 577 0 R ] /T (instructions7 pg2) >>
+endobj
+249 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 578 0 R ] /T (xdate7 pg2) >>
+endobj
+250 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 579 0 R ] /T (fdate7 pg2) >>
+endobj
+251 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 580 0 R ] /T (sdate7 pg2) >>
+endobj
+252 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 581 0 R ] /T (physician7 pg2) >>
+endobj
+253 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 582 0 R ] /T (perscription7 pg2) >>
+endobj
+254 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 583 0 R ] /T (refills7 pg2) >>
+endobj
+255 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 584 0 R ] /T (pharmacy7 pg2) >>
+endobj
+256 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 585 0 R ] /T (med name8 pg2) >>
+endobj
+257 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 586 0 R ] /T (strength8 pg2) >>
+endobj
+258 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 587 0 R ] /T (instructions8 pg2) >>
+endobj
+259 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 588 0 R ] /T (xdate8 pg2) >>
+endobj
+260 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 589 0 R ] /T (fdate8 pg2) >>
+endobj
+261 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 590 0 R ] /T (sdate8 pg2) >>
+endobj
+262 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 591 0 R ] /T (physician8 pg2) >>
+endobj
+263 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 592 0 R ] /T (perscription8 pg2) >>
+endobj
+264 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 593 0 R ] /T (refills8 pg2) >>
+endobj
+265 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 594 0 R ] /T (pharmacy8 pg2) >>
+endobj
+266 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 595 0 R ] /T (med name9 pg2) >>
+endobj
+267 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 596 0 R ] /T (strength9 pg2) >>
+endobj
+268 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 597 0 R ] /T (instructions9 pg2) >>
+endobj
+269 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 598 0 R ] /T (xdate9 pg2) >>
+endobj
+270 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 599 0 R ] /T (fdate9 pg2) >>
+endobj
+271 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 600 0 R ] /T (sdate9 pg2) >>
+endobj
+272 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 601 0 R ] /T (physician9 pg2) >>
+endobj
+273 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 602 0 R ] /T (perscription9 pg2) >>
+endobj
+274 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 603 0 R ] /T (refills9 pg2) >>
+endobj
+275 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 604 0 R ] /T (pharmacy9 pg2) >>
+endobj
+276 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 605 0 R ] /T (med name10 pg2) >>
+endobj
+277 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 606 0 R ] /T (strength10 pg2) >>
+endobj
+278 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 607 0 R ] /T (instructions10 pg2) >>
+endobj
+279 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 608 0 R ] /T (xdate10 pg2) >>
+endobj
+280 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 609 0 R ] /T (fdate10 pg2) >>
+endobj
+281 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 610 0 R ] /T (sdate10 pg2) >>
+endobj
+282 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 611 0 R ] /T (physician10 pg2) >>
+endobj
+283 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 612 0 R ] /T (perscription10 pg2) >>
+endobj
+284 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 613 0 R ] /T (refills10 pg2) >>
+endobj
+285 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 614 0 R ] /T (pharmacy10 pg2) >>
+endobj
+286 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /DR 8 0 R /F 4 /FT /Tx /MK << /R 270 >> /P 346 0 R /Rect [ 299.072 642.479 323.123 764 ] /Subtype /Widget /T (med name11 pg2) /Type /Annot >>
+endobj
+287 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /DR 8 0 R /F 4 /FT /Tx /MK << /R 270 >> /P 346 0 R /Rect [ 299.072 312.696 323.123 357 ] /Subtype /Widget /T (sdate11pg2) /Type /Annot >>
+endobj
+288 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /DR 8 0 R /F 4 /FT /Tx /MK << /R 270 >> /P 346 0 R /Rect [ 299.072 228.986 323.123 310 ] /Subtype /Widget /T (physician11 pg2) /Type /Annot >>
+endobj
+289 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /DR 8 0 R /F 4 /FT /Tx /MK << /R 270 >> /P 346 0 R /Rect [ 299.072 156.645 323.123 225 ] /Subtype /Widget /T (perscription11 pg2) /Type /Annot >>
+endobj
+290 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /DR 8 0 R /F 4 /FT /Tx /MK << /R 270 >> /P 346 0 R /Rect [ 299.072 119.574 323.123 152.486 ] /Subtype /Widget /T (refills11 pg2) /Type /Annot >>
+endobj
+291 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 615 0 R ] /T (instructions11 pg2) >>
+endobj
+292 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 616 0 R ] /T (strength11 pg2) >>
+endobj
+293 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 617 0 R ] /T (xdate11 pg2) >>
+endobj
+294 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 618 0 R ] /T (fdate12 pg2 pg2) >>
+endobj
+295 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 619 0 R ] /T (fdate11 pg2) >>
+endobj
+296 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 620 0 R ] /T (pharmacy11 pg2) >>
+endobj
+297 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 621 0 R ] /T (med name 12 pg2) >>
+endobj
+298 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 622 0 R ] /T (strength12 pg2) >>
+endobj
+299 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 623 0 R ] /T (perscription 12 pg2) >>
+endobj
+300 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 624 0 R ] /T (ddate1 pg2) >>
+endobj
+301 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 625 0 R ] /T (pharmacy12 pg2) >>
+endobj
+302 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 626 0 R ] /T (med name 13 pg2) >>
+endobj
+303 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 627 0 R ] /T (strength13 pg2) >>
+endobj
+304 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 628 0 R ] /T (fdate13 pg2 pg2) >>
+endobj
+305 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 629 0 R ] /T (perscription 13 pg2) >>
+endobj
+306 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 630 0 R ] /T (ddate2 pg2) >>
+endobj
+307 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 631 0 R ] /T (pharmacy13 pg2) >>
+endobj
+308 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 632 0 R ] /T (med name 14 pg2) >>
+endobj
+309 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 633 0 R ] /T (strength14 pg2) >>
+endobj
+310 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 634 0 R ] /T (fdate14 pg2 pg2) >>
+endobj
+311 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 635 0 R ] /T (perscription 14 pg2) >>
+endobj
+312 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 636 0 R ] /T (ddate3 pg2) >>
+endobj
+313 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 637 0 R ] /T (pharmacy14 pg2) >>
+endobj
+314 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 638 0 R ] /T (med name 15 pg2) >>
+endobj
+315 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 639 0 R ] /T (strength15 pg2) >>
+endobj
+316 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 640 0 R ] /T (fdate15 pg2 pg2) >>
+endobj
+317 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 641 0 R ] /T (perscription 15 pg2) >>
+endobj
+318 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 642 0 R ] /T (ddate4 pg2) >>
+endobj
+319 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 643 0 R ] /T (pharmacy15 pg2) >>
+endobj
+320 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 644 0 R ] /T (med name 16 pg2) >>
+endobj
+321 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 645 0 R ] /T (strength16 pg2) >>
+endobj
+322 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 646 0 R ] /T (fdate16 pg2 pg2) >>
+endobj
+323 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 647 0 R ] /T (perscription 16 pg2) >>
+endobj
+324 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 648 0 R ] /T (ddate5 pg2) >>
+endobj
+325 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 649 0 R ] /T (pharmacy16 pg2) >>
+endobj
+326 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 650 0 R ] /T (med name 17 pg2) >>
+endobj
+327 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 651 0 R ] /T (strength17 pg2) >>
+endobj
+328 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 652 0 R ] /T (fdate17 pg2 pg2) >>
+endobj
+329 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 653 0 R ] /T (perscription 17 pg2) >>
+endobj
+330 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 654 0 R ] /T (ddate6 pg2) >>
+endobj
+331 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 655 0 R ] /T (pharmacy17 pg2) >>
+endobj
+332 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 656 0 R ] /T (med name 18 pg2) >>
+endobj
+333 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 657 0 R ] /T (strength18 pg2) >>
+endobj
+334 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 658 0 R ] /T (fdate18 pg2 pg2) >>
+endobj
+335 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 659 0 R ] /T (perscription 18 pg2) >>
+endobj
+336 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 660 0 R ] /T (ddate7 pg2) >>
+endobj
+337 0 obj
+<< /DA (/Helv 9 Tf 0 g) /DR 8 0 R /FT /Tx /Kids [ 661 0 R ] /T (pharmacy18 pg2) >>
+endobj
+338 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /DR 8 0 R /F 4 /FT /Tx /MK << /R 270 >> /P 346 0 R /Rect [ 34 625.949 58 766.949 ] /Subtype /Widget /T (med name 19 pg2) /Type /Annot >>
+endobj
+339 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /DR 8 0 R /F 4 /FT /Tx /MK << /R 270 >> /P 346 0 R /Rect [ 34 565.378 57 622.378 ] /Subtype /Widget /T (strength19 pg2) /Type /Annot >>
+endobj
+340 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /DR 8 0 R /F 4 /FT /Tx /MK << /R 270 >> /P 346 0 R /Rect [ 34 495.352 59 560.352 ] /Subtype /Widget /T (fdate19 pg2 pg2) /Type /Annot >>
+endobj
+341 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /DR 8 0 R /F 4 /FT /Tx /MK << /R 270 >> /P 346 0 R /Rect [ 34 421.73 59 488.73 ] /Subtype /Widget /T (perscription 19 pg2) /Type /Annot >>
+endobj
+342 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /DR 8 0 R /F 4 /FT /Tx /MK << /R 270 >> /P 346 0 R /Rect [ 34 373.578 58 417.578 ] /Subtype /Widget /T (ddate8 pg2) /Type /Annot >>
+endobj
+343 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /DR 8 0 R /F 4 /FT /Tx /MK << /R 270 >> /P 346 0 R /Rect [ 34 254.21 59 369.21 ] /Subtype /Widget /T (pharmacy19pg2) /Type /Annot >>
+endobj
+344 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /DR 8 0 R /F 4 /FT /Tx /MK << /R 270 >> /P 345 0 R /Rect [ 251 410 276 467 ] /Subtype /Widget /T (xdate8) /Type /Annot >>
+endobj
+345 0 obj
+<< /Annots 662 0 R /Contents 663 0 R /CropBox [ 0 0 612 792 ] /MediaBox [ 0 0 612 792 ] /Parent 7 0 R /Resources 664 0 R /Rotate -90 /Type /Page >>
+endobj
+346 0 obj
+<< /Annots 665 0 R /Contents 666 0 R /CropBox [ 0 0 612 792 ] /MediaBox [ 0 0 612 792 ] /Parent 7 0 R /Resources 667 0 R /Rotate -90 /Type /Page >>
+endobj
+347 0 obj
+<< /PDFDocEncoding 668 0 R >>
+endobj
+348 0 obj
+<< /Helv 669 0 R /ZaDb 670 0 R >>
+endobj
+349 0 obj
+<< /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 9 0 R /Rect [ 511 18 537 153 ] /Subtype /Widget /Type /Annot >>
+endobj
+350 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 10 0 R /Rect [ 488 19 514 154 ] /Subtype /Widget /Type /Annot >>
+endobj
+351 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 11 0 R /Rect [ 464 629 490 764 ] /Subtype /Widget /Type /Annot >>
+endobj
+352 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 12 0 R /Rect [ 463 513 489 627 ] /Subtype /Widget /Type /Annot >>
+endobj
+353 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 13 0 R /Rect [ 463 419 488 496 ] /Subtype /Widget /Type /Annot >>
+endobj
+354 0 obj
+<< /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 14 0 R /Rect [ 464 313 488 405 ] /Subtype /Widget /Type /Annot >>
+endobj
+355 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 15 0 R /Rect [ 463 159 487 310 ] /Subtype /Widget /Type /Annot >>
+endobj
+356 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /F 4 /MK << /R 270 >> /P 345 0 R /Parent 17 0 R /Rect [ 417 643 444 767 ] /Subtype /Widget /Type /Annot >>
+endobj
+357 0 obj
+<< /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /F 4 /MK << /R 270 >> /P 345 0 R /Parent 18 0 R /Rect [ 417 578 442 640 ] /Subtype /Widget /Type /Annot >>
+endobj
+358 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /F 4 /MK << /R 270 >> /P 345 0 R /Parent 19 0 R /Rect [ 417 409 442 466 ] /Subtype /Widget /Type /Annot >>
+endobj
+359 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /F 4 /MK << /R 270 >> /P 345 0 R /Parent 20 0 R /Rect [ 417 362 442 406 ] /Subtype /Widget /Type /Annot >>
+endobj
+360 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /F 4 /MK << /R 270 >> /P 345 0 R /Parent 21 0 R /Rect [ 417 230 443 309 ] /Subtype /Widget /Type /Annot >>
+endobj
+361 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /DA (/Helv 9 Tf 0 g) /F 4 /MK << /R 270 >> /P 345 0 R /Parent 22 0 R /Rect [ 417 157 443 226 ] /Subtype /Widget /Type /Annot >>
+endobj
+362 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 23 0 R /Rect [ 417 469 442 574 ] /Subtype /Widget /Type /Annot >>
+endobj
+363 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 24 0 R /Rect [ 417 314 442 358 ] /Subtype /Widget /Type /Annot >>
+endobj
+364 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 25 0 R /Rect [ 417 121 443 154 ] /Subtype /Widget /Type /Annot >>
+endobj
+365 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 26 0 R /Rect [ 417 22 443 118 ] /Subtype /Widget /Type /Annot >>
+endobj
+366 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 27 0 R /Rect [ 393 643 420 767 ] /Subtype /Widget /Type /Annot >>
+endobj
+367 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 28 0 R /Rect [ 393 578 418 640 ] /Subtype /Widget /Type /Annot >>
+endobj
+368 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 29 0 R /Rect [ 393 469 418 574 ] /Subtype /Widget /Type /Annot >>
+endobj
+369 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 30 0 R /Rect [ 393 409 418 466 ] /Subtype /Widget /Type /Annot >>
+endobj
+370 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 31 0 R /Rect [ 393 362 418 406 ] /Subtype /Widget /Type /Annot >>
+endobj
+371 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 32 0 R /Rect [ 393 314 418 358 ] /Subtype /Widget /Type /Annot >>
+endobj
+372 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 33 0 R /Rect [ 393 230 419 309 ] /Subtype /Widget /Type /Annot >>
+endobj
+373 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 34 0 R /Rect [ 393 157 419 226 ] /Subtype /Widget /Type /Annot >>
+endobj
+374 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 35 0 R /Rect [ 393 121 419 154 ] /Subtype /Widget /Type /Annot >>
+endobj
+375 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 36 0 R /Rect [ 393 22 419 118 ] /Subtype /Widget /Type /Annot >>
+endobj
+376 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 37 0 R /Rect [ 369 643 396 767 ] /Subtype /Widget /Type /Annot >>
+endobj
+377 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 38 0 R /Rect [ 369 578 394 640 ] /Subtype /Widget /Type /Annot >>
+endobj
+378 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 39 0 R /Rect [ 369 469 394 574 ] /Subtype /Widget /Type /Annot >>
+endobj
+379 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 40 0 R /Rect [ 369 409 394 466 ] /Subtype /Widget /Type /Annot >>
+endobj
+380 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 41 0 R /Rect [ 369 362 394 406 ] /Subtype /Widget /Type /Annot >>
+endobj
+381 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 42 0 R /Rect [ 369 314 394 358 ] /Subtype /Widget /Type /Annot >>
+endobj
+382 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 43 0 R /Rect [ 369 230 395 309 ] /Subtype /Widget /Type /Annot >>
+endobj
+383 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 44 0 R /Rect [ 369 157 395 226 ] /Subtype /Widget /Type /Annot >>
+endobj
+384 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 45 0 R /Rect [ 369 121 395 154 ] /Subtype /Widget /Type /Annot >>
+endobj
+385 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 46 0 R /Rect [ 369 22 395 118 ] /Subtype /Widget /Type /Annot >>
+endobj
+386 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 47 0 R /Rect [ 344 643 371 767 ] /Subtype /Widget /Type /Annot >>
+endobj
+387 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 48 0 R /Rect [ 345 578 370 640 ] /Subtype /Widget /Type /Annot >>
+endobj
+388 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 49 0 R /Rect [ 346 469 371 574 ] /Subtype /Widget /Type /Annot >>
+endobj
+389 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 50 0 R /Rect [ 345 409 370 466 ] /Subtype /Widget /Type /Annot >>
+endobj
+390 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 51 0 R /Rect [ 346 362 371 406 ] /Subtype /Widget /Type /Annot >>
+endobj
+391 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 52 0 R /Rect [ 346 314 371 358 ] /Subtype /Widget /Type /Annot >>
+endobj
+392 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 53 0 R /Rect [ 345 230 371 309 ] /Subtype /Widget /Type /Annot >>
+endobj
+393 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 54 0 R /Rect [ 347 157 373 226 ] /Subtype /Widget /Type /Annot >>
+endobj
+394 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 55 0 R /Rect [ 345 121 371 154 ] /Subtype /Widget /Type /Annot >>
+endobj
+395 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 56 0 R /Rect [ 345 22 371 118 ] /Subtype /Widget /Type /Annot >>
+endobj
+396 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 57 0 R /Rect [ 320 643 347 767 ] /Subtype /Widget /Type /Annot >>
+endobj
+397 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 58 0 R /Rect [ 320 578 345 640 ] /Subtype /Widget /Type /Annot >>
+endobj
+398 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 59 0 R /Rect [ 320 469 345 574 ] /Subtype /Widget /Type /Annot >>
+endobj
+399 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 60 0 R /Rect [ 320 409 345 466 ] /Subtype /Widget /Type /Annot >>
+endobj
+400 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 61 0 R /Rect [ 320 362 345 406 ] /Subtype /Widget /Type /Annot >>
+endobj
+401 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 62 0 R /Rect [ 320 314 345 358 ] /Subtype /Widget /Type /Annot >>
+endobj
+402 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 63 0 R /Rect [ 320 230 346 309 ] /Subtype /Widget /Type /Annot >>
+endobj
+403 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 64 0 R /Rect [ 320 157 346 226 ] /Subtype /Widget /Type /Annot >>
+endobj
+404 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 65 0 R /Rect [ 320 121 346 154 ] /Subtype /Widget /Type /Annot >>
+endobj
+405 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 66 0 R /Rect [ 320 22 346 118 ] /Subtype /Widget /Type /Annot >>
+endobj
+406 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 67 0 R /Rect [ 298 643 325 767 ] /Subtype /Widget /Type /Annot >>
+endobj
+407 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 68 0 R /Rect [ 298 578 323 640 ] /Subtype /Widget /Type /Annot >>
+endobj
+408 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 69 0 R /Rect [ 298 469 323 574 ] /Subtype /Widget /Type /Annot >>
+endobj
+409 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 70 0 R /Rect [ 298 409 323 466 ] /Subtype /Widget /Type /Annot >>
+endobj
+410 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 71 0 R /Rect [ 298 362 323 406 ] /Subtype /Widget /Type /Annot >>
+endobj
+411 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 72 0 R /Rect [ 298 314 323 358 ] /Subtype /Widget /Type /Annot >>
+endobj
+412 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 73 0 R /Rect [ 298 230 324 309 ] /Subtype /Widget /Type /Annot >>
+endobj
+413 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 74 0 R /Rect [ 298 157 324 226 ] /Subtype /Widget /Type /Annot >>
+endobj
+414 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 75 0 R /Rect [ 298 121 324 154 ] /Subtype /Widget /Type /Annot >>
+endobj
+415 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 76 0 R /Rect [ 298 22 324 118 ] /Subtype /Widget /Type /Annot >>
+endobj
+416 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 77 0 R /Rect [ 273 643 300 767 ] /Subtype /Widget /Type /Annot >>
+endobj
+417 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 78 0 R /Rect [ 273 578 298 640 ] /Subtype /Widget /Type /Annot >>
+endobj
+418 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 79 0 R /Rect [ 273 469 298 574 ] /Subtype /Widget /Type /Annot >>
+endobj
+419 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 80 0 R /Rect [ 273 409 298 466 ] /Subtype /Widget /Type /Annot >>
+endobj
+420 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 81 0 R /Rect [ 273 362 298 406 ] /Subtype /Widget /Type /Annot >>
+endobj
+421 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 82 0 R /Rect [ 273 314 298 358 ] /Subtype /Widget /Type /Annot >>
+endobj
+422 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 83 0 R /Rect [ 273 230 299 309 ] /Subtype /Widget /Type /Annot >>
+endobj
+423 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 84 0 R /Rect [ 273 157 299 226 ] /Subtype /Widget /Type /Annot >>
+endobj
+424 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 85 0 R /Rect [ 273 121 299 154 ] /Subtype /Widget /Type /Annot >>
+endobj
+425 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 86 0 R /Rect [ 273 22 299 118 ] /Subtype /Widget /Type /Annot >>
+endobj
+426 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 87 0 R /Rect [ 249 643 276 767 ] /Subtype /Widget /Type /Annot >>
+endobj
+427 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 88 0 R /Rect [ 249 578 274 640 ] /Subtype /Widget /Type /Annot >>
+endobj
+428 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 89 0 R /Rect [ 249 469 274 574 ] /Subtype /Widget /Type /Annot >>
+endobj
+429 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 90 0 R /Rect [ 249 362 274 406 ] /Subtype /Widget /Type /Annot >>
+endobj
+430 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 91 0 R /Rect [ 249 314 274 358 ] /Subtype /Widget /Type /Annot >>
+endobj
+431 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 92 0 R /Rect [ 249 230 275 309 ] /Subtype /Widget /Type /Annot >>
+endobj
+432 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 93 0 R /Rect [ 249 157 275 226 ] /Subtype /Widget /Type /Annot >>
+endobj
+433 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 94 0 R /Rect [ 249 121 275 154 ] /Subtype /Widget /Type /Annot >>
+endobj
+434 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 95 0 R /Rect [ 249 22 275 118 ] /Subtype /Widget /Type /Annot >>
+endobj
+435 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 96 0 R /Rect [ 225 643 252 767 ] /Subtype /Widget /Type /Annot >>
+endobj
+436 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 97 0 R /Rect [ 225 578 250 640 ] /Subtype /Widget /Type /Annot >>
+endobj
+437 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 98 0 R /Rect [ 225 469 250 574 ] /Subtype /Widget /Type /Annot >>
+endobj
+438 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 99 0 R /Rect [ 225 409 250 466 ] /Subtype /Widget /Type /Annot >>
+endobj
+439 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 100 0 R /Rect [ 225 362 250 406 ] /Subtype /Widget /Type /Annot >>
+endobj
+440 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 101 0 R /Rect [ 225 314 250 358 ] /Subtype /Widget /Type /Annot >>
+endobj
+441 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 102 0 R /Rect [ 225 230 251 309 ] /Subtype /Widget /Type /Annot >>
+endobj
+442 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 103 0 R /Rect [ 225 157 251 226 ] /Subtype /Widget /Type /Annot >>
+endobj
+443 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 104 0 R /Rect [ 225 121 251 154 ] /Subtype /Widget /Type /Annot >>
+endobj
+444 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 105 0 R /Rect [ 225 22 251 118 ] /Subtype /Widget /Type /Annot >>
+endobj
+445 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 106 0 R /Rect [ 202 643 229 767 ] /Subtype /Widget /Type /Annot >>
+endobj
+446 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 107 0 R /Rect [ 202 578 227 640 ] /Subtype /Widget /Type /Annot >>
+endobj
+447 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 108 0 R /Rect [ 202 469 227 574 ] /Subtype /Widget /Type /Annot >>
+endobj
+448 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 109 0 R /Rect [ 202 409 227 466 ] /Subtype /Widget /Type /Annot >>
+endobj
+449 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 110 0 R /Rect [ 202 362 227 406 ] /Subtype /Widget /Type /Annot >>
+endobj
+450 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 111 0 R /Rect [ 202 314 227 358 ] /Subtype /Widget /Type /Annot >>
+endobj
+451 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 112 0 R /Rect [ 202 230 228 309 ] /Subtype /Widget /Type /Annot >>
+endobj
+452 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 113 0 R /Rect [ 202 157 228 226 ] /Subtype /Widget /Type /Annot >>
+endobj
+453 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 114 0 R /Rect [ 202 121 228 154 ] /Subtype /Widget /Type /Annot >>
+endobj
+454 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 115 0 R /Rect [ 202 22 228 118 ] /Subtype /Widget /Type /Annot >>
+endobj
+455 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 116 0 R /Rect [ 177 643 204 767 ] /Subtype /Widget /Type /Annot >>
+endobj
+456 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 117 0 R /Rect [ 178 578 203 640 ] /Subtype /Widget /Type /Annot >>
+endobj
+457 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 118 0 R /Rect [ 178 469 203 574 ] /Subtype /Widget /Type /Annot >>
+endobj
+458 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 119 0 R /Rect [ 178 409 203 466 ] /Subtype /Widget /Type /Annot >>
+endobj
+459 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 120 0 R /Rect [ 179 362 204 406 ] /Subtype /Widget /Type /Annot >>
+endobj
+460 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 121 0 R /Rect [ 178 314 203 358 ] /Subtype /Widget /Type /Annot >>
+endobj
+461 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 122 0 R /Rect [ 177 230 203 309 ] /Subtype /Widget /Type /Annot >>
+endobj
+462 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 123 0 R /Rect [ 179 157 205 226 ] /Subtype /Widget /Type /Annot >>
+endobj
+463 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 124 0 R /Rect [ 179 121 205 154 ] /Subtype /Widget /Type /Annot >>
+endobj
+464 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 125 0 R /Rect [ 177 22 203 118 ] /Subtype /Widget /Type /Annot >>
+endobj
+465 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 126 0 R /Rect [ 153 469 178 574 ] /Subtype /Widget /Type /Annot >>
+endobj
+466 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 127 0 R /Rect [ 153 314 178 358 ] /Subtype /Widget /Type /Annot >>
+endobj
+467 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 128 0 R /Rect [ 153 230 179 309 ] /Subtype /Widget /Type /Annot >>
+endobj
+468 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 129 0 R /Rect [ 153 157 179 226 ] /Subtype /Widget /Type /Annot >>
+endobj
+469 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 130 0 R /Rect [ 153 643 180 767 ] /Subtype /Widget /Type /Annot >>
+endobj
+470 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 131 0 R /Rect [ 153 578 178 640 ] /Subtype /Widget /Type /Annot >>
+endobj
+471 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 132 0 R /Rect [ 153 409 178 466 ] /Subtype /Widget /Type /Annot >>
+endobj
+472 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 133 0 R /Rect [ 153 362 178 406 ] /Subtype /Widget /Type /Annot >>
+endobj
+473 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 134 0 R /Rect [ 153 121 179 154 ] /Subtype /Widget /Type /Annot >>
+endobj
+474 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 135 0 R /Rect [ 153 22 179 118 ] /Subtype /Widget /Type /Annot >>
+endobj
+475 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 136 0 R /Rect [ 129 643 156 767 ] /Subtype /Widget /Type /Annot >>
+endobj
+476 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 137 0 R /Rect [ 129 578 154 640 ] /Subtype /Widget /Type /Annot >>
+endobj
+477 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 138 0 R /Rect [ 129 471 154 574 ] /Subtype /Widget /Type /Annot >>
+endobj
+478 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 139 0 R /Rect [ 129 409 154 466 ] /Subtype /Widget /Type /Annot >>
+endobj
+479 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 140 0 R /Rect [ 129 362 154 406 ] /Subtype /Widget /Type /Annot >>
+endobj
+480 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 141 0 R /Rect [ 129 314 154 358 ] /Subtype /Widget /Type /Annot >>
+endobj
+481 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 142 0 R /Rect [ 129 230 155 309 ] /Subtype /Widget /Type /Annot >>
+endobj
+482 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 143 0 R /Rect [ 129 157 155 226 ] /Subtype /Widget /Type /Annot >>
+endobj
+483 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 144 0 R /Rect [ 129 121 155 154 ] /Subtype /Widget /Type /Annot >>
+endobj
+484 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 145 0 R /Rect [ 129 22 155 118 ] /Subtype /Widget /Type /Annot >>
+endobj
+485 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 146 0 R /Rect [ 105 643 132 767 ] /Subtype /Widget /Type /Annot >>
+endobj
+486 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 147 0 R /Rect [ 105 578 130 640 ] /Subtype /Widget /Type /Annot >>
+endobj
+487 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 148 0 R /Rect [ 105 471 130 574 ] /Subtype /Widget /Type /Annot >>
+endobj
+488 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 149 0 R /Rect [ 105 409 130 466 ] /Subtype /Widget /Type /Annot >>
+endobj
+489 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 150 0 R /Rect [ 105 362 130 406 ] /Subtype /Widget /Type /Annot >>
+endobj
+490 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 151 0 R /Rect [ 105 314 130 358 ] /Subtype /Widget /Type /Annot >>
+endobj
+491 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 152 0 R /Rect [ 105 230 131 309 ] /Subtype /Widget /Type /Annot >>
+endobj
+492 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 153 0 R /Rect [ 105 157 131 226 ] /Subtype /Widget /Type /Annot >>
+endobj
+493 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 154 0 R /Rect [ 105 121 131 154 ] /Subtype /Widget /Type /Annot >>
+endobj
+494 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 155 0 R /Rect [ 105 22 131 118 ] /Subtype /Widget /Type /Annot >>
+endobj
+495 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 156 0 R /Rect [ 81 643 108 767 ] /Subtype /Widget /Type /Annot >>
+endobj
+496 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 157 0 R /Rect [ 81 578 106 640 ] /Subtype /Widget /Type /Annot >>
+endobj
+497 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 158 0 R /Rect [ 81 471 106 574 ] /Subtype /Widget /Type /Annot >>
+endobj
+498 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 159 0 R /Rect [ 81 409 106 466 ] /Subtype /Widget /Type /Annot >>
+endobj
+499 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 160 0 R /Rect [ 81 362 106 406 ] /Subtype /Widget /Type /Annot >>
+endobj
+500 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 161 0 R /Rect [ 81 314 106 358 ] /Subtype /Widget /Type /Annot >>
+endobj
+501 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 162 0 R /Rect [ 81 230 107 309 ] /Subtype /Widget /Type /Annot >>
+endobj
+502 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 163 0 R /Rect [ 81 157 107 226 ] /Subtype /Widget /Type /Annot >>
+endobj
+503 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 164 0 R /Rect [ 81 121 107 154 ] /Subtype /Widget /Type /Annot >>
+endobj
+504 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 165 0 R /Rect [ 81 22 107 118 ] /Subtype /Widget /Type /Annot >>
+endobj
+505 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 166 0 R /Rect [ 57 643 84 767 ] /Subtype /Widget /Type /Annot >>
+endobj
+506 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 167 0 R /Rect [ 57 578 82 640 ] /Subtype /Widget /Type /Annot >>
+endobj
+507 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 168 0 R /Rect [ 57 471 82 574 ] /Subtype /Widget /Type /Annot >>
+endobj
+508 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 169 0 R /Rect [ 57 409 82 466 ] /Subtype /Widget /Type /Annot >>
+endobj
+509 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 170 0 R /Rect [ 57 362 82 406 ] /Subtype /Widget /Type /Annot >>
+endobj
+510 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 171 0 R /Rect [ 57 314 82 358 ] /Subtype /Widget /Type /Annot >>
+endobj
+511 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 172 0 R /Rect [ 57 230 83 309 ] /Subtype /Widget /Type /Annot >>
+endobj
+512 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 173 0 R /Rect [ 57 157 83 226 ] /Subtype /Widget /Type /Annot >>
+endobj
+513 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 174 0 R /Rect [ 57 121 83 154 ] /Subtype /Widget /Type /Annot >>
+endobj
+514 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 345 0 R /Parent 175 0 R /Rect [ 57 22 83 118 ] /Subtype /Widget /Type /Annot >>
+endobj
+515 0 obj
+<< /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 186 0 R /Rect [ 539 643 564 764 ] /Subtype /Widget /Type /Annot >>
+endobj
+516 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 187 0 R /Rect [ 539 576 564 639 ] /Subtype /Widget /Type /Annot >>
+endobj
+517 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 188 0 R /Rect [ 539 408 564 465 ] /Subtype /Widget /Type /Annot >>
+endobj
+518 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 189 0 R /Rect [ 539 360 564 405 ] /Subtype /Widget /Type /Annot >>
+endobj
+519 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 190 0 R /Rect [ 539 312 564 357 ] /Subtype /Widget /Type /Annot >>
+endobj
+520 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 191 0 R /Rect [ 539 156 564 225 ] /Subtype /Widget /Type /Annot >>
+endobj
+521 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 192 0 R /Rect [ 539 468 564 573 ] /Subtype /Widget /Type /Annot >>
+endobj
+522 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 193 0 R /Rect [ 539 229 564 310 ] /Subtype /Widget /Type /Annot >>
+endobj
+523 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 194 0 R /Rect [ 538.581 119.574 563.898 152.486 ] /Subtype /Widget /Type /Annot >>
+endobj
+524 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 195 0 R /Rect [ 539 22 564 117 ] /Subtype /Widget /Type /Annot >>
+endobj
+525 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 196 0 R /Rect [ 514 643 539 764 ] /Subtype /Widget /Type /Annot >>
+endobj
+526 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 197 0 R /Rect [ 514 576 539 639 ] /Subtype /Widget /Type /Annot >>
+endobj
+527 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 198 0 R /Rect [ 514 468 539 573 ] /Subtype /Widget /Type /Annot >>
+endobj
+528 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 199 0 R /Rect [ 514 408 539 465 ] /Subtype /Widget /Type /Annot >>
+endobj
+529 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 200 0 R /Rect [ 514 360 539 405 ] /Subtype /Widget /Type /Annot >>
+endobj
+530 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 201 0 R /Rect [ 514 312 539 357 ] /Subtype /Widget /Type /Annot >>
+endobj
+531 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 202 0 R /Rect [ 514 229 539 310 ] /Subtype /Widget /Type /Annot >>
+endobj
+532 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 203 0 R /Rect [ 514 156 539 225 ] /Subtype /Widget /Type /Annot >>
+endobj
+533 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 204 0 R /Rect [ 514 119.486 539 152.486 ] /Subtype /Widget /Type /Annot >>
+endobj
+534 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 205 0 R /Rect [ 514 22 539 117 ] /Subtype /Widget /Type /Annot >>
+endobj
+535 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 206 0 R /Rect [ 490.479 642.479 514.53 764 ] /Subtype /Widget /Type /Annot >>
+endobj
+536 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 207 0 R /Rect [ 490.479 575.708 514.53 639 ] /Subtype /Widget /Type /Annot >>
+endobj
+537 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 208 0 R /Rect [ 490.479 467.935 514.53 573 ] /Subtype /Widget /Type /Annot >>
+endobj
+538 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 209 0 R /Rect [ 490.479 408.037 514.53 465 ] /Subtype /Widget /Type /Annot >>
+endobj
+539 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 210 0 R /Rect [ 490.479 360.696 514.53 405 ] /Subtype /Widget /Type /Annot >>
+endobj
+540 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 211 0 R /Rect [ 490.479 312.696 514.53 357 ] /Subtype /Widget /Type /Annot >>
+endobj
+541 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 212 0 R /Rect [ 490.479 228.986 514.53 310 ] /Subtype /Widget /Type /Annot >>
+endobj
+542 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 213 0 R /Rect [ 490.479 156.645 514.53 225 ] /Subtype /Widget /Type /Annot >>
+endobj
+543 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 214 0 R /Rect [ 490.479 119.574 514.53 152.486 ] /Subtype /Widget /Type /Annot >>
+endobj
+544 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 215 0 R /Rect [ 490.479 22.0621 514.53 117 ] /Subtype /Widget /Type /Annot >>
+endobj
+545 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 216 0 R /Rect [ 466.429 642.479 490.479 764 ] /Subtype /Widget /Type /Annot >>
+endobj
+546 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 217 0 R /Rect [ 466.429 575.708 490.479 639 ] /Subtype /Widget /Type /Annot >>
+endobj
+547 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 218 0 R /Rect [ 466.429 467.935 490.479 573 ] /Subtype /Widget /Type /Annot >>
+endobj
+548 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 219 0 R /Rect [ 466.429 408.037 490.479 465 ] /Subtype /Widget /Type /Annot >>
+endobj
+549 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 220 0 R /Rect [ 466.429 360.696 490.479 405 ] /Subtype /Widget /Type /Annot >>
+endobj
+550 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 221 0 R /Rect [ 466.429 312.696 490.479 357 ] /Subtype /Widget /Type /Annot >>
+endobj
+551 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 222 0 R /Rect [ 466.429 228.986 490.479 310 ] /Subtype /Widget /Type /Annot >>
+endobj
+552 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 223 0 R /Rect [ 466.429 156.645 490.479 225 ] /Subtype /Widget /Type /Annot >>
+endobj
+553 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 224 0 R /Rect [ 466.429 119.574 490.479 152.486 ] /Subtype /Widget /Type /Annot >>
+endobj
+554 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 225 0 R /Rect [ 466.429 22.0621 490.479 117 ] /Subtype /Widget /Type /Annot >>
+endobj
+555 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 226 0 R /Rect [ 443.643 642.479 467.694 764 ] /Subtype /Widget /Type /Annot >>
+endobj
+556 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 227 0 R /Rect [ 443.643 575.708 467.694 639 ] /Subtype /Widget /Type /Annot >>
+endobj
+557 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 228 0 R /Rect [ 443.643 467.935 467.694 573 ] /Subtype /Widget /Type /Annot >>
+endobj
+558 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 229 0 R /Rect [ 443.643 408.037 467.694 465 ] /Subtype /Widget /Type /Annot >>
+endobj
+559 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 230 0 R /Rect [ 443.643 360.696 467.694 405 ] /Subtype /Widget /Type /Annot >>
+endobj
+560 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 231 0 R /Rect [ 443.643 312.696 467.694 357 ] /Subtype /Widget /Type /Annot >>
+endobj
+561 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 232 0 R /Rect [ 443.643 228.986 467.694 310 ] /Subtype /Widget /Type /Annot >>
+endobj
+562 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 233 0 R /Rect [ 443.643 156.645 467.694 225 ] /Subtype /Widget /Type /Annot >>
+endobj
+563 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 234 0 R /Rect [ 443.643 119.574 467.694 152.486 ] /Subtype /Widget /Type /Annot >>
+endobj
+564 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 235 0 R /Rect [ 443.643 22.0621 467.694 117 ] /Subtype /Widget /Type /Annot >>
+endobj
+565 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 236 0 R /Rect [ 419.327 642.479 443.378 764 ] /Subtype /Widget /Type /Annot >>
+endobj
+566 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 237 0 R /Rect [ 419.327 575.708 443.378 639 ] /Subtype /Widget /Type /Annot >>
+endobj
+567 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 238 0 R /Rect [ 419.327 467.935 443.378 573 ] /Subtype /Widget /Type /Annot >>
+endobj
+568 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 239 0 R /Rect [ 419.327 408.037 443.378 465 ] /Subtype /Widget /Type /Annot >>
+endobj
+569 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 240 0 R /Rect [ 419.327 360.696 443.378 405 ] /Subtype /Widget /Type /Annot >>
+endobj
+570 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 241 0 R /Rect [ 419.327 312.696 443.378 357 ] /Subtype /Widget /Type /Annot >>
+endobj
+571 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 242 0 R /Rect [ 419.327 228.986 443.378 310 ] /Subtype /Widget /Type /Annot >>
+endobj
+572 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 243 0 R /Rect [ 419.327 156.645 443.378 225 ] /Subtype /Widget /Type /Annot >>
+endobj
+573 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 244 0 R /Rect [ 419.327 119.574 443.378 152.486 ] /Subtype /Widget /Type /Annot >>
+endobj
+574 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 245 0 R /Rect [ 419.327 22.0621 443.378 117 ] /Subtype /Widget /Type /Annot >>
+endobj
+575 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 246 0 R /Rect [ 395.542 642.479 419.593 764 ] /Subtype /Widget /Type /Annot >>
+endobj
+576 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 247 0 R /Rect [ 395.542 575.708 419.593 639 ] /Subtype /Widget /Type /Annot >>
+endobj
+577 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 248 0 R /Rect [ 395.542 467.935 419.593 573 ] /Subtype /Widget /Type /Annot >>
+endobj
+578 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 249 0 R /Rect [ 395.542 408.037 419.593 465 ] /Subtype /Widget /Type /Annot >>
+endobj
+579 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 250 0 R /Rect [ 395.542 360.696 419.593 405 ] /Subtype /Widget /Type /Annot >>
+endobj
+580 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 251 0 R /Rect [ 395.542 312.696 419.593 357 ] /Subtype /Widget /Type /Annot >>
+endobj
+581 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 252 0 R /Rect [ 395.542 228.986 419.593 310 ] /Subtype /Widget /Type /Annot >>
+endobj
+582 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 253 0 R /Rect [ 395.542 156.645 419.593 225 ] /Subtype /Widget /Type /Annot >>
+endobj
+583 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 254 0 R /Rect [ 395.542 119.574 419.593 152.486 ] /Subtype /Widget /Type /Annot >>
+endobj
+584 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 255 0 R /Rect [ 395.542 22.0621 419.593 117 ] /Subtype /Widget /Type /Annot >>
+endobj
+585 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 256 0 R /Rect [ 371.491 642.479 395.542 764 ] /Subtype /Widget /Type /Annot >>
+endobj
+586 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 257 0 R /Rect [ 371.491 575.708 395.542 639 ] /Subtype /Widget /Type /Annot >>
+endobj
+587 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 258 0 R /Rect [ 371.491 467.935 395.542 573 ] /Subtype /Widget /Type /Annot >>
+endobj
+588 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 259 0 R /Rect [ 371.491 408.037 395.542 465 ] /Subtype /Widget /Type /Annot >>
+endobj
+589 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 260 0 R /Rect [ 371.491 360.696 395.542 405 ] /Subtype /Widget /Type /Annot >>
+endobj
+590 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 261 0 R /Rect [ 371.491 312.696 395.542 357 ] /Subtype /Widget /Type /Annot >>
+endobj
+591 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 262 0 R /Rect [ 371.491 228.986 395.542 310 ] /Subtype /Widget /Type /Annot >>
+endobj
+592 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 263 0 R /Rect [ 371.491 156.645 395.542 225 ] /Subtype /Widget /Type /Annot >>
+endobj
+593 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 264 0 R /Rect [ 371.491 119.574 395.542 152.486 ] /Subtype /Widget /Type /Annot >>
+endobj
+594 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 265 0 R /Rect [ 371.491 22.0621 395.542 117 ] /Subtype /Widget /Type /Annot >>
+endobj
+595 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 266 0 R /Rect [ 346.174 642.479 370.225 764 ] /Subtype /Widget /Type /Annot >>
+endobj
+596 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 267 0 R /Rect [ 346.174 575.708 370.225 639 ] /Subtype /Widget /Type /Annot >>
+endobj
+597 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 268 0 R /Rect [ 346.174 467.935 370.225 573 ] /Subtype /Widget /Type /Annot >>
+endobj
+598 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 269 0 R /Rect [ 346.174 408.037 370.225 465 ] /Subtype /Widget /Type /Annot >>
+endobj
+599 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 270 0 R /Rect [ 346.174 360.696 370.225 405 ] /Subtype /Widget /Type /Annot >>
+endobj
+600 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 271 0 R /Rect [ 346.174 312.696 370.225 357 ] /Subtype /Widget /Type /Annot >>
+endobj
+601 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 272 0 R /Rect [ 346.174 228.986 370.225 310 ] /Subtype /Widget /Type /Annot >>
+endobj
+602 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 273 0 R /Rect [ 346.174 156.645 370.225 225 ] /Subtype /Widget /Type /Annot >>
+endobj
+603 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 274 0 R /Rect [ 346.174 119.574 370.225 152.486 ] /Subtype /Widget /Type /Annot >>
+endobj
+604 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 275 0 R /Rect [ 346.174 22.0621 370.225 117 ] /Subtype /Widget /Type /Annot >>
+endobj
+605 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 276 0 R /Rect [ 323.389 642.479 347.44 764 ] /Subtype /Widget /Type /Annot >>
+endobj
+606 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 277 0 R /Rect [ 323.389 575.708 347.44 639 ] /Subtype /Widget /Type /Annot >>
+endobj
+607 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 278 0 R /Rect [ 323.389 467.935 347.44 573 ] /Subtype /Widget /Type /Annot >>
+endobj
+608 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 279 0 R /Rect [ 323.389 408.037 347.44 465 ] /Subtype /Widget /Type /Annot >>
+endobj
+609 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 280 0 R /Rect [ 323.389 360.696 347.44 405 ] /Subtype /Widget /Type /Annot >>
+endobj
+610 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 281 0 R /Rect [ 323.389 312.696 347.44 357 ] /Subtype /Widget /Type /Annot >>
+endobj
+611 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 282 0 R /Rect [ 323.389 228.986 347.44 310 ] /Subtype /Widget /Type /Annot >>
+endobj
+612 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 283 0 R /Rect [ 323.389 156.645 347.44 225 ] /Subtype /Widget /Type /Annot >>
+endobj
+613 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 284 0 R /Rect [ 323.389 119.574 347.44 152.486 ] /Subtype /Widget /Type /Annot >>
+endobj
+614 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 285 0 R /Rect [ 323.389 22.0621 347.44 117 ] /Subtype /Widget /Type /Annot >>
+endobj
+615 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 291 0 R /Rect [ 299.072 467.935 323.123 573 ] /Subtype /Widget /Type /Annot >>
+endobj
+616 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 292 0 R /Rect [ 299.072 575.708 323.123 639 ] /Subtype /Widget /Type /Annot >>
+endobj
+617 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 293 0 R /Rect [ 299.072 408.037 323.123 465 ] /Subtype /Widget /Type /Annot >>
+endobj
+618 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 294 0 R /Rect [ 201.602 495.794 226.919 560.352 ] /Subtype /Widget /Type /Annot >>
+endobj
+619 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 295 0 R /Rect [ 299.072 360.696 323.123 405 ] /Subtype /Widget /Type /Annot >>
+endobj
+620 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 296 0 R /Rect [ 299.072 22.0621 323.123 117 ] /Subtype /Widget /Type /Annot >>
+endobj
+621 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 297 0 R /Rect [ 201.602 626.441 225.653 766.949 ] /Subtype /Widget /Type /Annot >>
+endobj
+622 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 298 0 R /Rect [ 201.602 565.415 224.388 622.378 ] /Subtype /Widget /Type /Annot >>
+endobj
+623 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 299 0 R /Rect [ 201.602 421.641 226.919 488.73 ] /Subtype /Widget /Type /Annot >>
+endobj
+624 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 300 0 R /Rect [ 201.602 373.273 225.653 417.578 ] /Subtype /Widget /Type /Annot >>
+endobj
+625 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 301 0 R /Rect [ 201.602 254.019 226.919 369.21 ] /Subtype /Widget /Type /Annot >>
+endobj
+626 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 302 0 R /Rect [ 177.817 626.441 201.868 766.949 ] /Subtype /Widget /Type /Annot >>
+endobj
+627 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 303 0 R /Rect [ 177.817 565.415 200.602 622.378 ] /Subtype /Widget /Type /Annot >>
+endobj
+628 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 304 0 R /Rect [ 177.817 495.794 203.134 560.352 ] /Subtype /Widget /Type /Annot >>
+endobj
+629 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 305 0 R /Rect [ 177.817 421.641 203.134 488.73 ] /Subtype /Widget /Type /Annot >>
+endobj
+630 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 306 0 R /Rect [ 177.817 373.273 201.868 417.578 ] /Subtype /Widget /Type /Annot >>
+endobj
+631 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 307 0 R /Rect [ 177.817 254.019 203.134 369.21 ] /Subtype /Widget /Type /Annot >>
+endobj
+632 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 308 0 R /Rect [ 153 625.949 177 766.949 ] /Subtype /Widget /Type /Annot >>
+endobj
+633 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 309 0 R /Rect [ 153 565.378 176 622.378 ] /Subtype /Widget /Type /Annot >>
+endobj
+634 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 310 0 R /Rect [ 153 495.352 178 560.352 ] /Subtype /Widget /Type /Annot >>
+endobj
+635 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 311 0 R /Rect [ 153 421.73 178 488.73 ] /Subtype /Widget /Type /Annot >>
+endobj
+636 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 312 0 R /Rect [ 153 373.578 177 417.578 ] /Subtype /Widget /Type /Annot >>
+endobj
+637 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 313 0 R /Rect [ 153 254.21 178 369.21 ] /Subtype /Widget /Type /Annot >>
+endobj
+638 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 314 0 R /Rect [ 129 625.949 153 766.949 ] /Subtype /Widget /Type /Annot >>
+endobj
+639 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 315 0 R /Rect [ 129 565.378 152 622.378 ] /Subtype /Widget /Type /Annot >>
+endobj
+640 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 316 0 R /Rect [ 129 495.352 154 560.352 ] /Subtype /Widget /Type /Annot >>
+endobj
+641 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 317 0 R /Rect [ 129 421.73 154 488.73 ] /Subtype /Widget /Type /Annot >>
+endobj
+642 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 318 0 R /Rect [ 129 373.578 153 417.578 ] /Subtype /Widget /Type /Annot >>
+endobj
+643 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 319 0 R /Rect [ 129 254.21 154 369.21 ] /Subtype /Widget /Type /Annot >>
+endobj
+644 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 320 0 R /Rect [ 105 625.949 129 766.949 ] /Subtype /Widget /Type /Annot >>
+endobj
+645 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 321 0 R /Rect [ 105 565.378 128 622.378 ] /Subtype /Widget /Type /Annot >>
+endobj
+646 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 322 0 R /Rect [ 105 495.352 130 560.352 ] /Subtype /Widget /Type /Annot >>
+endobj
+647 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 323 0 R /Rect [ 105 421.73 130 488.73 ] /Subtype /Widget /Type /Annot >>
+endobj
+648 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 324 0 R /Rect [ 105 373.578 129 417.578 ] /Subtype /Widget /Type /Annot >>
+endobj
+649 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 325 0 R /Rect [ 105 254.21 130 369.21 ] /Subtype /Widget /Type /Annot >>
+endobj
+650 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 326 0 R /Rect [ 81 625.949 105 766.949 ] /Subtype /Widget /Type /Annot >>
+endobj
+651 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 327 0 R /Rect [ 81 565.378 104 622.378 ] /Subtype /Widget /Type /Annot >>
+endobj
+652 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 328 0 R /Rect [ 81 495.352 106 560.352 ] /Subtype /Widget /Type /Annot >>
+endobj
+653 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 329 0 R /Rect [ 81 421.73 106 488.73 ] /Subtype /Widget /Type /Annot >>
+endobj
+654 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 330 0 R /Rect [ 81 373.578 105 417.578 ] /Subtype /Widget /Type /Annot >>
+endobj
+655 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 331 0 R /Rect [ 81 254.21 106 369.21 ] /Subtype /Widget /Type /Annot >>
+endobj
+656 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 332 0 R /Rect [ 58 625 82 766 ] /Subtype /Widget /Type /Annot >>
+endobj
+657 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 333 0 R /Rect [ 58 567 81 624 ] /Subtype /Widget /Type /Annot >>
+endobj
+658 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 334 0 R /Rect [ 58 493 83 558 ] /Subtype /Widget /Type /Annot >>
+endobj
+659 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 335 0 R /Rect [ 58 421 83 488 ] /Subtype /Widget /Type /Annot >>
+endobj
+660 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 336 0 R /Rect [ 58 375 82 419 ] /Subtype /Widget /Type /Annot >>
+endobj
+661 0 obj
+<< /AA << >> /BS << /S /S /W 3 >> /F 4 /MK << /R 270 >> /P 346 0 R /Parent 337 0 R /Rect [ 58 254 83 369 ] /Subtype /Widget /Type /Annot >>
+endobj
+662 0 obj
+[ 349 0 R 350 0 R 351 0 R 352 0 R 353 0 R 354 0 R 355 0 R 16 0 R 356 0 R 357 0 R 362 0 R 358 0 R 359 0 R 363 0 R 360 0 R 361 0 R 364 0 R 365 0 R 366 0 R 367 0 R 368 0 R 369 0 R 370 0 R 371 0 R 372 0 R 373 0 R 374 0 R 375 0 R 376 0 R 377 0 R 378 0 R 379 0 R 380 0 R 381 0 R 382 0 R 383 0 R 384 0 R 385 0 R 386 0 R 387 0 R 388 0 R 389 0 R 390 0 R 391 0 R 392 0 R 393 0 R 394 0 R 395 0 R 396 0 R 397 0 R 398 0 R 399 0 R 400 0 R 401 0 R 402 0 R 403 0 R 404 0 R 405 0 R 406 0 R 407 0 R 408 0 R 409 0 R 410 0 R 411 0 R 412 0 R 413 0 R 414 0 R 415 0 R 416 0 R 417 0 R 418 0 R 419 0 R 420 0 R 421 0 R 422 0 R 423 0 R 424 0 R 425 0 R 426 0 R 427 0 R 428 0 R 344 0 R 429 0 R 430 0 R 431 0 R 432 0 R 433 0 R 434 0 R 435 0 R 436 0 R 437 0 R 438 0 R 439 0 R 440 0 R 441 0 R 442 0 R 443 0 R 444 0 R 445 0 R 446 0 R 447 0 R 448 0 R 449 0 R 450 0 R 451 0 R 452 0 R 453 0 R 454 0 R 455 0 R 456 0 R 457 0 R 458 0 R 459 0 R 460 0 R 461 0 R 462 0 R 463 0 R 464 0 R 469 0 R 470 0 R 465 0 R 471 0 R 472 0 R 466 0 R 467 0 R 468 0 R 473 0 R 474 0 R 475 0 R 476 0 R 477 0 R 478 0 R 479 0 R 480 0 R 481 0 R 482 0 R 483 0 R 484 0 R 485 0 R 486 0 R 487 0 R 488 0 R 489 0 R 490 0 R 491 0 R 492 0 R 493 0 R 494 0 R 495 0 R 496 0 R 497 0 R 498 0 R 499 0 R 500 0 R 501 0 R 502 0 R 503 0 R 504 0 R 505 0 R 506 0 R 507 0 R 508 0 R 509 0 R 510 0 R 511 0 R 512 0 R 513 0 R 514 0 R 176 0 R 177 0 R 178 0 R 179 0 R 180 0 R 181 0 R 182 0 R 183 0 R 184 0 R 185 0 R ]
+endobj
+663 0 obj
+<< /Filter /FlateDecode /Length 1215 >>
+stream
+HâtV—võ8˝˛aÒÉe$êÄ}£ÄzlúŸ›ú¶‘&ç[«Ów≥›Øﬂ$a'Õ&«>◊Wö´ô—h$_úŸUÕ·KÔ(. å<çhÁ<89∂‡xAS«Ób˙∞◊„ÃS/¶–¿ª∆ôÕ9php“T2	ÙÒ@FÇ≈1Ñ*ÑÊ…ô•ΩÑuè<˝˜kgÍ1œÛ–lçfÕ≥„÷M“‰∞öCö,ä˘™*ã¶pù'ãÊí2ÉÎ€eRBùWøi^CrïóÈ›§˘Íp.ôÚUÄ¬MÊ∏Y~ìTÕ2/R´Wië,F3öènr&hÓËÆüÆñÀ€≤hÓ–Å*áŒ.Î¢º"ãŸ\år8≈ •œ|n„”1†IS%ã≈@›¨™<Éeûi“´rà!ÀÎ¶∫MáﬂUûÆ™Ã8CLö>:XM∑` g…_ç©`¡9A	uãr\¶˛M‡Î "¶™{/¢Gã¥€üéÌn˜˙”·ÿm‡©€l◊Ìi{ÿ˜–?‚|Ó‡[˜˝€=¥–∑¥˚ÏÎo8˝˚Æ]wpzlqºá˝·Ìz›ı˝ˆÛÈN˝	ﬂªcÿﬂª˝˝‰Â6∏›?kRnú«Ìø®∑›o∂o7?⁄]èIXéŒ`Ÿ≠«Mªv˝Î›]üª~ªApˆı©›ÓO¯A±á√–±]◊ˆ'4Ï‡g◊˘ê7∫2”⁄Tfù¢_Ô|èq!·ôv{	?y∞qdÄõ/û	B∏S;Gre)D‡ÈUÑ!Cy#e¸i(¸6î)£U„Ò|';Ç»åXù@åÍ¬®˚±ï"§©–∫EHSÅıÅê¶Ñ]âê¶<+Oh†DhÂ	iJZyBöVûê¶<+Oh†xdÂ	iJZyBöÚ≠<!MyVû–@EV=2‚ j+õò1/6-cº∆D˙±Ÿ— Ê¢dˇoü"ˇ¢œÒà˘aR7¯Ëñ…2üL}%ìÓΩªHÍf2<∞_πÛ¢™XY∂»Ò@L„–Y‡&Ÿ≤®kÍ°›„dE1jªI”‰eÜ}…éGÓÕı]]`ó+'SÆb·11®î6Åõ∆‰SÛû*ùJ/l≈“ÖÈsa8Bö3	@Ó"/˚ª?ƒÕ•ÓÛ$-‘Bá»ıòèÕy8ÊÁ·€Âªº2êj]Bo	}d®4E@SÅ›8ÜÚ,ÂY «≠(Ü‚FﬁHßKÿ"÷P«Ï+Ú@	£E`,ÉÛe†€v ±c!eÑ:˜E€∑©‡[/
+{LJ©^wl‹™ººjÆgC÷òèøﬁR8Ô√mR6òBö±Äá∏A¶â^6}Fsﬂ√ï∆.õÆ*Y-fÈ-^%ôπ:q)!Fç¸œõ¢/ŒTåqYÅ7Üíƒj¥¥:Îc©ær^9/ã|∏Ò$≈yŸ7Ñß¸ÕÒëP5ZB1q!·ﬁTyùV≈;sc{,îÁ»œ'áB|,†ÉØoŒA„ˆÑÁ†áuœ;õKΩ˚äÖÁÜìÂä·À√$Cƒ[†≈™úQøxX†ö/ºë4™ü≥æ™ƒ+πõÎ§Z&˙)Ùvã·Eá∫‘∆G(ºw˝YﬂO`ëÃã¯j“˜4—Œ îwXø
+endstream
+endobj
+664 0 obj
+<< /ColorSpace << /Cs5 671 0 R >> /ExtGState << /GS1 672 0 R >> /Font << /F1 673 0 R /F2 674 0 R /F3 675 0 R /F5 676 0 R >> /ProcSet [ /PDF /Text ] >>
+endobj
+665 0 obj
+[ 515 0 R 516 0 R 521 0 R 517 0 R 518 0 R 519 0 R 522 0 R 520 0 R 523 0 R 524 0 R 525 0 R 526 0 R 527 0 R 528 0 R 529 0 R 530 0 R 531 0 R 532 0 R 533 0 R 534 0 R 535 0 R 536 0 R 537 0 R 538 0 R 539 0 R 540 0 R 541 0 R 542 0 R 543 0 R 544 0 R 545 0 R 546 0 R 547 0 R 548 0 R 549 0 R 550 0 R 551 0 R 552 0 R 553 0 R 554 0 R 555 0 R 556 0 R 557 0 R 558 0 R 559 0 R 560 0 R 561 0 R 562 0 R 563 0 R 564 0 R 565 0 R 566 0 R 567 0 R 568 0 R 569 0 R 570 0 R 571 0 R 572 0 R 573 0 R 574 0 R 575 0 R 576 0 R 577 0 R 578 0 R 579 0 R 580 0 R 581 0 R 582 0 R 583 0 R 584 0 R 585 0 R 586 0 R 587 0 R 588 0 R 589 0 R 590 0 R 591 0 R 592 0 R 593 0 R 594 0 R 595 0 R 596 0 R 597 0 R 598 0 R 599 0 R 600 0 R 601 0 R 602 0 R 603 0 R 604 0 R 605 0 R 606 0 R 607 0 R 608 0 R 609 0 R 610 0 R 611 0 R 612 0 R 613 0 R 614 0 R 286 0 R 616 0 R 615 0 R 617 0 R 619 0 R 287 0 R 288 0 R 289 0 R 290 0 R 620 0 R 621 0 R 622 0 R 618 0 R 623 0 R 624 0 R 625 0 R 626 0 R 627 0 R 628 0 R 629 0 R 630 0 R 631 0 R 632 0 R 633 0 R 634 0 R 635 0 R 636 0 R 637 0 R 638 0 R 639 0 R 640 0 R 641 0 R 642 0 R 643 0 R 644 0 R 645 0 R 646 0 R 647 0 R 648 0 R 649 0 R 650 0 R 651 0 R 652 0 R 653 0 R 654 0 R 655 0 R 656 0 R 657 0 R 658 0 R 659 0 R 660 0 R 661 0 R 338 0 R 339 0 R 340 0 R 341 0 R 342 0 R 343 0 R ]
+endobj
+666 0 obj
+<< /Filter /FlateDecode /Length 1297 >>
+stream
+Hâ¨VÀvõH˝˛°ñÚBà¶i≥#9Ã±ëx2>ID¬6YÚ é∆?U˝@í£Õú3ˆÊÍv◊Ì™€]›0x¥f◊%É«ﬁÚôA‰¬Ûà∂÷Éı∑≈†ÀëL	tÕ…Ùœ∞S„∂„üM°Åï5[0`P=‡§i8‡ÜëÌy¯Tœ÷,È¨{‰Èø_[S«vC÷R¨IñŸ ∑È<K‚*[Ê0OÀ™∏K$.“dYÃØ™$œlπ.Ts≠·í∆$À«ÈÂo4s∂‡*£–ˆ}L¬9F»U'´ÆÈ◊]˚2¥˚l∫◊«v˚Ü˙ØfávxÇ·©Åı∂mv√Á∂˙Ç≥á¶{nwµå‹?@ﬂt?€u”√æÉ=uá∂o`”ˆ/˚æŸ»Oıvﬂël˙°€ø!K9
+a≥ ‡*∑Iªì+>‘Îv€o˝M˛é7∏Vãaı@˙N}náè»i≈ó…3|ƒúHzä€üÕ&éic™?®w*l◊Ùî ÔwçJÍÕÎvÄ√”ZeC˝ær‹ùk–ŸµXmÛœ∫y†–⁄zI›]}´~«ÉCÈ1]Xãc‘Ae•€M”mﬂ‡Î§HiˇıJô§™”·«Í∫f®—iﬂÎZ5·Ÿ«÷˚n£îÎ∂M›≤¥∑¶Ó0m©Ø∑@Î\û∫Fı∂¨"≠‘πMJ}nÀ‡Ô~Äc3W¿ò∑ÂõKÑë<Óœπ{KÑ¡Hä*±Ÿ`	_òDzƒàZ¬cfëíb£”R^ƒ5EHQæ…Åê¢<≥!Iπ˚⁄ë"‰zírF QîŒ‘uC3ÇHèåô∫égF…Q)Bäæ°)äõ) 1+íTh‘C-Óm_Ks£Ãµ07!\áxÆ1ìê4ÄG∆LBä
+åôÑÂ3	) 5fRîc‰	)#Hh<	>Ó•öEHq"ö#§8oT#§9g‰√qiéêÊòZ√ëHqÆ;fÁöX&Ã∫Ñ4«å!⁄Êã7ª8ﬁÏTµÁ€X^Ôììã;èoSyU€aà}0ÂÅ∫ÄÈ&∏0ç1; ØxhªÓØ˜:ﬁÍi~]}ú)Ié„µpzõ∫ãÛ*´Ó•§Õh¡)˜m◊√7ËêƒBYRíæV<{q‰≠ÖìÉß€HMíe^ÀõYrWVÀ˘Ω.ñs,“LIˇ\eÖÙCÂÌG(nNRô«ï4À#É	siÛY™–EvsìŒUn∏	LÓÖsfÚQé≥]Æ≤<ŸíπLŸE◊ *.*•„´pìÚ™HÀ§»>d˘µr¸h÷Í„}ô%Y,ç¿d9÷Ù.puÙI⁄_„ì\7øª˝ê21Œ0∆. ˝Úˇ7ΩŸB®Ì w.=œ ’≤åoT]Q¯Œ~f‹ÿQ¯˙3˙2±±UŸ{IÍX.`ı1.n„‰˛,Ï≈B˙ ‚ëMœÅá5∏‘âg=ªŒ„ÍÆê:Ò¸6À3<≤qµ,`YËE£/m„ÒÀøƒ§P:«1Ú.Õ+<≥®ˆ≈ÔåP¿—∫√ªu?gUûñ•ÚŸÒ¬ÀaH<øª© _Ê”‰&C}˝≠g.úê>%ôŸxÅcëjô|i„∫	‹Ë§ı‘)ÈÚÃr‹B.|¯µYNr—Œka‚>V´üÓ~(–´È„s#ﬂ!|RÖØ)ä‚Å´(ä¢WX=`¬PåÈ@äÚ"=ÀãÃ,œu4ÖÄ.ÏO÷ø “BÀ
+
+endstream
+endobj
+667 0 obj
+<< /ColorSpace << /Cs5 671 0 R >> /ExtGState << /GS1 672 0 R >> /Font << /F1 674 0 R /F3 675 0 R /F5 676 0 R >> /ProcSet [ /PDF /Text ] >>
+endobj
+668 0 obj
+<< /Differences [ 24 /breve /caron /circumflex /dotaccent /hungarumlaut /ogonek /ring /tilde 39 /quotesingle 96 /grave 128 /bullet /dagger /daggerdbl /ellipsis /emdash /endash /florin /fraction /guilsinglleft /guilsinglright /minus /perthousand /quotedblbase /quotedblleft /quotedblright /quoteleft /quoteright /quotesinglbase /trademark /fi /fl /Lslash /OE /Scaron /Ydieresis /Zcaron /dotlessi /lslash /oe /scaron /zcaron 160 /Euro 164 /currency 166 /brokenbar 168 /dieresis /copyright /ordfeminine 172 /logicalnot /.notdef /registered /macron /degree /plusminus /twosuperior /threesuperior /acute /mu 183 /periodcentered /cedilla /onesuperior /ordmasculine 188 /onequarter /onehalf /threequarters 192 /Agrave /Aacute /Acircumflex /Atilde /Adieresis /Aring /AE /Ccedilla /Egrave /Eacute /Ecircumflex /Edieresis /Igrave /Iacute /Icircumflex /Idieresis /Eth /Ntilde /Ograve /Oacute /Ocircumflex /Otilde /Odieresis /multiply /Oslash /Ugrave /Uacute /Ucircumflex /Udieresis /Yacute /Thorn /germandbls /agrave /aacute /acircumflex /atilde /adieresis /aring /ae /ccedilla /egrave /eacute /ecircumflex /edieresis /igrave /iacute /icircumflex /idieresis /eth /ntilde /ograve /oacute /ocircumflex /otilde /odieresis /divide /oslash /ugrave /uacute /ucircumflex /udieresis /yacute /thorn /ydieresis ] /Type /Encoding >>
+endobj
+669 0 obj
+<< /BaseFont /Helvetica /Encoding 668 0 R /Name /Helv /Subtype /Type1 /Type /Font >>
+endobj
+670 0 obj
+<< /BaseFont /ZapfDingbats /Name /ZaDb /Subtype /Type1 /Type /Font >>
+endobj
+671 0 obj
+[ /CalRGB << /Gamma [ 2.22221 2.22221 2.22221 ] /Matrix [ 0.4124 0.2126 0.0193 0.3576 0.71519 0.1192 0.1805 0.0722 0.9505 ] /WhitePoint [ 0.9505 1 1.089 ] >> ]
+endobj
+672 0 obj
+<< /SA false /SM 0.02 /TR /Identity /Type /ExtGState >>
+endobj
+673 0 obj
+<< /BaseFont /Helvetica /Encoding /WinAnsiEncoding /Subtype /Type1 /Type /Font >>
+endobj
+674 0 obj
+<< /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding /Subtype /Type1 /Type /Font >>
+endobj
+675 0 obj
+<< /BaseFont /Helvetica-Oblique /Encoding /WinAnsiEncoding /Subtype /Type1 /Type /Font >>
+endobj
+676 0 obj
+<< /BaseFont /Helvetica-Narrow-Bold /Encoding /WinAnsiEncoding /FirstChar 32 /FontDescriptor 677 0 R /LastChar 181 /Subtype /Type1 /Type /Font /Widths [ 228 273 389 456 456 729 592 195 273 273 319 479 228 273 228 228 456 456 456 456 456 456 456 456 456 456 273 273 479 479 479 501 800 592 592 592 592 547 501 638 592 228 456 592 501 683 592 638 547 638 592 547 501 592 547 774 547 547 501 273 228 273 479 456 273 456 501 456 501 456 273 501 501 228 228 456 228 729 501 501 501 501 319 456 273 501 456 638 456 456 410 319 230 319 479 228 228 228 228 228 228 228 228 228 228 228 228 228 228 228 228 228 228 228 228 228 228 228 228 228 228 228 228 228 228 228 228 228 228 228 456 456 228 228 228 228 228 604 228 228 228 228 228 228 228 479 228 228 228 501 ] >>
+endobj
+677 0 obj
+<< /Ascent 718 /CapHeight 718 /Descent -207 /Flags 262176 /FontBBox [ -139 -228 822 962 ] /FontName /Helvetica-Narrow-Bold /ItalicAngle 0 /StemV 140 /Type /FontDescriptor /XHeight 532 >>
+endobj
+xref
+0 678
+0000000000 65535 f 
+0000000015 00000 n 
+0000010470 00000 n 
+0000010664 00000 n 
+0000013337 00000 n 
+0000014916 00000 n 
+0000014966 00000 n 
+0000015012 00000 n 
+0000015081 00000 n 
+0000015134 00000 n 
+0000015223 00000 n 
+0000015325 00000 n 
+0000015421 00000 n 
+0000015518 00000 n 
+0000015616 00000 n 
+0000015712 00000 n 
+0000015809 00000 n 
+0000016009 00000 n 
+0000016104 00000 n 
+0000016189 00000 n 
+0000016281 00000 n 
+0000016373 00000 n 
+0000016469 00000 n 
+0000016568 00000 n 
+0000016666 00000 n 
+0000016757 00000 n 
+0000016850 00000 n 
+0000016944 00000 n 
+0000017038 00000 n 
+0000017132 00000 n 
+0000017230 00000 n 
+0000017321 00000 n 
+0000017412 00000 n 
+0000017503 00000 n 
+0000017598 00000 n 
+0000017696 00000 n 
+0000017789 00000 n 
+0000017883 00000 n 
+0000017977 00000 n 
+0000018071 00000 n 
+0000018169 00000 n 
+0000018260 00000 n 
+0000018351 00000 n 
+0000018442 00000 n 
+0000018537 00000 n 
+0000018635 00000 n 
+0000018728 00000 n 
+0000018822 00000 n 
+0000018916 00000 n 
+0000019010 00000 n 
+0000019108 00000 n 
+0000019199 00000 n 
+0000019290 00000 n 
+0000019381 00000 n 
+0000019476 00000 n 
+0000019574 00000 n 
+0000019667 00000 n 
+0000019761 00000 n 
+0000019855 00000 n 
+0000019949 00000 n 
+0000020047 00000 n 
+0000020138 00000 n 
+0000020229 00000 n 
+0000020320 00000 n 
+0000020415 00000 n 
+0000020513 00000 n 
+0000020606 00000 n 
+0000020700 00000 n 
+0000020794 00000 n 
+0000020888 00000 n 
+0000020986 00000 n 
+0000021077 00000 n 
+0000021168 00000 n 
+0000021259 00000 n 
+0000021354 00000 n 
+0000021452 00000 n 
+0000021545 00000 n 
+0000021639 00000 n 
+0000021733 00000 n 
+0000021827 00000 n 
+0000021925 00000 n 
+0000022016 00000 n 
+0000022107 00000 n 
+0000022198 00000 n 
+0000022293 00000 n 
+0000022391 00000 n 
+0000022484 00000 n 
+0000022578 00000 n 
+0000022672 00000 n 
+0000022766 00000 n 
+0000022864 00000 n 
+0000022955 00000 n 
+0000023046 00000 n 
+0000023141 00000 n 
+0000023239 00000 n 
+0000023332 00000 n 
+0000023426 00000 n 
+0000023520 00000 n 
+0000023614 00000 n 
+0000023712 00000 n 
+0000023803 00000 n 
+0000023895 00000 n 
+0000023987 00000 n 
+0000024083 00000 n 
+0000024182 00000 n 
+0000024276 00000 n 
+0000024371 00000 n 
+0000024467 00000 n 
+0000024563 00000 n 
+0000024663 00000 n 
+0000024756 00000 n 
+0000024849 00000 n 
+0000024942 00000 n 
+0000025039 00000 n 
+0000025139 00000 n 
+0000025234 00000 n 
+0000025330 00000 n 
+0000025426 00000 n 
+0000025522 00000 n 
+0000025622 00000 n 
+0000025715 00000 n 
+0000025808 00000 n 
+0000025901 00000 n 
+0000025998 00000 n 
+0000026098 00000 n 
+0000026193 00000 n 
+0000026289 00000 n 
+0000026389 00000 n 
+0000026482 00000 n 
+0000026579 00000 n 
+0000026679 00000 n 
+0000026775 00000 n 
+0000026871 00000 n 
+0000026964 00000 n 
+0000027057 00000 n 
+0000027152 00000 n 
+0000027248 00000 n 
+0000027344 00000 n 
+0000027440 00000 n 
+0000027540 00000 n 
+0000027633 00000 n 
+0000027726 00000 n 
+0000027819 00000 n 
+0000027916 00000 n 
+0000028016 00000 n 
+0000028111 00000 n 
+0000028207 00000 n 
+0000028303 00000 n 
+0000028399 00000 n 
+0000028499 00000 n 
+0000028592 00000 n 
+0000028685 00000 n 
+0000028778 00000 n 
+0000028875 00000 n 
+0000028975 00000 n 
+0000029070 00000 n 
+0000029166 00000 n 
+0000029262 00000 n 
+0000029358 00000 n 
+0000029458 00000 n 
+0000029551 00000 n 
+0000029644 00000 n 
+0000029737 00000 n 
+0000029834 00000 n 
+0000029934 00000 n 
+0000030029 00000 n 
+0000030125 00000 n 
+0000030221 00000 n 
+0000030317 00000 n 
+0000030417 00000 n 
+0000030510 00000 n 
+0000030603 00000 n 
+0000030696 00000 n 
+0000030793 00000 n 
+0000030893 00000 n 
+0000030988 00000 n 
+0000031084 00000 n 
+0000031280 00000 n 
+0000031476 00000 n 
+0000031676 00000 n 
+0000031869 00000 n 
+0000032062 00000 n 
+0000032255 00000 n 
+0000032452 00000 n 
+0000032652 00000 n 
+0000032847 00000 n 
+0000033042 00000 n 
+0000033131 00000 n 
+0000033230 00000 n 
+0000033326 00000 n 
+0000033422 00000 n 
+0000033518 00000 n 
+0000033622 00000 n 
+0000033725 00000 n 
+0000033825 00000 n 
+0000033923 00000 n 
+0000034022 00000 n 
+0000034121 00000 n 
+0000034220 00000 n 
+0000034323 00000 n 
+0000034419 00000 n 
+0000034515 00000 n 
+0000034611 00000 n 
+0000034711 00000 n 
+0000034814 00000 n 
+0000034912 00000 n 
+0000035011 00000 n 
+0000035110 00000 n 
+0000035209 00000 n 
+0000035312 00000 n 
+0000035408 00000 n 
+0000035503 00000 n 
+0000035599 00000 n 
+0000035699 00000 n 
+0000035802 00000 n 
+0000035900 00000 n 
+0000035999 00000 n 
+0000036098 00000 n 
+0000036197 00000 n 
+0000036300 00000 n 
+0000036396 00000 n 
+0000036492 00000 n 
+0000036588 00000 n 
+0000036688 00000 n 
+0000036791 00000 n 
+0000036889 00000 n 
+0000036988 00000 n 
+0000037087 00000 n 
+0000037186 00000 n 
+0000037289 00000 n 
+0000037385 00000 n 
+0000037481 00000 n 
+0000037577 00000 n 
+0000037677 00000 n 
+0000037780 00000 n 
+0000037878 00000 n 
+0000037977 00000 n 
+0000038076 00000 n 
+0000038175 00000 n 
+0000038278 00000 n 
+0000038374 00000 n 
+0000038470 00000 n 
+0000038566 00000 n 
+0000038666 00000 n 
+0000038769 00000 n 
+0000038867 00000 n 
+0000038966 00000 n 
+0000039065 00000 n 
+0000039164 00000 n 
+0000039267 00000 n 
+0000039363 00000 n 
+0000039459 00000 n 
+0000039555 00000 n 
+0000039655 00000 n 
+0000039758 00000 n 
+0000039856 00000 n 
+0000039955 00000 n 
+0000040054 00000 n 
+0000040153 00000 n 
+0000040256 00000 n 
+0000040352 00000 n 
+0000040448 00000 n 
+0000040544 00000 n 
+0000040644 00000 n 
+0000040747 00000 n 
+0000040845 00000 n 
+0000040944 00000 n 
+0000041043 00000 n 
+0000041142 00000 n 
+0000041245 00000 n 
+0000041341 00000 n 
+0000041437 00000 n 
+0000041533 00000 n 
+0000041633 00000 n 
+0000041736 00000 n 
+0000041834 00000 n 
+0000041933 00000 n 
+0000042033 00000 n 
+0000042133 00000 n 
+0000042237 00000 n 
+0000042334 00000 n 
+0000042431 00000 n 
+0000042528 00000 n 
+0000042629 00000 n 
+0000042733 00000 n 
+0000042832 00000 n 
+0000042932 00000 n 
+0000043146 00000 n 
+0000043356 00000 n 
+0000043571 00000 n 
+0000043789 00000 n 
+0000044006 00000 n 
+0000044110 00000 n 
+0000044210 00000 n 
+0000044307 00000 n 
+0000044408 00000 n 
+0000044505 00000 n 
+0000044605 00000 n 
+0000044706 00000 n 
+0000044806 00000 n 
+0000044911 00000 n 
+0000045007 00000 n 
+0000045107 00000 n 
+0000045208 00000 n 
+0000045308 00000 n 
+0000045409 00000 n 
+0000045514 00000 n 
+0000045610 00000 n 
+0000045710 00000 n 
+0000045811 00000 n 
+0000045911 00000 n 
+0000046012 00000 n 
+0000046117 00000 n 
+0000046213 00000 n 
+0000046313 00000 n 
+0000046414 00000 n 
+0000046514 00000 n 
+0000046615 00000 n 
+0000046720 00000 n 
+0000046816 00000 n 
+0000046916 00000 n 
+0000047017 00000 n 
+0000047117 00000 n 
+0000047218 00000 n 
+0000047323 00000 n 
+0000047419 00000 n 
+0000047519 00000 n 
+0000047620 00000 n 
+0000047720 00000 n 
+0000047821 00000 n 
+0000047926 00000 n 
+0000048022 00000 n 
+0000048122 00000 n 
+0000048223 00000 n 
+0000048323 00000 n 
+0000048424 00000 n 
+0000048529 00000 n 
+0000048625 00000 n 
+0000048725 00000 n 
+0000048934 00000 n 
+0000049142 00000 n 
+0000049351 00000 n 
+0000049562 00000 n 
+0000049766 00000 n 
+0000049971 00000 n 
+0000050165 00000 n 
+0000050330 00000 n 
+0000050495 00000 n 
+0000050542 00000 n 
+0000050593 00000 n 
+0000050739 00000 n 
+0000050896 00000 n 
+0000051054 00000 n 
+0000051212 00000 n 
+0000051370 00000 n 
+0000051518 00000 n 
+0000051676 00000 n 
+0000051855 00000 n 
+0000052024 00000 n 
+0000052203 00000 n 
+0000052382 00000 n 
+0000052561 00000 n 
+0000052740 00000 n 
+0000052898 00000 n 
+0000053056 00000 n 
+0000053214 00000 n 
+0000053371 00000 n 
+0000053529 00000 n 
+0000053687 00000 n 
+0000053845 00000 n 
+0000054003 00000 n 
+0000054161 00000 n 
+0000054319 00000 n 
+0000054477 00000 n 
+0000054635 00000 n 
+0000054793 00000 n 
+0000054950 00000 n 
+0000055108 00000 n 
+0000055266 00000 n 
+0000055424 00000 n 
+0000055582 00000 n 
+0000055740 00000 n 
+0000055898 00000 n 
+0000056056 00000 n 
+0000056214 00000 n 
+0000056372 00000 n 
+0000056529 00000 n 
+0000056687 00000 n 
+0000056845 00000 n 
+0000057003 00000 n 
+0000057161 00000 n 
+0000057319 00000 n 
+0000057477 00000 n 
+0000057635 00000 n 
+0000057793 00000 n 
+0000057951 00000 n 
+0000058108 00000 n 
+0000058266 00000 n 
+0000058424 00000 n 
+0000058582 00000 n 
+0000058740 00000 n 
+0000058898 00000 n 
+0000059056 00000 n 
+0000059214 00000 n 
+0000059372 00000 n 
+0000059530 00000 n 
+0000059687 00000 n 
+0000059845 00000 n 
+0000060003 00000 n 
+0000060161 00000 n 
+0000060319 00000 n 
+0000060477 00000 n 
+0000060635 00000 n 
+0000060793 00000 n 
+0000060951 00000 n 
+0000061109 00000 n 
+0000061266 00000 n 
+0000061424 00000 n 
+0000061582 00000 n 
+0000061740 00000 n 
+0000061898 00000 n 
+0000062056 00000 n 
+0000062214 00000 n 
+0000062372 00000 n 
+0000062530 00000 n 
+0000062688 00000 n 
+0000062845 00000 n 
+0000063003 00000 n 
+0000063161 00000 n 
+0000063319 00000 n 
+0000063477 00000 n 
+0000063635 00000 n 
+0000063793 00000 n 
+0000063951 00000 n 
+0000064109 00000 n 
+0000064266 00000 n 
+0000064424 00000 n 
+0000064582 00000 n 
+0000064740 00000 n 
+0000064898 00000 n 
+0000065057 00000 n 
+0000065216 00000 n 
+0000065375 00000 n 
+0000065534 00000 n 
+0000065693 00000 n 
+0000065851 00000 n 
+0000066010 00000 n 
+0000066169 00000 n 
+0000066328 00000 n 
+0000066487 00000 n 
+0000066646 00000 n 
+0000066805 00000 n 
+0000066964 00000 n 
+0000067123 00000 n 
+0000067282 00000 n 
+0000067440 00000 n 
+0000067599 00000 n 
+0000067758 00000 n 
+0000067917 00000 n 
+0000068076 00000 n 
+0000068235 00000 n 
+0000068394 00000 n 
+0000068553 00000 n 
+0000068712 00000 n 
+0000068871 00000 n 
+0000069029 00000 n 
+0000069188 00000 n 
+0000069347 00000 n 
+0000069506 00000 n 
+0000069665 00000 n 
+0000069824 00000 n 
+0000069983 00000 n 
+0000070142 00000 n 
+0000070301 00000 n 
+0000070460 00000 n 
+0000070618 00000 n 
+0000070777 00000 n 
+0000070936 00000 n 
+0000071095 00000 n 
+0000071254 00000 n 
+0000071413 00000 n 
+0000071572 00000 n 
+0000071731 00000 n 
+0000071890 00000 n 
+0000072049 00000 n 
+0000072207 00000 n 
+0000072366 00000 n 
+0000072525 00000 n 
+0000072684 00000 n 
+0000072843 00000 n 
+0000073002 00000 n 
+0000073161 00000 n 
+0000073320 00000 n 
+0000073479 00000 n 
+0000073638 00000 n 
+0000073796 00000 n 
+0000073954 00000 n 
+0000074112 00000 n 
+0000074270 00000 n 
+0000074428 00000 n 
+0000074586 00000 n 
+0000074744 00000 n 
+0000074902 00000 n 
+0000075060 00000 n 
+0000075218 00000 n 
+0000075375 00000 n 
+0000075532 00000 n 
+0000075689 00000 n 
+0000075846 00000 n 
+0000076003 00000 n 
+0000076160 00000 n 
+0000076317 00000 n 
+0000076474 00000 n 
+0000076631 00000 n 
+0000076788 00000 n 
+0000076944 00000 n 
+0000077093 00000 n 
+0000077252 00000 n 
+0000077411 00000 n 
+0000077570 00000 n 
+0000077729 00000 n 
+0000077888 00000 n 
+0000078047 00000 n 
+0000078206 00000 n 
+0000078381 00000 n 
+0000078539 00000 n 
+0000078698 00000 n 
+0000078857 00000 n 
+0000079016 00000 n 
+0000079175 00000 n 
+0000079334 00000 n 
+0000079493 00000 n 
+0000079652 00000 n 
+0000079811 00000 n 
+0000079978 00000 n 
+0000080136 00000 n 
+0000080306 00000 n 
+0000080476 00000 n 
+0000080646 00000 n 
+0000080816 00000 n 
+0000080986 00000 n 
+0000081156 00000 n 
+0000081326 00000 n 
+0000081496 00000 n 
+0000081670 00000 n 
+0000081840 00000 n 
+0000082011 00000 n 
+0000082182 00000 n 
+0000082353 00000 n 
+0000082524 00000 n 
+0000082695 00000 n 
+0000082866 00000 n 
+0000083037 00000 n 
+0000083208 00000 n 
+0000083383 00000 n 
+0000083554 00000 n 
+0000083725 00000 n 
+0000083896 00000 n 
+0000084067 00000 n 
+0000084238 00000 n 
+0000084409 00000 n 
+0000084580 00000 n 
+0000084751 00000 n 
+0000084922 00000 n 
+0000085097 00000 n 
+0000085268 00000 n 
+0000085439 00000 n 
+0000085610 00000 n 
+0000085781 00000 n 
+0000085952 00000 n 
+0000086123 00000 n 
+0000086294 00000 n 
+0000086465 00000 n 
+0000086636 00000 n 
+0000086811 00000 n 
+0000086982 00000 n 
+0000087153 00000 n 
+0000087324 00000 n 
+0000087495 00000 n 
+0000087666 00000 n 
+0000087837 00000 n 
+0000088008 00000 n 
+0000088179 00000 n 
+0000088350 00000 n 
+0000088525 00000 n 
+0000088696 00000 n 
+0000088867 00000 n 
+0000089038 00000 n 
+0000089209 00000 n 
+0000089380 00000 n 
+0000089551 00000 n 
+0000089722 00000 n 
+0000089893 00000 n 
+0000090064 00000 n 
+0000090239 00000 n 
+0000090410 00000 n 
+0000090581 00000 n 
+0000090752 00000 n 
+0000090923 00000 n 
+0000091094 00000 n 
+0000091265 00000 n 
+0000091436 00000 n 
+0000091607 00000 n 
+0000091778 00000 n 
+0000091953 00000 n 
+0000092124 00000 n 
+0000092294 00000 n 
+0000092464 00000 n 
+0000092634 00000 n 
+0000092804 00000 n 
+0000092974 00000 n 
+0000093144 00000 n 
+0000093314 00000 n 
+0000093484 00000 n 
+0000093658 00000 n 
+0000093828 00000 n 
+0000093999 00000 n 
+0000094170 00000 n 
+0000094341 00000 n 
+0000094516 00000 n 
+0000094687 00000 n 
+0000094858 00000 n 
+0000095033 00000 n 
+0000095208 00000 n 
+0000095382 00000 n 
+0000095557 00000 n 
+0000095731 00000 n 
+0000095906 00000 n 
+0000096081 00000 n 
+0000096256 00000 n 
+0000096430 00000 n 
+0000096605 00000 n 
+0000096779 00000 n 
+0000096946 00000 n 
+0000097113 00000 n 
+0000097280 00000 n 
+0000097445 00000 n 
+0000097612 00000 n 
+0000097777 00000 n 
+0000097944 00000 n 
+0000098111 00000 n 
+0000098278 00000 n 
+0000098443 00000 n 
+0000098610 00000 n 
+0000098775 00000 n 
+0000098942 00000 n 
+0000099109 00000 n 
+0000099276 00000 n 
+0000099441 00000 n 
+0000099608 00000 n 
+0000099773 00000 n 
+0000099939 00000 n 
+0000100105 00000 n 
+0000100271 00000 n 
+0000100435 00000 n 
+0000100601 00000 n 
+0000100765 00000 n 
+0000100922 00000 n 
+0000101079 00000 n 
+0000101236 00000 n 
+0000101393 00000 n 
+0000101550 00000 n 
+0000101707 00000 n 
+0000103151 00000 n 
+0000104441 00000 n 
+0000104609 00000 n 
+0000105894 00000 n 
+0000107266 00000 n 
+0000107422 00000 n 
+0000108750 00000 n 
+0000108852 00000 n 
+0000108939 00000 n 
+0000109116 00000 n 
+0000109189 00000 n 
+0000109288 00000 n 
+0000109392 00000 n 
+0000109499 00000 n 
+0000110274 00000 n 
+trailer << /Info 2 0 R /Root 1 0 R /Size 678 /ID [<a57b193df7fe59199f8027c51a060faf><f2bf1b47bdbc51aed32c06626080c353>] >>
+startxref
+110478
+%%EOF
