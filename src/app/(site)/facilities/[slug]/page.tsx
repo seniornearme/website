@@ -305,7 +305,7 @@ export default async function FacilityPage({
           <li className="truncate text-zinc-700 dark:text-zinc-300">{titleCase(f.name)}</li>
         </ol>
         <Link
-          href="/search"
+          href={`/search?facility=${f.slug}`}
           aria-label="View on map"
           className="inline-flex shrink-0 items-center gap-1 text-blue-600 hover:underline"
         >
@@ -482,7 +482,7 @@ export default async function FacilityPage({
 
               {reports.length > 0 && (
                 <details className="group mt-4">
-                  <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-900 [&::-webkit-details-marker]:hidden">
+                  <summary className="inline-flex cursor-pointer list-none items-center gap-1 text-sm font-medium text-blue-600 hover:underline [&::-webkit-details-marker]:hidden">
                     View visit history ({reports.length})
                     <svg
                       width="14"

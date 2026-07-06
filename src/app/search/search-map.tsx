@@ -517,10 +517,19 @@ export function SearchMap() {
     return () => clearTimeout(t);
   }, [query]);
 
-  // Deep links: /search?city=reseda, ?zip=91335, or ?lng=&lat= (address pin).
+  // Deep links: /search?facility=<slug>, ?city=reseda, ?zip=91335, or
+  // ?lng=&lat= (address pin).
   const deepLinkDone = useRef(false);
   useEffect(() => {
     if (!mapReady || deepLinkDone.current) return;
+    const facilitySlug = searchParams.get("facility");
+    if (facilitySlug) {
+      if (!facilities.length) return; // wait for the dataset, then re-run
+      deepLinkDone.current = true;
+      const target = facilities.find((x) => x.slug === facilitySlug);
+      if (target) selectFacility(target);
+      return;
+    }
     deepLinkDone.current = true;
     const city = searchParams.get("city");
     const zip = searchParams.get("zip");
@@ -529,7 +538,7 @@ export function SearchMap() {
     if (city) void showBoundary("city", city);
     else if (zip) void showBoundary("zip", zip);
     else if (Number.isFinite(lng) && Number.isFinite(lat)) dropPin(lng, lat);
-  }, [mapReady, searchParams, showBoundary, dropPin]);
+  }, [mapReady, searchParams, showBoundary, dropPin, facilities, selectFacility]);
 
   useEffect(() => {
     if (!mapContainer.current || mapRef.current) return;
