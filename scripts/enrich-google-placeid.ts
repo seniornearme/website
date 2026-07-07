@@ -133,10 +133,13 @@ async function main() {
   let matched = 0;
   let done = 0;
   let errors = 0;
+  let badBatches = 0; // consecutive all-error batches
 
-  const processOne = async (f: Target) => {
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+  const processOne = async (f: Target): Promise<boolean> => {
     const result = await findPlaceId(f);
-    if (!result.ok) { errors++; return; } // left un-stamped for a later retry
+    if (!result.ok) { errors++; return false; } // left un-stamped for a later retry
     const { error } = await supabase
       .from("facilities")
       .update({
@@ -146,21 +149,30 @@ async function main() {
       .eq("id", f.id);
     if (error) console.error(`  update ${f.name}:`, error.message);
     else if (result.id) matched++;
+    return true;
   };
 
   for (let i = 0; i < facilities.length; i += CONCURRENCY) {
     const batchStart = Date.now();
-    await Promise.all(facilities.slice(i, i + CONCURRENCY).map(processOne));
+    const results = await Promise.all(facilities.slice(i, i + CONCURRENCY).map(processOne));
     // pace to ~480 req/min — under the default 600/min SearchTextRequest quota
     const wait = 1000 - (Date.now() - batchStart);
-    if (wait > 0) await new Promise((r) => setTimeout(r, wait));
-    done += Math.min(CONCURRENCY, facilities.length - i);
+    if (wait > 0) await sleep(wait);
+    done += results.length;
     if (done % 500 < CONCURRENCY || done >= facilities.length) {
       console.log(`  ${done}/${facilities.length}  matched=${matched}  errors=${errors}`);
     }
-    if (errors >= 25) {
-      console.log("Stopping: repeated API errors (quota/key/billing). Un-stamped rows retry next run.");
-      break;
+    // transient throttling/timeouts: back off and continue; only a sustained
+    // wall of all-error batches (key/billing/daily quota) stops the run
+    if (results.every((ok) => !ok)) {
+      badBatches++;
+      if (badBatches >= 6) {
+        console.log("Stopping: sustained API errors (quota/key/billing). Un-stamped rows retry next run.");
+        break;
+      }
+      await sleep(Math.min(60000, 5000 * 2 ** badBatches));
+    } else {
+      badBatches = 0;
     }
   }
 

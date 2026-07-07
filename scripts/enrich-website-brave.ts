@@ -99,15 +99,14 @@ async function findWebsite(name: string, city: string | null): Promise<Lookup> {
       headers: { Accept: "application/json", "X-Subscription-Token": API_KEY! },
       signal: AbortSignal.timeout(15000),
     });
-  } catch {
-    return { status: "error" };
-  }
-  if (res.status === 429) {
-    await sleep(2000);
+  } catch (e) {
+    console.error(`  fetch error for "${name}": ${(e as Error).message.slice(0, 80)}`);
     return { status: "error" };
   }
   if (!res.ok) {
-    console.error(`  brave ${res.status} for "${name}"`);
+    const body = (await res.text()).slice(0, 200);
+    console.error(`  brave HTTP ${res.status} for "${name}": ${body}`);
+    if (res.status === 429) await sleep(2000);
     return { status: "error" };
   }
   const data = (await res.json()) as { web?: { results?: BraveResult[] } };
@@ -175,13 +174,14 @@ async function main() {
   for (const f of targets) {
     const result = await findWebsite(f.name, f.city);
     if (result.status === "error") {
-      // monthly quota exhausted or outage — stop rather than churn errors;
-      // untouched rows are retried by the next run
-      if (++consecutiveErrors >= 5) {
+      // transient blips are common over a multi-hour run — back off and keep
+      // going; only a sustained error wall (quota exhausted, outage) stops us
+      consecutiveErrors++;
+      if (consecutiveErrors >= 12) {
         console.log(`\nStopping after ${consecutiveErrors} consecutive errors (quota likely exhausted).`);
         break;
       }
-      await sleep(1100);
+      await sleep(Math.min(60000, 2000 * 2 ** Math.min(consecutiveErrors, 5)));
       continue;
     }
     consecutiveErrors = 0;
