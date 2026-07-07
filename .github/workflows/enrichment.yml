@@ -1,0 +1,56 @@
+# Enrichment: website discovery (Brave + first-party verification) and the
+# photo / amenity / description harvest. Both scripts are resumable — they
+# work from un-stamped rows — so hitting the job timeout or a quota cap just
+# means the next run continues where this one stopped.
+#
+# Runs Tuesdays 11:00 UTC (day after the Monday data refresh) and on demand.
+name: Enrichment
+
+on:
+  schedule:
+    - cron: "0 11 * * 2"
+  workflow_dispatch:
+
+concurrency:
+  group: enrichment
+  cancel-in-progress: false
+
+jobs:
+  discover-websites:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Website discovery (Brave lead + first-party verification)
+        run: npx tsx scripts/enrich-website-brave.ts
+
+  harvest-content:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: us-west-2
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Install headless Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Photos, amenities & descriptions (queued facilities)
+        run: npx tsx scripts/photo-pipeline.ts
