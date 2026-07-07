@@ -31,7 +31,8 @@ import { chromium, type Browser } from "playwright";
 import sharp from "sharp";
 import { createHash } from "node:crypto";
 import { config } from "dotenv";
-import { extractCareFeatures, sortCareFeatures, DEFAULT_FEATURES } from "../src/lib/care-taxonomy";
+import { extractCareFeatures, sortCareFeatures, groupCareFeatures, DEFAULT_FEATURES } from "../src/lib/care-taxonomy";
+import { describeFacility } from "./lib/describe";
 
 config({ path: ".env.local" });
 
@@ -80,6 +81,7 @@ const hostOf = (u: string) => { try { return new URL(u).hostname.replace(/^www\.
 const fileKey = (u: string) => { try { const p = new URL(u); return p.hostname + "/" + (p.pathname.split("/").pop() || p.pathname).toLowerCase(); } catch { return u; } };
 const deent = (s: string) => s.replace(/&amp;/gi, "&").replace(/&#0*38;/g, "&").replace(/&#x0*26;/gi, "&");
 const abs = (u: string, base: string) => { try { const x = new URL(deent(u.trim()), base); return x.protocol === "http:" || x.protocol === "https:" ? x.href : null; } catch { return null; } };
+const titleCaseName = (s: string) => s.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
 
 function heurKind(url: string, og: boolean): "facility" | "stock" {
   const l = url.toLowerCase();
@@ -191,6 +193,32 @@ function subpageLinks(html: string, base: string, host: string): string[] {
   return out.sort((a, b) => (/(gallery|photo|tour|room)/i.test(b) ? 1 : 0) - (/(gallery|photo|tour|room)/i.test(a) ? 1 : 0)).slice(0, SUBPAGES);
 }
 
+// meta description / og:description / JSON-LD description values — the same
+// machine-readable blurbs search engines read; candidates for our description
+function collectMetaDescriptions(html: string, out: string[]) {
+  for (const m of html.matchAll(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)) {
+    try {
+      const walk = (o: unknown, depth: number) => {
+        if (!o || depth > 4) return;
+        if (Array.isArray(o)) { o.forEach((x) => walk(x, depth + 1)); return; }
+        if (typeof o === "object") {
+          const rec = o as Record<string, unknown>;
+          if (typeof rec.description === "string") out.push(rec.description);
+          Object.values(rec).forEach((v) => walk(v, depth + 1));
+        }
+      };
+      walk(JSON.parse(m[1]), 0);
+    } catch { /* malformed JSON-LD */ }
+  }
+  for (const m of html.matchAll(/<meta\b[^>]*>/gi)) {
+    const nm = (extAttr(m[0], "name") || extAttr(m[0], "property") || "").toLowerCase();
+    if (nm === "description" || nm === "og:description") {
+      const c = extAttr(m[0], "content");
+      if (c) out.push(deent(c));
+    }
+  }
+}
+
 const htmlToText = (html: string) =>
   html
     .replace(/<script[\s\S]*?<\/script>/gi, " ")
@@ -200,23 +228,25 @@ const htmlToText = (html: string) =>
     .replace(/&amp;/gi, "&")
     .replace(/\s+/g, " ");
 
-async function staticHarvest(site: string): Promise<{ reachable: boolean; cands: Map<string, Cand>; texts: string[] }> {
+async function staticHarvest(site: string): Promise<{ reachable: boolean; cands: Map<string, Cand>; texts: string[]; metas: string[] }> {
   const cands = new Map<string, Cand>();
   const texts: string[] = [];
+  const metas: string[] = [];
   const home = await fetchHtml(site.startsWith("http") ? site : `https://${site}`);
-  if (!home) return { reachable: false, cands, texts };
+  if (!home) return { reachable: false, cands, texts, metas };
   harvestHtml(home.html, home.finalUrl, cands);
   texts.push(htmlToText(home.html));
+  collectMetaDescriptions(home.html, metas);
   const host = hostOf(home.finalUrl);
   for (const sp of subpageLinks(home.html, home.finalUrl, host)) {
     const r = await fetchHtml(sp);
     if (r) { harvestHtml(r.html, r.finalUrl, cands); texts.push(htmlToText(r.html)); }
   }
-  return { reachable: true, cands, texts };
+  return { reachable: true, cands, texts, metas };
 }
 
 // ---------- headless harvest ----------
-async function headlessHarvest(browser: Browser, site: string, cands: Map<string, Cand>, texts: string[]): Promise<boolean> {
+async function headlessHarvest(browser: Browser, site: string, cands: Map<string, Cand>, texts: string[], metas: string[]): Promise<boolean> {
   const ctx = await browser.newContext({ userAgent: UA, viewport: { width: 1366, height: 900 } });
   const page = await ctx.newPage();
   // tsx/esbuild wraps evaluate()'d functions with a __name helper; define it in-page.
@@ -265,7 +295,31 @@ async function headlessHarvest(browser: Browser, site: string, cands: Map<string
   };
 
   const grabText = async () => {
-    try { texts.push(await page.evaluate(() => document.body?.innerText ?? "")); } catch { /* optional */ }
+    try {
+      texts.push(await page.evaluate(() => document.body?.innerText ?? ""));
+      metas.push(...await page.evaluate(() => {
+        const out: string[] = [];
+        document.querySelectorAll("script[type='application/ld+json']").forEach((s) => {
+          try {
+            const walk = (o: unknown, d: number) => {
+              if (!o || d > 4) return;
+              if (Array.isArray(o)) { o.forEach((x) => walk(x, d + 1)); return; }
+              if (typeof o === "object") {
+                const rec = o as Record<string, unknown>;
+                if (typeof rec.description === "string") out.push(rec.description);
+                Object.values(rec).forEach((v) => walk(v, d + 1));
+              }
+            };
+            walk(JSON.parse(s.textContent || ""), 0);
+          } catch { /* malformed */ }
+        });
+        for (const sel of ["meta[name='description']", "meta[property='og:description']"]) {
+          const c = document.querySelector(sel)?.getAttribute("content");
+          if (c) out.push(c);
+        }
+        return out;
+      }));
+    } catch { /* optional */ }
   };
 
   try {
@@ -397,13 +451,17 @@ async function storePhoto(license: string, buf: Buffer): Promise<{ key: string; 
 }
 
 // ---------- main ----------
-type Target = { id: string; license_number: string; name: string; website: string; amenities_source: string | null };
+type Target = {
+  id: string; license_number: string; name: string; website: string;
+  city: string | null; capacity: number | null;
+  amenities_source: string | null; description_source: string | null;
+};
 
 async function fetchTargets(): Promise<Target[]> {
   const PAGE = 1000; const out: Target[] = [];
   for (let from = 0; ; from += PAGE) {
     let q = supabase.from("facilities")
-      .select("id, license_number, name, website, amenities_source")
+      .select("id, license_number, name, website, city, capacity, amenities_source, description_source")
       .not("website", "is", null).not("license_number", "is", null)
       .eq("status", "active").order("id").range(from, from + PAGE - 1);
     if (CITY) q = q.ilike("city", CITY);
@@ -445,24 +503,46 @@ async function main() {
     }
 
     // 1-2. harvest (static, headless fallback)
-    const { reachable, cands, texts } = await staticHarvest(site);
+    const { reachable, cands, texts, metas } = await staticHarvest(site);
     let usedHeadless = false;
     if (!NO_HEADLESS && (!reachable || cands.size < HEADLESS_THRESHOLD)) {
       browser ??= await chromium.launch({ headless: true });
-      usedHeadless = await headlessHarvest(browser, site, cands, texts);
+      usedHeadless = await headlessHarvest(browser, site, cands, texts, metas);
     }
 
-    // care & amenities from the site's own text (plus the universal baseline)
-    // — never overwrites owner curation
-    const features = texts.join(" ").trim()
-      ? sortCareFeatures([...DEFAULT_FEATURES, ...extractCareFeatures(texts.join(" "))])
+    // care & amenities + a Brave-style description from the site's own
+    // content — never overwrites owner curation
+    const pageText = texts.join(" ").trim();
+    const features = pageText
+      ? sortCareFeatures([...DEFAULT_FEATURES, ...extractCareFeatures(pageText)])
       : [];
-    if (features.length) {
+    let described = 0;
+    if (pageText) {
+      const featureLabels = groupCareFeatures(features).flatMap((g) => g.features.map((ft) => ft.label));
       for (const m of members) {
-        if (m.amenities_source === "owner") continue;
-        await supabase.from("facilities")
-          .update({ amenities: features, amenities_source: "scrape" })
-          .eq("id", m.id);
+        const update: Record<string, unknown> = {};
+        if (m.amenities_source !== "owner" && features.length) {
+          update.amenities = features;
+          update.amenities_source = "scrape";
+        }
+        if (m.description_source !== "owner") {
+          const desc = await describeFacility({
+            name: titleCaseName(m.name),
+            city: m.city,
+            capacity: m.capacity,
+            featureLabels,
+            siteText: pageText,
+            metaCandidates: metas,
+          });
+          if (desc) {
+            update.description = desc.text;
+            update.description_source = desc.source;
+            described++;
+          }
+        }
+        if (Object.keys(update).length) {
+          await supabase.from("facilities").update(update).eq("id", m.id);
+        }
       }
     }
 
@@ -530,7 +610,7 @@ async function main() {
       stored += rows.length;
     }
     const vis = photos.filter((p) => p.kind === "facility").length;
-    console.log(`${photos.length} stored (${vis} visible, ${photos.length - vis} hidden-stock), ${features.length} features${usedHeadless ? " [headless]" : ""}${members.length > 1 ? ` ×${members.length} facilities` : ""}`);
+    console.log(`${photos.length} stored (${vis} visible, ${photos.length - vis} hidden-stock), ${features.length} features, ${described} described${usedHeadless ? " [headless]" : ""}${members.length > 1 ? ` ×${members.length} facilities` : ""}`);
   }
 
   if (browser) await browser.close();
