@@ -70,6 +70,16 @@ const BLOCK = new Set([
   "dss.ca.gov", "ca.gov", "usnews.com", "wikipedia.org", "bbb.org", "manta.com",
   "opencorporates.com", "loopnet.com", "crexi.com", "apartments.com", "npino.com",
   "npidb.org", "yellowbook.com", "chamberofcommerce.com", "dandb.com", "buzzfile.com",
+  // directories caught by first-party verification of the initial sweep —
+  // their page titles contain facility names, so title-token scoring alone
+  // let them through
+  "seniorcareauthority.com", "miradorliving.com", "carelistings.com", "seniorhomes.com",
+  "oasissenioradvisors.com", "myseniorcarefinder.com", "carechanges.com",
+  "assistedlivingnearme.net", "seniorcarehomes.com", "careavailability.com",
+  "familyassets.com", "elderlifefinancial.com", "choosewellsandiego.org",
+  "assistedlivingcenter.com", "themapofcare.com", "seniorlivingfacilities.net",
+  "seniorcare.com", "rubyhome.com", "nursa.com", "assistedliving.org",
+  "seniorguidance.org", "retirementliving.com", "seniorsite.org", "care.com",
 ]);
 
 const STOP = new Set([
