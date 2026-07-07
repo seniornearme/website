@@ -1,14 +1,25 @@
 /**
- * Website discovery via Brave Search API (free tier: 2,000/mo, 1 query/sec).
+ * Website discovery: Brave Search as a transient lead + first-party
+ * verification before anything is stored.
  *
- * For each facility, searches "name city CA" and keeps the top result that is
- * (a) not a known directory/aggregator/social/gov site and (b) actually matches
- * the facility name (domain or title token). Stores the homepage URL. A no-match
- * still records website_checked_at so it isn't re-queried.
+ * For each facility, a Brave query ("name city CA") produces candidate
+ * homepages — filtered against known directories/aggregators/social/gov and
+ * name-matched. Candidates are held only in-flight (Brave ToS permits
+ * transient operational storage; storing Search Results requires a
+ * storage-rights plan). We then fetch each candidate site OURSELVES and only
+ * persist a URL after verifying, on the facility's own page, that a facility
+ * name token appears in its content or final domain. What lands in the
+ * database is a fact derived from our crawl of the facility's public website
+ * (website_source = 'search_verified'), not a Brave result.
  *
- * Run:  npx tsx scripts/enrich-website-brave.ts --city reseda   # test first
+ * A no-match or failed verification still records website_checked_at so the
+ * facility isn't re-queried.
+ *
+ * Run:  npx tsx scripts/enrich-website-brave.ts --city reseda     # test first
  *       npx tsx scripts/enrich-website-brave.ts --limit 50
- *       npx tsx scripts/enrich-website-brave.ts                 # all un-checked
+ *       npx tsx scripts/enrich-website-brave.ts                   # all un-checked
+ *       npx tsx scripts/enrich-website-brave.ts --verify-existing # re-verify
+ *           URLs stored before verification existed; failures are nulled out
  *
  * Env:  NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, BRAVE_API_KEY
  */
@@ -26,6 +37,11 @@ const flag = (n: string) => {
 const CITY_FILTER = flag("--city");
 const FORCE = args.includes("--force");
 const LIMIT = flag("--limit") ? parseInt(flag("--limit")!, 10) : undefined;
+const VERIFY_EXISTING = args.includes("--verify-existing");
+
+const UA =
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 " +
+  "(KHTML, like Gecko) Chrome/124.0 Safari/537.36";
 
 const API_KEY = process.env.BRAVE_API_KEY;
 if (!API_KEY) {
@@ -86,10 +102,14 @@ function isBlocked(host: string): boolean {
 
 type BraveResult = { url: string; title?: string };
 
-type Lookup = { status: "found"; url: string } | { status: "none" } | { status: "error" };
+type Lookup =
+  | { status: "candidates"; urls: string[] }
+  | { status: "none" }
+  | { status: "error" };
 
-// "none" is a real no-match and stamps website_checked_at; "error" (timeouts,
-// 429s, exhausted quota) leaves the row untouched so a later run retries it.
+// Candidate homepages from a Brave query, ranked — held in-flight only, never
+// stored. "none" is a real no-match and stamps website_checked_at; "error"
+// (timeouts, 429s, exhausted quota) leaves the row untouched for retry.
 async function findWebsite(name: string, city: string | null): Promise<Lookup> {
   const q = `${name} ${city ?? ""} CA`.trim();
   const url = `${SEARCH}?q=${encodeURIComponent(q)}&count=10&country=us`;
@@ -114,7 +134,7 @@ async function findWebsite(name: string, city: string | null): Promise<Lookup> {
   const tokens = nameTokens(name);
   if (!tokens.length) return { status: "none" };
 
-  let best: { url: string; score: number } | null = null;
+  const scored: { url: string; score: number }[] = [];
   for (const r of results) {
     const host = hostOf(r.url);
     if (!host || isBlocked(host)) continue;
@@ -123,11 +143,39 @@ async function findWebsite(name: string, city: string | null): Promise<Lookup> {
     let score = 0;
     if (tokens.some((t) => domainStr.includes(t))) score += 2;
     if (tokens.some((t) => title.includes(t))) score += 1;
-    if (score >= 1 && (!best || score > best.score)) {
-      best = { url: `https://${host}`, score };
-    }
+    if (score >= 1) scored.push({ url: `https://${host}`, score });
   }
-  return best ? { status: "found", url: best.url } : { status: "none" };
+  scored.sort((a, b) => b.score - a.score);
+  const urls = [...new Set(scored.map((s) => s.url))].slice(0, 3);
+  return urls.length ? { status: "candidates", urls } : { status: "none" };
+}
+
+// First-party verification: fetch the candidate site ourselves and require a
+// facility-name token on the page (or in the final domain after redirects).
+// Returns the canonical https://host of the VERIFIED final destination —
+// this observation of the facility's own website is what gets stored.
+async function verifyFacilitySite(candidateUrl: string, tokens: string[]): Promise<string | null> {
+  let res: Response;
+  try {
+    res = await fetch(candidateUrl, {
+      headers: { "User-Agent": UA, Accept: "text/html" },
+      redirect: "follow",
+      signal: AbortSignal.timeout(12000),
+    });
+  } catch {
+    return null;
+  }
+  if (!res.ok || !(res.headers.get("content-type") || "").includes("html")) return null;
+  const finalHost = hostOf(res.url || candidateUrl);
+  if (!finalHost || isBlocked(finalHost)) return null;
+  const text = (await res.text())
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .toLowerCase();
+  const hostStr = finalHost.replace(/[^a-z0-9]/g, "");
+  const match = tokens.some((t) => text.includes(t) || hostStr.includes(t));
+  return match ? `https://${finalHost}` : null;
 }
 
 type Target = { id: string; name: string; city: string | null };
@@ -158,7 +206,59 @@ async function fetchTargets(): Promise<Target[]> {
   return out;
 }
 
+// Re-verify URLs stored before first-party verification existed. Passing
+// rows upgrade to search_verified (with the canonical final host); failures
+// are nulled out — conservative, with one retry for transient fetch flakes.
+async function verifyExisting() {
+  const PAGE = 1000;
+  const rows: { id: string; name: string; website: string }[] = [];
+  for (let from = 0; ; from += PAGE) {
+    const { data, error } = await supabase
+      .from("facilities")
+      .select("id, name, website")
+      .eq("website_source", "brave")
+      .order("id")
+      .range(from, from + PAGE - 1);
+    if (error) throw error;
+    if (!data?.length) break;
+    rows.push(...(data as never[]));
+    if (data.length < PAGE) break;
+  }
+  console.log(`${rows.length} previously stored URLs to re-verify`);
+
+  let kept = 0;
+  let dropped = 0;
+  let done = 0;
+  const CONC = 8;
+  for (let i = 0; i < rows.length; i += CONC) {
+    await Promise.all(rows.slice(i, i + CONC).map(async (r) => {
+      const tokens = nameTokens(r.name);
+      let verified = await verifyFacilitySite(r.website, tokens);
+      if (!verified) {
+        await sleep(2000);
+        verified = await verifyFacilitySite(r.website, tokens);
+      }
+      const update = verified
+        ? { website: verified, website_source: "search_verified" }
+        : { website: null, website_source: null };
+      const { error } = await supabase.from("facilities").update(update).eq("id", r.id);
+      if (error) console.error(`  update ${r.name}: ${error.message}`);
+      else if (verified) kept++;
+      else { dropped++; console.log(`  dropped ${r.name}: ${r.website}`); }
+    }));
+    done += Math.min(CONC, rows.length - i);
+    if (done % 200 < CONC || done >= rows.length) {
+      console.log(`  ${done}/${rows.length}  kept=${kept} dropped=${dropped}`);
+    }
+  }
+  console.log(`Done. kept=${kept}, dropped=${dropped}`);
+}
+
 async function main() {
+  if (VERIFY_EXISTING) {
+    await verifyExisting();
+    return;
+  }
   const scope = CITY_FILTER ? `city="${CITY_FILTER}"` : "all CA facilities";
   console.log(`Finding websites via Brave for ${scope}…`);
   const targets = await fetchTargets();
@@ -188,10 +288,17 @@ async function main() {
     const update: Record<string, unknown> = {
       website_checked_at: new Date().toISOString(),
     };
-    if (result.status === "found") {
-      update.website = result.url;
-      update.website_source = "brave";
-      found++;
+    if (result.status === "candidates") {
+      const tokens = nameTokens(f.name);
+      for (const candidate of result.urls) {
+        const verified = await verifyFacilitySite(candidate, tokens);
+        if (verified) {
+          update.website = verified;
+          update.website_source = "search_verified";
+          found++;
+          break;
+        }
+      }
     }
     const { error } = await supabase.from("facilities").update(update).eq("id", f.id);
     if (error) console.error(`  update ${f.name}:`, error.message);
