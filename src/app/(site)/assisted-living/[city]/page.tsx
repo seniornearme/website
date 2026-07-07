@@ -104,6 +104,10 @@ export default async function CityPage({
         records, with inspection histories on every listing.{" "}
         <Link href={`/search?city=${slug}`} className="text-blue-600 hover:underline">
           View them on the map
+        </Link>{" "}
+        or{" "}
+        <Link href={`/inspection-records/${slug}`} className="text-blue-600 hover:underline">
+          compare inspection records
         </Link>
         .
       </p>

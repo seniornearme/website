@@ -4,7 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { titleCase } from "@/lib/format";
 import { withDefaultFeatures } from "@/lib/care-taxonomy";
-import { WebsiteConnect, GoogleConnect, CareFeaturesEditor } from "./manage-client";
+import { WebsiteConnect, GoogleConnect, CareFeaturesEditor, PricingEditor } from "./manage-client";
 import { ComplianceTracker, type ComplianceItem } from "./compliance-client";
 
 export const metadata: Metadata = { title: "Manage facility" };
@@ -21,7 +21,7 @@ export default async function ManageFacilityPage({
 
   const { data: f } = await supabase
     .from("facilities")
-    .select("id, name, slug, street_address, city, zip, license_number, website, website_source, photos_synced_at, owner_id, amenities, amenities_source")
+    .select("id, name, slug, street_address, city, zip, license_number, website, website_source, photos_synced_at, owner_id, amenities, amenities_source, price_min, price_max, pricing_source")
     .eq("id", id)
     .single();
   if (!f || f.owner_id !== user.id) notFound();
@@ -77,6 +77,12 @@ export default async function ManageFacilityPage({
         <GoogleConnect
           facilityId={f.id}
           connection={connection as { status: string; google_email: string | null; connected_at: string } | null}
+        />
+        <PricingEditor
+          facilityId={f.id}
+          initialMin={f.price_min}
+          initialMax={f.price_max}
+          isOwnerSet={f.pricing_source === "owner"}
         />
         <CareFeaturesEditor
           facilityId={f.id}

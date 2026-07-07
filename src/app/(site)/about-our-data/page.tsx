@@ -85,6 +85,31 @@ export default function AboutOurDataPage() {
         </div>
       </section>
 
+      <section id="pricing-estimates">
+        <h2 className="text-lg font-semibold">Pricing estimates</h2>
+        <div className="mt-2 space-y-3 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
+          <p>
+            Unless a facility has published its own rates with us (badged
+            &ldquo;Pricing provided by the facility&rdquo;), the cost shown is an estimate
+            built from three public inputs:
+          </p>
+          <p className="rounded-lg bg-zinc-50 px-4 py-3 font-mono text-xs dark:bg-zinc-900">
+            California median for assisted living ($7,350/mo, Genworth/CareScout Cost of
+            Care Survey 2024) × county cost factor (Zillow Observed Rent Index, damped 50%
+            because care costs vary less than housing) × a range for the facility&apos;s
+            licensed capacity class
+          </p>
+          <p>
+            Smaller board-and-care homes typically price below the survey median, which
+            skews toward larger communities; large communities with tiered care price
+            above it. Actual rates depend on care needs, room type (private vs. shared),
+            and negotiation — treat the estimate as a starting point and confirm directly
+            with the facility. Facility owners can replace the estimate with real rates by
+            claiming their listing, at no cost.
+          </p>
+        </div>
+      </section>
+
       <LegalSection heading="Ratings & reviews">
         <p>
           Ratings and reviews shown on facility pages are provided live by Google and are

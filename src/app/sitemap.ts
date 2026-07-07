@@ -25,6 +25,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/terms`, changeFrequency: "yearly", priority: 0.1 },
   ];
 
+  const inspectionUrls: MetadataRoute.Sitemap = cities.map((c) => ({
+    url: `${BASE}/inspection-records/${slugifyCity(c.city)}`,
+    changeFrequency: "weekly",
+    priority: 0.6,
+  }));
+
   const cityUrls: MetadataRoute.Sitemap = cities.map((c) => ({
     url: `${BASE}/assisted-living/${slugifyCity(c.city)}`,
     changeFrequency: "weekly",
@@ -38,5 +44,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...statics, ...cityUrls, ...facilityUrls];
+  return [...statics, ...cityUrls, ...inspectionUrls, ...facilityUrls];
 }

@@ -8,6 +8,7 @@ import { getGoogleReviews } from "@/lib/google-reviews";
 import { slugifyCity } from "@/lib/cities";
 import { scoreTier } from "@/lib/inspection";
 import { groupCareFeatures, withDefaultFeatures } from "@/lib/care-taxonomy";
+import { estimateRange, fmtUsd } from "@/lib/pricing";
 import { reportUrl, summarizeFacilityReports } from "@/lib/report-summaries";
 import { PhotoGallery } from "./photo-gallery";
 import { InquiryForm } from "./inquiry-form";
@@ -70,7 +71,11 @@ type Facility = {
   status: string;
   street_address: string | null;
   city: string | null;
+  county: string | null;
   zip: string | null;
+  price_min: number | null;
+  price_max: number | null;
+  pricing_source: string | null;
   phone: string | null;
   email: string | null;
   website: string | null;
@@ -95,7 +100,7 @@ type Facility = {
 };
 
 const SELECT =
-  "id,name,slug,facility_type,status,street_address,city,zip,phone,email,website,capacity,administrator,licensee,license_number,license_issue_date,description,amenities,amenities_source,google_place_id,google_connected,cdss_last_visit_date,cdss_num_visits,cdss_num_complaints,cdss_citations_type_a,cdss_citations_type_b,cdss_substantiated_allegations,cdss_synced_at,inspection_score";
+  "id,name,slug,facility_type,status,street_address,city,county,zip,price_min,price_max,pricing_source,phone,email,website,capacity,administrator,licensee,license_number,license_issue_date,description,amenities,amenities_source,google_place_id,google_connected,cdss_last_visit_date,cdss_num_visits,cdss_num_complaints,cdss_citations_type_a,cdss_citations_type_b,cdss_substantiated_allegations,cdss_synced_at,inspection_score";
 
 async function getFacility(slug: string): Promise<Facility | null> {
   const supabase = await createClient();
@@ -380,6 +385,44 @@ export default async function FacilityPage({
               <p className="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">{f.description}</p>
             </section>
           )}
+
+          {/* Pricing */}
+          <section>
+            <h2 className="mb-2 text-lg font-semibold">Cost</h2>
+            {f.pricing_source === "owner" && f.price_min ? (
+              <>
+                <p className="text-2xl font-semibold">
+                  {fmtUsd(f.price_min)}
+                  {f.price_max && f.price_max !== f.price_min ? ` – ${fmtUsd(f.price_max)}` : "+"}
+                  <span className="text-sm font-normal text-zinc-500"> /month</span>
+                </p>
+                <p className="mt-1 inline-flex items-center gap-1 rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-950 dark:text-green-300">
+                  Pricing provided by the facility
+                </p>
+              </>
+            ) : (
+              (() => {
+                const est = estimateRange(f.county, f.capacity);
+                return (
+                  <>
+                    <p className="text-2xl font-semibold">
+                      {fmtUsd(est.min)} – {fmtUsd(est.max)}
+                      <span className="text-sm font-normal text-zinc-500"> /month (estimated)</span>
+                    </p>
+                    <p className="mt-2 text-[11px] leading-snug text-zinc-400">
+                      Estimated from the statewide median for assisted living, local housing
+                      costs, and this facility&apos;s size — actual rates vary with care needs
+                      and room type.{" "}
+                      <Link href="/about-our-data#pricing-estimates" className="text-blue-600 hover:underline">
+                        How we estimate
+                      </Link>
+                      . Contact the facility for a quote.
+                    </p>
+                  </>
+                );
+              })()
+            )}
+          </section>
 
           {/* Amenities */}
           {amenityGroups.length > 0 && (
