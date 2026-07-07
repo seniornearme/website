@@ -81,38 +81,79 @@ export function WebsiteConnect({
 
 export function PricingEditor({
   facilityId,
-  initialMin,
-  initialMax,
+  initial,
   isOwnerSet,
 }: {
   facilityId: string;
-  initialMin: number | null;
-  initialMax: number | null;
+  initial: { min: number | null; max: number | null; sharedMin: number | null; sharedMax: number | null };
   isOwnerSet: boolean;
 }) {
-  const [min, setMin] = useState(initialMin?.toString() ?? "");
-  const [max, setMax] = useState(initialMax?.toString() ?? "");
+  const [priv, setPriv] = useState({ lo: initial.min?.toString() ?? "", hi: initial.max?.toString() ?? "" });
+  const [shared, setShared] = useState({ lo: initial.sharedMin?.toString() ?? "", hi: initial.sharedMax?.toString() ?? "" });
   const [state, setState] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const [error, setError] = useState("");
 
+  function parsePair(pair: { lo: string; hi: string }, label: string): [number | null, number | null] | string {
+    if (!pair.lo.trim()) return [null, null];
+    const lo = parseInt(pair.lo, 10);
+    const hi = pair.hi.trim() ? parseInt(pair.hi, 10) : lo;
+    if (!lo || lo < 500 || lo > 50000 || hi < lo) return `Check the ${label} range — monthly dollars, low to high.`;
+    return [lo, hi];
+  }
+
   async function save(e: React.FormEvent) {
     e.preventDefault();
+    setError("");
+    const p = parsePair(priv, "private room");
+    const s = parsePair(shared, "shared room");
+    if (typeof p === "string") { setError(p); setState("error"); return; }
+    if (typeof s === "string") { setError(s); setState("error"); return; }
+    if (!p[0] && !s[0]) { setError("Enter at least one room rate."); setState("error"); return; }
     setState("saving");
-    const lo = parseInt(min, 10);
-    const hi = max ? parseInt(max, 10) : lo;
-    if (!lo || lo < 500 || lo > 50000 || hi < lo) {
-      setError("Enter a monthly starting rate (and optional upper range) in dollars.");
-      setState("error");
-      return;
-    }
     const supabase = createClient();
     const { error } = await supabase
       .from("facilities")
-      .update({ price_min: lo, price_max: hi, pricing_source: "owner" })
+      .update({
+        price_min: p[0], price_max: p[1],
+        price_shared_min: s[0], price_shared_max: s[1],
+        pricing_source: "owner",
+      })
       .eq("id", facilityId);
     if (error) { setError(error.message); setState("error"); }
     else setState("saved");
   }
+
+  const row = (
+    label: string,
+    pair: { lo: string; hi: string },
+    set: (p: { lo: string; hi: string }) => void,
+    ph: [string, string],
+  ) => (
+    <div className="flex flex-wrap items-center gap-2">
+      <span className="w-28 text-sm text-zinc-600 dark:text-zinc-400">{label}</span>
+      <label className="flex items-center gap-1.5 text-sm">
+        $
+        <input
+          type="number"
+          value={pair.lo}
+          onChange={(e) => { set({ ...pair, lo: e.target.value }); setState("idle"); }}
+          placeholder={ph[0]}
+          className="w-24 rounded-lg border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
+        />
+      </label>
+      <label className="flex items-center gap-1.5 text-sm">
+        to $
+        <input
+          type="number"
+          value={pair.hi}
+          onChange={(e) => { set({ ...pair, hi: e.target.value }); setState("idle"); }}
+          placeholder={ph[1]}
+          className="w-24 rounded-lg border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
+        />
+      </label>
+      <span className="text-sm text-zinc-400">/month</span>
+    </div>
+  );
 
   return (
     <section className="rounded-xl border border-zinc-200 p-5 dark:border-zinc-800">
@@ -122,28 +163,9 @@ export function PricingEditor({
           ? "Your published pricing is shown on your listing."
           : "Until you set pricing, your listing shows an estimated range based on region and facility size. Real pricing from you replaces the estimate and is badged as provided by the facility."}
       </p>
-      <form onSubmit={save} className="mt-4 flex flex-wrap items-center gap-2">
-        <label className="flex items-center gap-1.5 text-sm">
-          From $
-          <input
-            type="number"
-            value={min}
-            onChange={(e) => { setMin(e.target.value); setState("idle"); }}
-            placeholder="4500"
-            className="w-28 rounded-lg border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
-          />
-        </label>
-        <label className="flex items-center gap-1.5 text-sm">
-          to $
-          <input
-            type="number"
-            value={max}
-            onChange={(e) => { setMax(e.target.value); setState("idle"); }}
-            placeholder="6500"
-            className="w-28 rounded-lg border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
-          />
-        </label>
-        <span className="text-sm text-zinc-400">/month</span>
+      <form onSubmit={save} className="mt-4 space-y-3">
+        {row("Private room", priv, setPriv, ["5750", "7500"])}
+        {row("Shared room", shared, setShared, ["3750", "4500"])}
         <button
           type="submit"
           disabled={state === "saving"}

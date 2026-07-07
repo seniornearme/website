@@ -21,7 +21,7 @@ export default async function ManageFacilityPage({
 
   const { data: f } = await supabase
     .from("facilities")
-    .select("id, name, slug, street_address, city, zip, license_number, website, website_source, photos_synced_at, owner_id, amenities, amenities_source, price_min, price_max, pricing_source")
+    .select("id, name, slug, street_address, city, zip, license_number, website, website_source, photos_synced_at, owner_id, amenities, amenities_source, price_min, price_max, price_shared_min, price_shared_max, pricing_source")
     .eq("id", id)
     .single();
   if (!f || f.owner_id !== user.id) notFound();
@@ -80,8 +80,12 @@ export default async function ManageFacilityPage({
         />
         <PricingEditor
           facilityId={f.id}
-          initialMin={f.price_min}
-          initialMax={f.price_max}
+          initial={{
+            min: f.price_min,
+            max: f.price_max,
+            sharedMin: f.price_shared_min,
+            sharedMax: f.price_shared_max,
+          }}
           isOwnerSet={f.pricing_source === "owner"}
         />
         <CareFeaturesEditor

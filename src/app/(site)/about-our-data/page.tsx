@@ -102,10 +102,11 @@ export default function AboutOurDataPage() {
           <p>
             Smaller board-and-care homes typically price below the survey median, which
             skews toward larger communities; large communities with tiered care price
-            above it. Actual rates depend on care needs, room type (private vs. shared),
-            and negotiation — treat the estimate as a starting point and confirm directly
-            with the facility. Facility owners can replace the estimate with real rates by
-            claiming their listing, at no cost.
+            above it. The estimate reflects a private room — shared rooms typically run
+            25&ndash;40% less. Actual rates depend on care needs and negotiation — treat
+            the estimate as a starting point and confirm directly with the facility.
+            Facility owners can replace the estimate with real room-type rates by claiming
+            their listing, at no cost.
           </p>
         </div>
       </section>

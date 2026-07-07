@@ -75,6 +75,8 @@ type Facility = {
   zip: string | null;
   price_min: number | null;
   price_max: number | null;
+  price_shared_min: number | null;
+  price_shared_max: number | null;
   pricing_source: string | null;
   phone: string | null;
   email: string | null;
@@ -100,7 +102,7 @@ type Facility = {
 };
 
 const SELECT =
-  "id,name,slug,facility_type,status,street_address,city,county,zip,price_min,price_max,pricing_source,phone,email,website,capacity,administrator,licensee,license_number,license_issue_date,description,amenities,amenities_source,google_place_id,google_connected,cdss_last_visit_date,cdss_num_visits,cdss_num_complaints,cdss_citations_type_a,cdss_citations_type_b,cdss_substantiated_allegations,cdss_synced_at,inspection_score";
+  "id,name,slug,facility_type,status,street_address,city,county,zip,price_min,price_max,price_shared_min,price_shared_max,pricing_source,phone,email,website,capacity,administrator,licensee,license_number,license_issue_date,description,amenities,amenities_source,google_place_id,google_connected,cdss_last_visit_date,cdss_num_visits,cdss_num_complaints,cdss_citations_type_a,cdss_citations_type_b,cdss_substantiated_allegations,cdss_synced_at,inspection_score";
 
 async function getFacility(slug: string): Promise<Facility | null> {
   const supabase = await createClient();
@@ -389,14 +391,33 @@ export default async function FacilityPage({
           {/* Pricing */}
           <section>
             <h2 className="mb-2 text-lg font-semibold">Cost</h2>
-            {f.pricing_source === "owner" && f.price_min ? (
+            {f.pricing_source === "owner" && (f.price_min || f.price_shared_min) ? (
               <>
-                <p className="text-2xl font-semibold">
-                  {fmtUsd(f.price_min)}
-                  {f.price_max && f.price_max !== f.price_min ? ` – ${fmtUsd(f.price_max)}` : "+"}
-                  <span className="text-sm font-normal text-zinc-500"> /month</span>
-                </p>
-                <p className="mt-1 inline-flex items-center gap-1 rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-950 dark:text-green-300">
+                <dl className="space-y-1.5">
+                  {f.price_min && (
+                    <div className="flex items-baseline gap-3">
+                      <dt className="w-28 text-sm text-zinc-500">Private room</dt>
+                      <dd className="text-xl font-semibold">
+                        {fmtUsd(f.price_min)}
+                        {f.price_max && f.price_max !== f.price_min ? ` – ${fmtUsd(f.price_max)}` : "+"}
+                        <span className="text-sm font-normal text-zinc-500"> /mo</span>
+                      </dd>
+                    </div>
+                  )}
+                  {f.price_shared_min && (
+                    <div className="flex items-baseline gap-3">
+                      <dt className="w-28 text-sm text-zinc-500">Shared room</dt>
+                      <dd className="text-xl font-semibold">
+                        {fmtUsd(f.price_shared_min)}
+                        {f.price_shared_max && f.price_shared_max !== f.price_shared_min
+                          ? ` – ${fmtUsd(f.price_shared_max)}`
+                          : "+"}
+                        <span className="text-sm font-normal text-zinc-500"> /mo</span>
+                      </dd>
+                    </div>
+                  )}
+                </dl>
+                <p className="mt-2 inline-flex items-center gap-1 rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-950 dark:text-green-300">
                   Pricing provided by the facility
                 </p>
               </>
@@ -407,12 +428,15 @@ export default async function FacilityPage({
                   <>
                     <p className="text-2xl font-semibold">
                       {fmtUsd(est.min)} – {fmtUsd(est.max)}
-                      <span className="text-sm font-normal text-zinc-500"> /month (estimated)</span>
+                      <span className="text-sm font-normal text-zinc-500">
+                        {" "}
+                        /month (estimated, private room)
+                      </span>
                     </p>
                     <p className="mt-2 text-[11px] leading-snug text-zinc-400">
                       Estimated from the statewide median for assisted living, local housing
-                      costs, and this facility&apos;s size — actual rates vary with care needs
-                      and room type.{" "}
+                      costs, and this facility&apos;s size. Shared rooms typically run 25–40%
+                      less; actual rates vary with care needs.{" "}
                       <Link href="/about-our-data#pricing-estimates" className="text-blue-600 hover:underline">
                         How we estimate
                       </Link>
