@@ -134,12 +134,18 @@ async function findWebsite(name: string, city: string | null): Promise<Lookup> {
     return { status: "error" };
   }
   if (!res.ok) {
-    const body = (await res.text()).slice(0, 200);
-    console.error(`  brave HTTP ${res.status} for "${name}": ${body}`);
+    const body = await res.text().catch(() => "");
+    console.error(`  brave HTTP ${res.status} for "${name}": ${body.slice(0, 200)}`);
     if (res.status === 429) await sleep(2000);
     return { status: "error" };
   }
-  const data = (await res.json()) as { web?: { results?: BraveResult[] } };
+  // body reads can also die mid-stream — treat like any transient error
+  let data: { web?: { results?: BraveResult[] } };
+  try {
+    data = (await res.json()) as typeof data;
+  } catch {
+    return { status: "error" };
+  }
   const results = data.web?.results ?? [];
   const tokens = nameTokens(name);
   if (!tokens.length) return { status: "none" };
@@ -178,7 +184,13 @@ async function verifyFacilitySite(candidateUrl: string, tokens: string[]): Promi
   if (!res.ok || !(res.headers.get("content-type") || "").includes("html")) return null;
   const finalHost = hostOf(res.url || candidateUrl);
   if (!finalHost || isBlocked(finalHost)) return null;
-  const text = (await res.text())
+  let raw: string;
+  try {
+    raw = await res.text(); // sockets can close mid-body
+  } catch {
+    return null;
+  }
+  const text = raw
     .replace(/<script[\s\S]*?<\/script>/gi, " ")
     .replace(/<style[\s\S]*?<\/style>/gi, " ")
     .replace(/<[^>]+>/g, " ")
