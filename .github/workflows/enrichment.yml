@@ -11,14 +11,16 @@ on:
     - cron: "0 11 * * 2"
   workflow_dispatch:
 
-concurrency:
-  group: enrichment
-  cancel-in-progress: false
-
+# Concurrency is per JOB, not per run: a new run's discovery must not queue
+# behind an old run's hours-long harvest. Same-type jobs still never overlap
+# (both scripts work from un-stamped rows, so overlap would double-process).
 jobs:
   discover-websites:
     runs-on: ubuntu-latest
     timeout-minutes: 350
+    concurrency:
+      group: enrichment-discover
+      cancel-in-progress: false
     env:
       NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
@@ -36,6 +38,9 @@ jobs:
   harvest-content:
     runs-on: ubuntu-latest
     timeout-minutes: 350
+    concurrency:
+      group: enrichment-harvest
+      cancel-in-progress: false
     env:
       NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
