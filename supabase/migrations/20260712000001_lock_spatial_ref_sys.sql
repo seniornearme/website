@@ -1,0 +1,18 @@
+-- Supabase linter: rls_disabled_in_public flagged spatial_ref_sys — the
+-- PostGIS EPSG reference catalog (projection definitions, ~8,500 rows of
+-- public reference data — NOT application data).
+--
+-- We can't enable RLS on it (the extension owns the table). The intended
+-- remediation is to strip API-role access so anon/authenticated clients have
+-- no PostgREST path to it. This REVOKE applies cleanly in any environment
+-- where our migration role owns the table (e.g. local `supabase db reset`,
+-- where postgres creates the extension).
+--
+-- On the HOSTED project the table is owned by `supabase_admin`, so the
+-- platform `postgres` role cannot revoke supabase_admin's grants (the
+-- statement no-ops without error). Closing it there requires a Supabase
+-- support action or acknowledging the advisor. Blast radius meanwhile is
+-- limited to the projection catalog — no user data is exposed, and every
+-- app table (facilities, compliance_items, facility_photos, …) has RLS with
+-- policies. Verified 2026-07-12.
+revoke all on table public.spatial_ref_sys from anon, authenticated, public;
